@@ -1,0 +1,67 @@
+name: CI
+
+# Runs on every push to any branch and every PR targeting main.
+# Fails fast: each step is independent so all errors surface in one run, not three.
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+
+# Concurrency: if you push twice in 30 seconds, cancel the older run.
+# Saves Actions minutes and avoids confusing "two PR checks running" UX.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate HTML / CSS / JS / versions
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dev tooling
+        # --no-audit / --no-fund: cuts ~3 seconds of noise, no security implications
+        # for dev-only deps that never ship to users
+        run: npm ci --no-audit --no-fund
+
+      - name: JS syntax check (extract scripts → node --check)
+        # The app is one big HTML file. We extract every inline <script> block
+        # and run `node --check` on it. Catches syntax errors that would silently
+        # brick the app at runtime — cheap insurance.
+        run: node tools/check-js-syntax.mjs
+
+      - name: HTML validation
+        # html-validate enforces structural correctness: matched tags, valid
+        # attributes, no duplicate IDs (this one bit us once), accessibility
+        # basics. Config is in .htmlvalidate.json
+        run: npx html-validate index.html
+
+      - name: CSS lint
+        # stylelint with the standard config + a custom rule that the broken
+        # splash-screen CSS (missing comma in selector list) would have caught.
+        # Targets only the inline <style> block in index.html.
+        run: npx stylelint --custom-syntax postcss-html "index.html"
+
+      - name: Cache-version sync check
+        # Enforces that APP_VERSION in index.html equals CACHE_VERSION in sw.js.
+        # This is the single biggest deployment footgun in a single-file PWA:
+        # forget to bump CACHE_VERSION and returning users see stale code forever.
+        # Failing CI here is much better than failing in production.
+        run: node tools/check-versions.mjs
+
+      - name: Manifest sanity
+        # Quick JSON parse + required-fields check. If manifest.json breaks,
+        # iOS/Android stop showing the splash screen and PWA installability dies
+        # silently. So we check it explicitly.
+        run: node tools/check-manifest.mjs

@@ -1,0 +1,20 @@
+{
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "no-inline-style": "off",
+    "no-unknown-elements": "error",
+    "void-style": "off",
+    "element-required-attributes": "error",
+    "no-duplicate-id": "error",
+    "wcag/h30": "off",
+    "wcag/h32": "off",
+    "no-trailing-whitespace": "off",
+    "attr-quotes": "off",
+    "doctype-style": "off",
+    "long-title": "off",
+    "no-raw-characters": "off",
+    "require-sri": "off",
+    "no-implicit-button-type": "warn",
+    "input-missing-label": "warn"
+  }
+}
