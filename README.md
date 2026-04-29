@@ -1,3 +1,4 @@
+
 # UniManager
 
 > A single-file, offline-first PWA that acts as a complete companion for university students — schedule, GPA, exams, notes, and group collaboration. Built solo by a CS student who got tired of juggling 6 different apps.
@@ -77,7 +78,7 @@ UniManager is a single PWA that replaces the patchwork of Notes, Calendar, Whats
 
 ## 💡 Why I built this
 
-I'm a CS student at AASTMT in Egypt. Halfway through the spring 2026 semester I realized I was using:
+I'm a CS student at AASTMT in Lattakia, Syria. Halfway through the spring 2026 semester I realized I was using:
 
 - iOS Calendar for lectures
 - A WhatsApp group for "wait when's the midterm again?"
@@ -97,28 +98,44 @@ Six weeks of late nights later, here we are.
 
 <table>
   <tr>
-    <td><img src="docs/screenshots/home.png" alt="Home" width="200"></td>
-    <td><img src="docs/screenshots/schedule.png" alt="Schedule" width="200"></td>
-    <td><img src="docs/screenshots/gpa.png" alt="GPA calculator" width="200"></td>
-    <td><img src="docs/screenshots/groups.png" alt="Groups" width="200"></td>
+    <td><img src="docs/screenshots/home-stats.png" alt="Home — Stats & Progress" width="200"></td>
+    <td><img src="docs/screenshots/home-pomodoro.png" alt="Home — Pomodoro & Analytics" width="200"></td>
+    <td><img src="docs/screenshots/schedule.png" alt="Weekly Schedule" width="200"></td>
   </tr>
   <tr>
-    <td align="center"><sub>Home dashboard</sub></td>
-    <td align="center"><sub>Weekly schedule</sub></td>
-    <td align="center"><sub>GPA calculator</sub></td>
-    <td align="center"><sub>Group overview</sub></td>
+    <td align="center"><sub>Home — Stats & Progress</sub></td>
+    <td align="center"><sub>Home — Pomodoro & Analytics</sub></td>
+    <td align="center"><sub>Weekly Schedule</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/screenshots/group-chat.png" alt="Group chat" width="200"></td>
-    <td><img src="docs/screenshots/exams.png" alt="Shared exams" width="200"></td>
-    <td><img src="docs/screenshots/settings-rtl.png" alt="Arabic UI" width="200"></td>
-    <td><img src="docs/screenshots/splash.png" alt="Splash screen" width="200"></td>
+    <td><img src="docs/screenshots/schedule-exams.png" alt="Exam Countdowns" width="200"></td>
+    <td><img src="docs/screenshots/gpa.png" alt="GPA Calculator" width="200"></td>
+    <td><img src="docs/screenshots/groups-overview.png" alt="Groups — Members & Stats" width="200"></td>
   </tr>
   <tr>
-    <td align="center"><sub>Group chat with permissions</sub></td>
-    <td align="center"><sub>Shared exams + countdown</sub></td>
-    <td align="center"><sub>Full Arabic RTL support</sub></td>
-    <td align="center"><sub>Animated splash screen</sub></td>
+    <td align="center"><sub>Exam Countdowns</sub></td>
+    <td align="center"><sub>GPA Calculator</sub></td>
+    <td align="center"><sub>Groups — Members & Stats</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/group-chat.png" alt="Groups — Real‑time Chat" width="200"></td>
+    <td><img src="docs/screenshots/settings-general.png" alt="Settings — General" width="200"></td>
+    <td><img src="docs/screenshots/settings-data.png" alt="Settings — Data & Time Slots" width="200"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Groups — Real‑time Chat</sub></td>
+    <td align="center"><sub>Settings — General</sub></td>
+    <td align="center"><sub>Settings — Data & Time Slots</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/skills.png" alt="Study Techniques" width="200"></td>
+    <td><img src="docs/screenshots/account.png" alt="Account & Cloud Sync" width="200"></td>
+    <td><img src="docs/screenshots/splash.png" alt="App Splash Screen" width="200"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Study Techniques</sub></td>
+    <td align="center"><sub>Account & Cloud Sync</sub></td>
+    <td align="center"><sub>App Splash Screen</sub></td>
   </tr>
 </table>
 
@@ -337,7 +354,7 @@ You can use, modify, and ship this for any purpose, commercial or otherwise. Att
 ## 👨‍💻 About the author
 
 **Mohamed Hassan**
-CS student @ AASTMT, Cairo, Egypt
+CS student @ AASTMT, Lattakia, Syria
 🐙 [@andrewleko19-boop](https://github.com/andrewleko19-boop)
 
 Currently learning: distributed systems, performance engineering, and the art of saying no to scope creep.
