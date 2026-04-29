@@ -2151,7 +2151,6 @@ function loadState(){try{const raw=localStorage.getItem('unimanager');if(!raw)re
 /* GROUPS: ensure shape for users upgrading from pre-groups versions */
 if(typeof s.groups!=='object'||Array.isArray(s.groups)||s.groups===null){s.groups={current:null,members:[],sharedSchedule:{},sharedExams:[],sharedNotes:{}};}else{if(!('current' in s.groups))s.groups.current=null;if(!Array.isArray(s.groups.members))s.groups.members=[];if(typeof s.groups.sharedSchedule!=='object'||Array.isArray(s.groups.sharedSchedule))s.groups.sharedSchedule={};if(!Array.isArray(s.groups.sharedExams))s.groups.sharedExams=[];if(typeof s.groups.sharedNotes!=='object'||Array.isArray(s.groups.sharedNotes))s.groups.sharedNotes={};}
 return s;}catch(e){return defaultState();}}
-function saveState(){localStorage.setItem('unimanager',JSON.stringify(state));}
 let state=loadState(),activeDay=getTodayIndex(),editingSlot=null,editingDay=null,currentFilter='all',gpaMode='percentage',cdInt=null;
 let pomoInterval=null,pomoRunning=false,pomoSeconds=25*60,pomoMode={work:25,brk:5},pomoOnBreak=false,pomoSessionCount=0;
 

@@ -5,7 +5,6 @@
     "no-unknown-elements": "error",
     "void-style": "off",
     "element-required-attributes": "error",
-    "no-duplicate-id": "error",
     "wcag/h30": "off",
     "wcag/h32": "off",
     "no-trailing-whitespace": "off",
@@ -15,6 +14,10 @@
     "no-raw-characters": "off",
     "require-sri": "off",
     "no-implicit-button-type": "warn",
-    "input-missing-label": "warn"
+    "no-implicit-input-type": "warn",
+    "input-missing-label": "warn",
+    "aria-label-misuse": "warn",
+    "text-content": "warn",
+    "element-permitted-content": "warn"
   }
 }

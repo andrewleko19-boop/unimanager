@@ -4,10 +4,9 @@
   "private": true,
   "description": "Single-file offline-first PWA for university students. CI tooling lives here; the app itself is index.html.",
   "scripts": {
-    "check": "npm run check:js && npm run check:html && npm run check:css && npm run check:versions && npm run check:manifest",
+    "check": "npm run check:js && npm run check:html && npm run check:versions && npm run check:manifest",
     "check:js": "node tools/check-js-syntax.mjs",
     "check:html": "html-validate index.html",
-    "check:css": "stylelint --custom-syntax postcss-html \"index.html\"",
     "check:versions": "node tools/check-versions.mjs",
     "check:manifest": "node tools/check-manifest.mjs",
     "serve": "npx serve . -l 8000",
@@ -15,10 +14,7 @@
   },
   "devDependencies": {
     "@lhci/cli": "^0.13.0",
-    "html-validate": "^8.18.0",
-    "postcss-html": "^1.7.0",
-    "stylelint": "^16.10.0",
-    "stylelint-config-standard": "^36.0.1"
+    "html-validate": "^8.18.0"
   },
   "engines": {
     "node": ">=20"

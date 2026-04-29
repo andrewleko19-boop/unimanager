@@ -1,29 +1,20 @@
 name: Deploy
 
-# Auto-deploy to GitHub Pages on every push to main, but ONLY if CI passed.
-# The `needs:` chain ensures broken code never reaches production.
 on:
   push:
     branches: [main]
-  workflow_dispatch:  # allow manual re-deploy from the Actions tab
+  workflow_dispatch:
 
-# Pages deployments need these permissions. Setting them per-job (not workflow-wide)
-# keeps the principle of least privilege.
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Only one deploy at a time. If two pushes land in quick succession, the second
-# waits for the first — Pages can't handle parallel deploys.
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  # Same checks as CI, but pinned to ubuntu-latest for reproducibility.
-  # We re-run them here even though CI ran them on the PR — because someone
-  # could have force-pushed to main bypassing the PR.
   validate:
     name: Re-validate before deploy
     runs-on: ubuntu-latest
@@ -42,7 +33,7 @@ jobs:
 
   deploy:
     name: Deploy to GitHub Pages
-    needs: validate  # blocks deploy if validate failed
+    needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 5
     environment:
@@ -52,18 +43,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
-
       - name: Upload artifact
-        # Uploads the entire repo root. The single-file PWA architecture means
-        # there's nothing to build — index.html, sw.js, manifest.json, /icons,
-        # and /docs all ship as-is.
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
-
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
