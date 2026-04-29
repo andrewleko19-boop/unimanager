@@ -3,12 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: blob: https:; connect-src https://gcjlvfggsupndpnjoake.supabase.co wss://gcjlvfggsupndpnjoake.supabase.co https://cdn.jsdelivr.net;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://browser.sentry-cdn.com; img-src 'self' data: blob: https:; connect-src https://gcjlvfggsupndpnjoake.supabase.co wss://gcjlvfggsupndpnjoake.supabase.co https://cdn.jsdelivr.net https://*.ingest.de.sentry.io https://*.sentry.io;">
 <title>UniManager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+   SENTRY ERROR TRACKING
+  ════════════════════════════════════════════════════════════════════════════
+   Loads Sentry's browser SDK from CDN and initializes it BEFORE the main
+   app script. This way, even errors during early init (loading state from
+   IDB, parsing localStorage, Supabase auth) get captured.
+
+   PII handling: the beforeSend hook scrubs anything that looks like user
+   data — emails, JWT tokens, chat/note content. Stack traces, device info,
+   and Supabase user IDs (raw UUIDs only) are kept.
+
+   Free tier: 5,000 errors/month. The app should produce << 100/month
+   if healthy, so we sample 100% to never miss a bug.
+
+   ⚠️ DSN is public-by-design: anyone can find it in the deployed HTML, but
+   it only allows POSTING events to YOUR project (rate-limited per source IP).
+   It cannot read events. This is Sentry's intended threat model.
+-->
+<!-- Note on integrity: Sentry doesn't publish stable SRI hashes (bundles can
+     change between minor versions of the same URL). We rely on CSP script-src
+     whitelisting + HTTPS instead. If you want maximum paranoia, self-host the
+     SDK in /vendor/sentry.min.js. -->
+<script
+  src="https://browser.sentry-cdn.com/8.45.0/bundle.min.js"
+  crossorigin="anonymous"
+  defer></script>
+<script>
+  // Wait for SDK load. We poll because <script defer> doesn't fire a load
+  // event reliably on iOS Safari, and we want this to run regardless.
+  (function waitForSentry(attempts) {
+    if (typeof Sentry !== 'undefined' && Sentry.init) {
+      initSentry();
+      return;
+    }
+    if (attempts > 50) {
+      // Gave up after 5s. Probably blocked by adblocker or offline.
+      // The app still works; we just lose error reporting until next page load.
+      console.warn('[Sentry] SDK failed to load after 5s; error tracking disabled.');
+      return;
+    }
+    setTimeout(function () { waitForSentry(attempts + 1); }, 100);
+  })(0);
+
+  function initSentry() {
+    Sentry.init({
+      dsn: 'https://33bd0a65ed228589d3d286f2af90827e@o4511301896568832.ingest.de.sentry.io/4511301971673168',
+
+      // Tag every event with the app version. Critical for "is this fixed
+      // in v1.0.1?" queries on the Sentry dashboard.
+      release: typeof APP_VERSION !== 'undefined' ? APP_VERSION : 'unknown',
+
+      // Skip events from localhost — too noisy during development.
+      environment: location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+        ? 'development'
+        : 'production',
+
+      // 100% of errors. We're well under the 5K/month free tier.
+      sampleRate: 1.0,
+
+      // Performance monitoring disabled — would burn through quota in days.
+      // Add later if we ever upgrade plans.
+      tracesSampleRate: 0,
+
+      // Don't capture errors from browser extensions, ad blockers, etc.
+      ignoreErrors: [
+        'ResizeObserver loop limit exceeded',
+        'Non-Error promise rejection captured',
+        'Network request failed',
+        'Failed to fetch',
+        'Load failed',
+        'top.GLOBALS',
+        'Can\'t find variable: ZiteReader',
+        'AbortError',
+      ],
+
+      // PII scrubbing: Sentry calls this for every event BEFORE sending.
+      // Return null to drop the event entirely.
+      beforeSend: function (event, hint) {
+        try {
+          // Drop dev events
+          if (event.request && event.request.url && event.request.url.indexOf('localhost') !== -1) {
+            return null;
+          }
+
+          // Strip JWT tokens from URLs (Supabase auth callbacks contain them)
+          if (event.request && event.request.url) {
+            event.request.url = event.request.url
+              .replace(/([?&#])access_token=[^&]*/g, '$1access_token=[REDACTED]')
+              .replace(/([?&#])refresh_token=[^&]*/g, '$1refresh_token=[REDACTED]');
+          }
+
+          // Strip emails from messages and exceptions
+          var emailRegex = /[\w.+-]+@[\w-]+\.[\w.-]+/g;
+          if (event.message) {
+            event.message = event.message.replace(emailRegex, '[EMAIL]');
+          }
+          if (event.exception && event.exception.values) {
+            event.exception.values.forEach(function (ex) {
+              if (ex.value) ex.value = ex.value.replace(emailRegex, '[EMAIL]');
+            });
+          }
+
+          // Scrub breadcrumbs — drop chat/note content, keep action types
+          if (event.breadcrumbs) {
+            event.breadcrumbs = event.breadcrumbs.map(function (b) {
+              if (!b) return b;
+              if (b.category === 'chat' || b.category === 'note') {
+                if (b.data) {
+                  b.data = { action: b.data.action, length: (b.data.content || '').length };
+                }
+                b.message = '(content redacted)';
+              }
+              if (b.message) b.message = b.message.replace(emailRegex, '[EMAIL]');
+              return b;
+            });
+          }
+
+          // Tag with anonymous user ID (Supabase UUID — random, no PII)
+          if (typeof state !== 'undefined' && state && state.user && state.user.id) {
+            event.user = { id: state.user.id };
+          }
+
+          return event;
+        } catch (err) {
+          // If scrubbing throws, send unscrubbed rather than lose visibility
+          console.warn('[Sentry] beforeSend hook failed:', err);
+          return event;
+        }
+      },
+    });
+
+    window.__SENTRY_INITIALIZED__ = true;
+  }
+</script>
+<!-- ══════════════════════════════════════════════════════════════════════ -->
 <!-- Firebase SDK removed -->
 
 <style>
