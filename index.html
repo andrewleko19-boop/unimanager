@@ -4365,7 +4365,9 @@ try {
         _supa.from('group_shared_exams').select('*').eq('group_id', gid).order('date'),
         _supa.from('group_subject_notes').select('*').eq('group_id', gid)
       ]);
-      if (mRes.data) state.groups.members = mRes.data;
+      if (mRes.data) {
+        const uids = mRes.data.map(m => m.user_id);
+        const {data: nameRows} = await _supa.from('user_se
       if (sRes.data) {
         const sched = {};
         sRes.data.forEach(r => {
@@ -5674,8 +5676,8 @@ if (_chatInput) {
       const isYou = m.user_id === myUid;
       const isAdmin = m.role === 'admin';
       const shortId = m.user_id ? m.user_id.slice(0, 8) : '—';
-      const label = isYou ? (state.name || 'You') : ('Member · ' + shortId);
-      const initial = (isYou ? (state.name || 'Y') : 'M').charAt(0).toUpperCase();
+      const label = isYou ? (state.name || 'You') : (m.display_name || ('Member · ' + shortId));
+      const initial = (isYou ? (state.name || 'Y') : (m.display_name || 'M')).charAt(0).toUpperCase();
       return '<div class="gis-member"><div class="gis-member-av">'+escapeHTML(initial)+'</div>'+
         '<div class="gis-member-label">'+escapeHTML(label)+(isYou?' <span style="color:var(--text-muted);font-size:.7rem">(you)</span>':'')+'</div>'+
         (isAdmin ? '<span class="gis-member-role">Admin</span>' : '')+
