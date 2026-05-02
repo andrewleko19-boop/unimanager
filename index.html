@@ -1143,8 +1143,8 @@ body.group-active #pageGroups>.section-title{display:none}
 #chatReplyBar .crb-sender{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:2px}
 #chatReplyBar .crb-preview{font-size:12px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #chatReplyBar .crb-close{background:none;border:none;color:var(--text-muted);font-size:18px;cursor:pointer;padding:0 4px;line-height:1}
-#chatAttachBtn{background:none;border:none;color:var(--text-secondary);font-size:20px;cursor:pointer;padding:0 4px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-#chatAttachBtn:active{color:var(--accent)}
+#chatAttachBtn{background:none;border:none;color:var(--text-secondary);font-size:30px;font-weight:300;line-height:1;cursor:pointer;padding:0 6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%}
+#chatAttachBtn:active{color:var(--accent);background:rgba(255,255,255,.06)}
 #chatUploadProgress{display:none;padding:4px 14px;background:var(--bg-secondary)}
 #chatUploadProgress.visible{display:block}
 #chatUploadProgress .cup-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
@@ -1611,11 +1611,12 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
           </div>
           <div id="chatUploadProgress"><div class="cup-bar"><div class="cup-fill" id="cupFill"></div></div></div>
           <div class="chat-input-row" id="chatInputRow">
-            <button id="chatAttachBtn" type="button">&#128206;</button>
+            <button id="chatAttachBtn" type="button" aria-label="Attach">+</button>
             <input type="text" id="chatInput" maxlength="2000" autocomplete="off">
             <button id="chatSendBtn"></button>
           </div>
-          <input type="file" id="chatFileInput" style="display:none" accept="image/*,video/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx">
+          <input type="file" id="chatGalleryInput" style="display:none" accept="image/*">
+          <input type="file" id="chatDocInput" style="display:none" accept=".pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx">
         </div>
       </div>
     </div>
@@ -1924,6 +1925,15 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   <div class="as-row cancel" id="cmsCancel"></div>
 </div>
 
+<!-- ═══ Chat attach action sheet (Gallery / Document) ═══ -->
+<div class="action-sheet-backdrop" id="chatAttachSheetBackdrop"></div>
+<div class="action-sheet" id="chatAttachSheet">
+  <div class="as-handle"></div>
+  <div class="as-row" id="caGallery"><span id="caGalleryLabel">🖼  Gallery</span></div>
+  <div class="as-row" id="caDocument"><span id="caDocumentLabel">📄  Document</span></div>
+  <div class="as-row cancel" id="caCancel">Cancel</div>
+</div>
+
 <!-- ═══ Group Info modal (tap chat header) ═══ -->
 <div class="modal-overlay" id="groupInfoModal"><div class="modal">
   <div class="modal-header"><div class="modal-title" id="gimTitle">Group info</div><button class="modal-close" onclick="closeModal('groupInfoModal')">×</button></div>
@@ -2207,8 +2217,9 @@ noSharedSlots:'No shared schedule yet. Tap a slot to add.',tapAddAdmin:'Tap to a
 noSharedNotes:'No subjects in the shared schedule yet.',noteSavedShared:'Note saved',notesSharedPlaceholder:'Shared notes for this subject \u2014 any member can edit...',
 /* ═══ F1/F2/F3 keys ═══ */
 editTimeSlots:'Edit Time Slots',timeSlotsTitle:'Group Time Slots',addTimeSlot:'+ Add Time Slot',timeSlotsSaved:'Time slots saved',startTime:'Start',endTime:'End',saveTimeSlots:'Save',
-nGroupChat:'Chat',gTabChat:'Chat',chatEmpty:'No messages yet. Say hello \uD83D\uDC4B',chatPlaceholder:'Type a message...',chatSend:'Send',chatLocked:'\uD83D\uDD12 Chat is locked',chatAdminOnlyMsg:'Only the admin can send messages in this group',chatMsgDeleted:'Message deleted',chatDelete:'Delete',adminChip:'\uD83D\uDC51 Admin',chatModeAll:'All members',chatModeAdminOnly:'Admin only',chatModeLocked:'Locked',chatMsgTooLong:'Message too long',chatSendFail:'Failed to send',chatAttach:'Attach file',chatReplyTo:'Replying to',chatCancelReply:'Cancel reply',chatFileTooLarge:'File too large (max 10MB)',chatUploading:'Uploading...',chatFileDoc:'Document',chatFileImg:'Image',chatFileVideo:'Video',chatDownload:'Download',
+nGroupChat:'Chat',gTabChat:'Chat',chatEmpty:'No messages yet. Say hello \uD83D\uDC4B',chatPlaceholder:'Type a message...',chatSend:'Send',chatLocked:'\uD83D\uDD12 Chat is locked',chatAdminOnlyMsg:'Only the admin can send messages in this group',chatMsgDeleted:'Message deleted',chatDelete:'Delete',adminChip:'\uD83D\uDC51 Admin',chatModeAll:'All members',chatModeAdminOnly:'Admin only',chatModeLocked:'Locked',chatMsgTooLong:'Message too long',chatSendFail:'Failed to send',chatAttach:'Attach file',chatAttachGallery:'🖼  Gallery',chatAttachDoc:'📄  Document',chatReplyTo:'Replying to',chatCancelReply:'Cancel reply',chatFileTooLarge:'File too large (max 10MB)',chatUploading:'Uploading...',chatFileDoc:'Document',chatFileImg:'Image',chatFileVideo:'Video',chatDownload:'Download',
 groupSettings:'\u2699 Group Settings',gsTitle:'Group Settings',gsName:'Group Name',gsDesc:'Description',gsChatMode:'Chat Mode',gsTimeSlots:'Time Slots',gsRotateCode:'Rotate Invite Code',gsRotateConfirm:'Old code will stop working. Continue?',gsMembers:'Members',kick:'Kick',kickConfirm:'Remove this member from the group?',gsDeleteGroup:'Delete Group',gsDeleteConfirm:'Type the group name to confirm deletion',gsDeleteLabel:'Type group name:',gsDelete:'Delete permanently',gsSave:'Save',nameSaved:'Name updated',descSaved:'Description updated',modeSaved:'Chat mode updated',codeRotated:'Invite code rotated',memberKicked:'Member removed',groupDeleted:'Group deleted',gsSaveName:'Save Name',gsSaveDesc:'Save Description',gsDangerZone:'Danger Zone',gsPermissions:'Permissions',gsPermSend:'Who can send messages?',gsPermSendDesc:'Controls the chat input box for members',gsPermInfo:'Who can edit group info?',gsPermInfoDesc:'Name and description',gsPermPic:'Who can change group picture?',gsPermPicDesc:'Group avatar',permEveryone:'Everyone',permAdmins:'Admins',gsmPicHint:'Tap picture to change',
+gimTitleLbl:'Group info',gimMember:'member',gimMembers:'members',gimCreated:'Created',gimYou:'(you)',gimAdminChip:'Admin',gimPermSend:'Send messages',gimPermInfo:'Edit group info',gimPermPic:'Change group picture',gimAdminsOnly:'Admins only',
 changePhoto:'Change Photo',takePhoto:'\uD83D\uDCF7 Take Photo',chooseGallery:'\uD83D\uDDBC Choose from Gallery',removePhoto:'\uD83D\uDDD1 Remove Photo',cancel:'Cancel',photoUpdated:'\u2713 Profile photo updated',photoUpdateFailed:'\u2717 Photo update failed',photoRemoved:'Profile photo removed',photoOfflineError:'\uD83D\uDD34 Change photo requires internet',
 gTabOverview:'Overview',gTabSchedule:'Schedule',gTabExams:'Exams',gTabNotes:'Notes',
 inviteCode:'Invite Code',copy:'Copy',
@@ -2295,8 +2306,9 @@ noSharedSlots:'\u0644\u0627 \u064A\u0648\u062C\u062F \u062C\u062F\u0648\u0644 \u
 noSharedNotes:'\u0644\u0627 \u062A\u0648\u062C\u062F \u0645\u0648\u0627\u062F \u0641\u064A \u0627\u0644\u062C\u062F\u0648\u0644 \u0627\u0644\u0645\u0634\u062A\u0631\u0643 \u0628\u0639\u062F.',noteSavedShared:'\u062A\u0645 \u062D\u0641\u0638 \u0627\u0644\u0645\u0644\u0627\u062D\u0638\u0629',notesSharedPlaceholder:'\u0645\u0644\u0627\u062D\u0638\u0627\u062A \u0645\u0634\u062A\u0631\u0643\u0629 \u0644\u0647\u0630\u0647 \u0627\u0644\u0645\u0627\u062F\u0629 \u2014 \u0623\u064A \u0639\u0636\u0648 \u064A\u0645\u0643\u0646\u0647 \u0627\u0644\u062A\u0639\u062F\u064A\u0644...',
 /* ═══ F1/F2/F3 keys (AR) ═══ */
 editTimeSlots:'\u062A\u0639\u062F\u064A\u0644 \u0627\u0644\u062D\u0635\u0635 \u0627\u0644\u0632\u0645\u0646\u064A\u0629',timeSlotsTitle:'\u062D\u0635\u0635 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',addTimeSlot:'+ \u0625\u0636\u0627\u0641\u0629 \u062D\u0635\u0629',timeSlotsSaved:'\u062A\u0645 \u062D\u0641\u0638 \u0627\u0644\u062D\u0635\u0635',startTime:'\u0627\u0644\u0628\u062F\u0627\u064A\u0629',endTime:'\u0627\u0644\u0646\u0647\u0627\u064A\u0629',saveTimeSlots:'\u062D\u0641\u0638',
-nGroupChat:'\u0627\u0644\u062F\u0631\u062F\u0634\u0629',gTabChat:'\u0627\u0644\u062F\u0631\u062F\u0634\u0629',chatEmpty:'\u0644\u0627 \u062A\u0648\u062C\u062F \u0631\u0633\u0627\u0626\u0644 \u0628\u0639\u062F. \u0642\u0644 \u0645\u0631\u062D\u0628\u0627 \uD83D\uDC4B',chatPlaceholder:'\u0627\u0643\u062A\u0628 \u0631\u0633\u0627\u0644\u0629...',chatSend:'\u0625\u0631\u0633\u0627\u0644',chatLocked:'\uD83D\uDD12 \u0627\u0644\u062F\u0631\u062F\u0634\u0629 \u0645\u0642\u0641\u0644\u0629',chatAdminOnlyMsg:'\u0627\u0644\u0645\u0634\u0631\u0641 \u0641\u0642\u0637 \u064A\u0645\u0643\u0646\u0647 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0631\u0633\u0627\u0626\u0644',chatMsgDeleted:'\u062A\u0645 \u062D\u0630\u0641 \u0627\u0644\u0631\u0633\u0627\u0644\u0629',chatDelete:'\u062D\u0630\u0641',adminChip:'\uD83D\uDC51 \u0645\u0634\u0631\u0641',chatModeAll:'\u062C\u0645\u064A\u0639 \u0627\u0644\u0623\u0639\u0636\u0627\u0621',chatModeAdminOnly:'\u0627\u0644\u0645\u0634\u0631\u0641 \u0641\u0642\u0637',chatModeLocked:'\u0645\u0642\u0641\u0644',chatMsgTooLong:'\u0627\u0644\u0631\u0633\u0627\u0644\u0629 \u0637\u0648\u064A\u0644\u0629 \u062C\u062F\u0627',chatSendFail:'\u0641\u0634\u0644 \u0627\u0644\u0625\u0631\u0633\u0627\u0644',chatAttach:'\u0625\u0631\u0641\u0627\u0642 \u0645\u0644\u0641',chatReplyTo:'\u0631\u062F \u0639\u0644\u0649',chatCancelReply:'\u0625\u0644\u063A\u0627\u0621 \u0627\u0644\u0631\u062F',chatFileTooLarge:'\u0627\u0644\u0645\u0644\u0641 \u0643\u0628\u064A\u0631 (\u0623\u0642\u0635\u0649 10MB)',chatUploading:'\u062C\u0627\u0631\u064A \u0627\u0644\u0631\u0641\u0639...',chatFileDoc:'\u0645\u0633\u062A\u0646\u062F',chatFileImg:'\u0635\u0648\u0631\u0629',chatFileVideo:'\u0641\u064A\u062F\u064A\u0648',chatDownload:'\u062A\u062D\u0645\u064A\u0644',
+nGroupChat:'\u0627\u0644\u062F\u0631\u062F\u0634\u0629',gTabChat:'\u0627\u0644\u062F\u0631\u062F\u0634\u0629',chatEmpty:'\u0644\u0627 \u062A\u0648\u062C\u062F \u0631\u0633\u0627\u0626\u0644 \u0628\u0639\u062F. \u0642\u0644 \u0645\u0631\u062D\u0628\u0627 \uD83D\uDC4B',chatPlaceholder:'\u0627\u0643\u062A\u0628 \u0631\u0633\u0627\u0644\u0629...',chatSend:'\u0625\u0631\u0633\u0627\u0644',chatLocked:'\uD83D\uDD12 \u0627\u0644\u062F\u0631\u062F\u0634\u0629 \u0645\u0642\u0641\u0644\u0629',chatAdminOnlyMsg:'\u0627\u0644\u0645\u0634\u0631\u0641 \u0641\u0642\u0637 \u064A\u0645\u0643\u0646\u0647 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0631\u0633\u0627\u0626\u0644',chatMsgDeleted:'\u062A\u0645 \u062D\u0630\u0641 \u0627\u0644\u0631\u0633\u0627\u0644\u0629',chatDelete:'\u062D\u0630\u0641',adminChip:'\uD83D\uDC51 \u0645\u0634\u0631\u0641',chatModeAll:'\u062C\u0645\u064A\u0639 \u0627\u0644\u0623\u0639\u0636\u0627\u0621',chatModeAdminOnly:'\u0627\u0644\u0645\u0634\u0631\u0641 \u0641\u0642\u0637',chatModeLocked:'\u0645\u0642\u0641\u0644',chatMsgTooLong:'\u0627\u0644\u0631\u0633\u0627\u0644\u0629 \u0637\u0648\u064A\u0644\u0629 \u062C\u062F\u0627',chatSendFail:'\u0641\u0634\u0644 \u0627\u0644\u0625\u0631\u0633\u0627\u0644',chatAttach:'\u0625\u0631\u0641\u0627\u0642 \u0645\u0644\u0641',chatAttachGallery:'\uD83D\uDDBC  \u0627\u0644\u0645\u0639\u0631\u0636',chatAttachDoc:'\uD83D\uDCC4  \u0645\u0633\u062A\u0646\u062F',chatReplyTo:'\u0631\u062F \u0639\u0644\u0649',chatCancelReply:'\u0625\u0644\u063A\u0627\u0621 \u0627\u0644\u0631\u062F',chatFileTooLarge:'\u0627\u0644\u0645\u0644\u0641 \u0643\u0628\u064A\u0631 (\u0623\u0642\u0635\u0649 10MB)',chatUploading:'\u062C\u0627\u0631\u064A \u0627\u0644\u0631\u0641\u0639...',chatFileDoc:'\u0645\u0633\u062A\u0646\u062F',chatFileImg:'\u0635\u0648\u0631\u0629',chatFileVideo:'\u0641\u064A\u062F\u064A\u0648',chatDownload:'\u062A\u062D\u0645\u064A\u0644',
 groupSettings:'\u2699 \u0625\u0639\u062F\u0627\u062F\u0627\u062A \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gsTitle:'\u0625\u0639\u062F\u0627\u062F\u0627\u062A \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gsName:'\u0627\u0633\u0645 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gsDesc:'\u0627\u0644\u0648\u0635\u0641',gsChatMode:'\u0648\u0636\u0639 \u0627\u0644\u062F\u0631\u062F\u0634\u0629',gsTimeSlots:'\u0627\u0644\u062D\u0635\u0635 \u0627\u0644\u0632\u0645\u0646\u064A\u0629',gsRotateCode:'\u062A\u063A\u064A\u064A\u0631 \u0631\u0645\u0632 \u0627\u0644\u062F\u0639\u0648\u0629',gsRotateConfirm:'\u0633\u064A\u062A\u0648\u0642\u0641 \u0627\u0644\u0631\u0645\u0632 \u0627\u0644\u0642\u062F\u064A\u0645 \u0639\u0646 \u0627\u0644\u0639\u0645\u0644. \u0645\u062A\u0627\u0628\u0639\u0629\u061F',gsMembers:'\u0627\u0644\u0623\u0639\u0636\u0627\u0621',kick:'\u0637\u0631\u062F',kickConfirm:'\u0637\u0631\u062F \u0647\u0630\u0627 \u0627\u0644\u0639\u0636\u0648 \u0645\u0646 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629\u061F',gsDeleteGroup:'\u062D\u0630\u0641 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gsDeleteConfirm:'\u0627\u0643\u062A\u0628 \u0627\u0633\u0645 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629 \u0644\u062A\u0623\u0643\u064A\u062F \u0627\u0644\u062D\u0630\u0641',gsDeleteLabel:'\u0627\u0633\u0645 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629:',gsDelete:'\u062D\u0630\u0641 \u0646\u0647\u0627\u0626\u064A',gsSave:'\u062D\u0641\u0638',nameSaved:'\u062A\u0645 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0627\u0633\u0645',descSaved:'\u062A\u0645 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0648\u0635\u0641',modeSaved:'\u062A\u0645 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0648\u0636\u0639',codeRotated:'\u062A\u0645 \u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0631\u0645\u0632',memberKicked:'\u062A\u0645 \u0637\u0631\u062F \u0627\u0644\u0639\u0636\u0648',groupDeleted:'\u062A\u0645 \u062D\u0630\u0641 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gsSaveName:'\u062D\u0641\u0638 \u0627\u0644\u0627\u0633\u0645',gsSaveDesc:'\u062D\u0641\u0638 \u0627\u0644\u0648\u0635\u0641',gsDangerZone:'\u0645\u0646\u0637\u0642\u0629 \u0627\u0644\u062E\u0637\u0631',gsPermissions:'\u0627\u0644\u0623\u0630\u0648\u0646\u0627\u062A',gsPermSend:'\u0645\u0646 \u064A\u0645\u0643\u0646\u0647 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0631\u0633\u0627\u0626\u0644\u061F',gsPermSendDesc:'\u064A\u062A\u062D\u0643\u0645 \u0641\u064A \u0645\u0631\u0628\u0639 \u0625\u062F\u062E\u0627\u0644 \u0627\u0644\u0631\u0633\u0627\u0626\u0644 \u0644\u0644\u0623\u0639\u0636\u0627\u0621',gsPermInfo:'\u0645\u0646 \u064A\u0645\u0643\u0646\u0647 \u062A\u0639\u062F\u064A\u0644 \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629\u061F',gsPermInfoDesc:'\u0627\u0644\u0627\u0633\u0645 \u0648\u0627\u0644\u0648\u0635\u0641',gsPermPic:'\u0645\u0646 \u064A\u0645\u0643\u0646\u0647 \u062A\u063A\u064A\u064A\u0631 \u0635\u0648\u0631\u0629 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629\u061F',gsPermPicDesc:'\u0635\u0648\u0631\u0629 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',permEveryone:'\u0627\u0644\u062C\u0645\u064A\u0639',permAdmins:'\u0627\u0644\u0645\u0634\u0631\u0641\u0648\u0646',gsmPicHint:'\u0627\u0636\u063A\u0637 \u0639\u0644\u0649 \u0627\u0644\u0635\u0648\u0631\u0629 \u0644\u0644\u062A\u063A\u064A\u064A\u0631',
+gimTitleLbl:'\u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gimMember:'\u0639\u0636\u0648',gimMembers:'\u0623\u0639\u0636\u0627\u0621',gimCreated:'\u062A\u0645 \u0627\u0644\u0625\u0646\u0634\u0627\u0621',gimYou:'(\u0623\u0646\u062A)',gimAdminChip:'\u0645\u0634\u0631\u0641',gimPermSend:'\u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0631\u0633\u0627\u0626\u0644',gimPermInfo:'\u062A\u0639\u062F\u064A\u0644 \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gimPermPic:'\u062A\u063A\u064A\u064A\u0631 \u0635\u0648\u0631\u0629 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gimAdminsOnly:'\u0627\u0644\u0645\u0634\u0631\u0641\u0648\u0646 \u0641\u0642\u0637',
 changePhoto:'\u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0635\u0648\u0631\u0629',takePhoto:'\uD83D\uDCF7 \u0627\u0644\u062A\u0642\u0627\u0637 \u0635\u0648\u0631\u0629',chooseGallery:'\uD83D\uDDBC \u0627\u062E\u062A\u064A\u0627\u0631 \u0645\u0646 \u0627\u0644\u0645\u0639\u0631\u0636',removePhoto:'\uD83D\uDDD1 \u0625\u0632\u0627\u0644\u0629 \u0627\u0644\u0635\u0648\u0631\u0629',cancel:'\u0625\u0644\u063A\u0627\u0621',photoUpdated:'\u2713 \u062A\u0645 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0635\u0648\u0631\u0629',photoUpdateFailed:'\u2717 \u0641\u0634\u0644 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0635\u0648\u0631\u0629',photoRemoved:'\u062A\u0645\u062A \u0625\u0632\u0627\u0644\u0629 \u0627\u0644\u0635\u0648\u0631\u0629',photoOfflineError:'\uD83D\uDD34 \u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0635\u0648\u0631\u0629 \u064A\u062A\u0637\u0644\u0628 \u0627\u0644\u0625\u0646\u062A\u0631\u0646\u062A',
 gTabOverview:'\u0646\u0638\u0631\u0629 \u0639\u0627\u0645\u0629',gTabSchedule:'\u0627\u0644\u062C\u062F\u0648\u0644',gTabExams:'\u0627\u0644\u0627\u0645\u062A\u062D\u0627\u0646\u0627\u062A',gTabNotes:'\u0627\u0644\u0645\u0644\u0627\u062D\u0638\u0627\u062A',
 inviteCode:'\u0631\u0645\u0632 \u0627\u0644\u062F\u0639\u0648\u0629',copy:'\u0646\u0633\u062E',
@@ -2473,6 +2485,12 @@ function applyText(){
   if($('avsCancel')) $('avsCancel').textContent=t('cancel');
   if($('cmsDeleteLabel')) $('cmsDeleteLabel').textContent=t('chatDelete');
   if($('cmsCancel')) $('cmsCancel').textContent=t('cancel');
+  if($('caGalleryLabel')) $('caGalleryLabel').textContent=t('chatAttachGallery');
+  if($('caDocumentLabel')) $('caDocumentLabel').textContent=t('chatAttachDoc');
+  if($('caCancel')) $('caCancel').textContent=t('cancel');
+  if($('gimTitle')) $('gimTitle').textContent=t('gimTitleLbl');
+  if($('gimPermsTitle')) $('gimPermsTitle').textContent=t('gsPermissions');
+  if($('gimMembersTitle')) $('gimMembersTitle').textContent=t('gsMembers');
 }
 
 /* ===== NAV ===== */
@@ -5265,11 +5283,25 @@ function _detectFileType(file){
 
 /* -- Attach button + file upload -- */
 (function(){
-  const btn=$('chatAttachBtn'), inp=$('chatFileInput');
-  if(!btn||!inp) return;
-  btn.addEventListener('click',()=>inp.click());
-  inp.addEventListener('change', async()=>{
-    const file=inp.files&&inp.files[0]; inp.value='';
+  const btn=$('chatAttachBtn');
+  const galInp=$('chatGalleryInput'), docInp=$('chatDocInput');
+  const sheetBd=$('chatAttachSheetBackdrop'), sheet=$('chatAttachSheet');
+  if(!btn||!galInp||!docInp||!sheet||!sheetBd) return;
+
+  function openSheet(){ sheetBd.classList.add('open'); sheet.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeSheet(){
+    sheetBd.classList.remove('open'); sheet.classList.remove('open');
+    if(!document.querySelector('.action-sheet.open') && !document.querySelector('.modal-overlay.open')){
+      document.body.style.overflow='';
+    }
+  }
+  btn.addEventListener('click', openSheet);
+  sheetBd.addEventListener('click', closeSheet);
+  $('caCancel')?.addEventListener('click', closeSheet);
+  $('caGallery')?.addEventListener('click', ()=>{ closeSheet(); galInp.click(); });
+  $('caDocument')?.addEventListener('click', ()=>{ closeSheet(); docInp.click(); });
+
+  async function handleFile(file){
     if(!file) return;
     if(file.size>10*1024*1024){ toast(t('chatFileTooLarge'),'error'); return; }
     if(!SupaDB.isOnline()){ toast('🔴 Offline','error'); return; }
@@ -5278,7 +5310,6 @@ function _detectFileType(file){
     const ftype = _detectFileType(file);
     let uploadFile = file;
     if(ftype==='image') uploadFile = await _compressImage(file);
-    /* progress bar */
     const prog=$('chatUploadProgress'), fill=$('cupFill');
     if(prog){ prog.classList.add('visible'); if(fill) fill.style.width='10%'; }
     try {
@@ -5291,11 +5322,14 @@ function _detectFileType(file){
       if(fill) fill.style.width='100%';
     } catch(e){
       console.warn('[chat] upload failed',e);
-      toast('✗ Upload failed','error');
+      const raw = (e&&(e.message||e.error_description||e.statusText)) || 'Upload failed';
+      toast('✗ '+raw,'error');
     } finally {
       setTimeout(()=>{ if(prog) prog.classList.remove('visible'); if(fill) fill.style.width='0%'; },500);
     }
-  });
+  }
+  galInp.addEventListener('change', async()=>{ const f=galInp.files&&galInp.files[0]; galInp.value=''; await handleFile(f); });
+  docInp.addEventListener('change', async()=>{ const f=docInp.files&&docInp.files[0]; docInp.value=''; await handleFile(f); });
 })();
 
 /* -- Lightbox -- */
@@ -5864,14 +5898,19 @@ if (_chatInput) {
     $('gimDesc').textContent = cur.description || '';
     $('gimDesc').style.display = cur.description ? '' : 'none';
     const count = (state.groups.members || []).length;
-    const createdStr = cur.created_at ? new Date(cur.created_at).toLocaleDateString() : '';
-    $('gimMeta').textContent = count + ' members' + (createdStr ? ' · Created ' + createdStr : '');
+    let createdStr = '';
+    if(cur.created_at){
+      const d = new Date(cur.created_at);
+      createdStr = d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+    }
+    const memberWord = count === 1 ? t('gimMember') : t('gimMembers');
+    $('gimMeta').textContent = count + ' ' + memberWord + (createdStr ? ' · ' + t('gimCreated') + ' ' + createdStr : '');
     // Permissions summary
     const p = _perms();
     const rows = [
-      ['Send messages', p.who_can_send === 'admin_only' ? 'Admins only' : 'Everyone'],
-      ['Edit group info', p.who_can_edit_info === 'admin_only' ? 'Admins only' : 'Everyone'],
-      ['Change group picture', p.who_can_change_picture === 'admin_only' ? 'Admins only' : 'Everyone']
+      [t('gimPermSend'), p.who_can_send === 'admin_only' ? t('gimAdminsOnly') : t('permEveryone')],
+      [t('gimPermInfo'), p.who_can_edit_info === 'admin_only' ? t('gimAdminsOnly') : t('permEveryone')],
+      [t('gimPermPic'), p.who_can_change_picture === 'admin_only' ? t('gimAdminsOnly') : t('permEveryone')]
     ];
     $('gimPermsList').innerHTML = rows.map(r =>
       '<div style="display:flex;justify-content:space-between;padding:4px 0"><span>'+r[0]+'</span><span style="color:var(--text-primary);font-weight:600">'+r[1]+'</span></div>'
@@ -5883,11 +5922,11 @@ if (_chatInput) {
       const isYou = m.user_id === myUid;
       const isAdmin = m.role === 'admin';
       const shortId = m.user_id ? m.user_id.slice(0, 8) : '—';
-      const label = isYou ? (state.name || 'You') : (m.display_name || ('Member · ' + shortId));
+      const label = isYou ? (state.name || t('gimYou').replace(/[()]/g,'')) : (m.display_name || ('Member · ' + shortId));
       const initial = (isYou ? (state.name || 'Y') : (m.display_name || 'M')).charAt(0).toUpperCase();
       return '<div class="gis-member"><div class="gis-member-av">'+escapeHTML(initial)+'</div>'+
-        '<div class="gis-member-label">'+escapeHTML(label)+(isYou?' <span style="color:var(--text-muted);font-size:.7rem">(you)</span>':'')+'</div>'+
-        (isAdmin ? '<span class="gis-member-role">Admin</span>' : '')+
+        '<div class="gis-member-label">'+escapeHTML(label)+(isYou?' <span style="color:var(--text-muted);font-size:.7rem">'+escapeHTML(t('gimYou'))+'</span>':'')+'</div>'+
+        (isAdmin ? '<span class="gis-member-role">'+escapeHTML(t('gimAdminChip'))+'</span>' : '')+
         '</div>';
     }).join('');
     if(typeof openModal === 'function') openModal('groupInfoModal');
