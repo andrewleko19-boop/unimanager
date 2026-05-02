@@ -5343,13 +5343,31 @@ function _detectFileType(file){
   docInp.addEventListener('change', async()=>{ const f=docInp.files&&docInp.files[0]; docInp.value=''; await handleFile(f); });
 })();
 
-/* -- Lightbox -- */
+/* -- Lightbox (event delegation — works regardless of DOM order) -- */
 (function(){
-  const lb=$('chatLightbox'), lc=$('chatLightboxClose');
-  if(!lb) return;
-  const close=()=>{ lb.classList.remove('open'); const i=$('chatLightboxImg'); if(i) i.src=''; };
-  if(lc) lc.addEventListener('click',close);
-  lb.addEventListener('click',e=>{ if(e.target===lb) close(); });
+  const closeLightbox = ()=>{
+    const lb=document.getElementById('chatLightbox');
+    if(!lb) return;
+    lb.classList.remove('open');
+    const i=document.getElementById('chatLightboxImg');
+    if(i) i.src='';
+  };
+  document.addEventListener('click', e=>{
+    const lb=document.getElementById('chatLightbox');
+    if(!lb || !lb.classList.contains('open')) return;
+    if(e.target.id==='chatLightboxClose' || e.target.closest('#chatLightboxClose')){
+      e.stopPropagation();
+      closeLightbox();
+      return;
+    }
+    if(e.target===lb) closeLightbox();
+  });
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape'){
+      const lb=document.getElementById('chatLightbox');
+      if(lb && lb.classList.contains('open')) closeLightbox();
+    }
+  });
 })();
 
 /* -- Swipe-to-reply (touch + double-click) -- */
