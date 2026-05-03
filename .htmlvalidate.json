@@ -12,6 +12,7 @@
     "attribute-boolean-style": "off",
     "attribute-empty-style": "off",
     "doctype-style": "off",
+    "no-inline-style": "off",
     "element-required-attributes": "warn",
     "element-permitted-content": "warn",
     "element-permitted-parent": "warn"
