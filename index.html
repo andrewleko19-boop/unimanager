@@ -1143,10 +1143,8 @@ body.group-active #pageGroups>.section-title{display:none}
 #chatReplyBar .crb-sender{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:2px}
 #chatReplyBar .crb-preview{font-size:12px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #chatReplyBar .crb-close{background:none;border:none;color:var(--text-muted);font-size:18px;cursor:pointer;padding:0 4px;line-height:1}
-#chatAttachBtn{background:none;border:none;color:var(--text-secondary);font-size:0;line-height:1;cursor:pointer;padding:0;flex-shrink:0;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%}
+#chatAttachBtn{background:none;border:none;color:var(--text-secondary);font-size:30px;font-weight:300;line-height:1;cursor:pointer;padding:0 6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%}
 #chatAttachBtn:active{color:var(--accent);background:rgba(255,255,255,.06)}
-#chatAttachBtn::after{content:none}
-#chatAttachBtn svg{pointer-events:none;display:block}
 #chatUploadProgress{display:none;padding:4px 14px;background:var(--bg-secondary)}
 #chatUploadProgress.visible{display:block}
 #chatUploadProgress .cup-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
@@ -1613,7 +1611,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
           </div>
           <div id="chatUploadProgress"><div class="cup-bar"><div class="cup-fill" id="cupFill"></div></div></div>
           <div class="chat-input-row" id="chatInputRow">
-            <button id="chatAttachBtn" type="button" aria-label="Attach"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="9" y1="2" x2="9" y2="16"/><line x1="2" y1="9" x2="16" y2="9"/></svg></button>
+            <button id="chatAttachBtn" type="button" aria-label="Attach">+</button>
             <input type="text" id="chatInput" maxlength="2000" autocomplete="off">
             <button id="chatSendBtn"></button>
           </div>
@@ -1703,11 +1701,11 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   <div id="authSignedOut" style="display:none">
     <div class="card" style="text-align:center;padding:24px 20px">
       <div style="font-size:2.4rem;margin-bottom:12px">🎓</div>
-      <div style="font-weight:700;margin-bottom:6px">Sign in to sync your data</div>
+      <div id="accountSignInPrompt" style="font-weight:700;margin-bottom:6px">Sign in to sync your data</div>
       <div style="font-size:.82rem;color:var(--text-secondary);margin-bottom:20px">Your tasks, schedule, and GPA — backed up in the cloud and available on any device.</div>
       <button class="btn-google" id="loginBtn">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         Continue with Google
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
       </button>
     </div>
   </div>
@@ -2142,7 +2140,7 @@ const LL={en:{
 welSub:'Your university companion',yourName:'Your Name',namePH:'Enter your name',university:'University',selectUni:'Select your university',language:'Language',getStarted:'Get Started',
 welGoogleCta:'Continue with Google',welOr:'or',welSignedInAs:'Signed in as',
 uni_latakia:'University of Lattakia',uni_sham:'Al-Sham Private University',uni_aast:'Arab Academy for Science, Technology and Maritime Transport',uni_manara:'Al-Manara University',uni_gemtq:'GEMTQ — Syrian Academy for Maritime Training',
-nHome:'Home',nSchedule:'Schedule',nTasks:'Tasks',nGPA:'GPA',nSettings:'Settings',nAccount:'Account',loginGoogle:'Login with Google',logout:'Logout',authSuccess:'Logged in successfully',authFail:'Login failed',logoutSuccess:'Logged out successfully',
+nHome:'Home',nSchedule:'Schedule',nTasks:'Tasks',nGPA:'GPA',nSettings:'Settings',nAccount:'Account',loginGoogle:'Login with Google',logout:'Logout',authSuccess:'Logged in successfully',authFail:'Login failed',logoutSuccess:'Logged out successfully',accountSignIn:'Sign in to sync your data',accountSignInSub:'Your tasks, schedule, and GPA — backed up in the cloud and available on any device.',syncNow:'🔄 Sync Now',syncing:'⏳ Syncing…',signingOut:'⏳ Signing out…',
 nextLec:'Next Lecture',noUp:'No upcoming lectures today',enjoyFree:'Enjoy your free time!',
 pendTasks:'Pending Tasks',attendance:'Attendance',weekProg:'Weekly Tasks',of:'of',goals:'completed',
 morning:'Good morning',afternoon:'Good afternoon',evening:'Good evening',
@@ -2235,7 +2233,7 @@ timeRangeInvalid:'End time must be after start time'
 welSub:'\u0631\u0641\u064A\u0642\u0643 \u0627\u0644\u062C\u0627\u0645\u0639\u064A',yourName:'\u0627\u0633\u0645\u0643',namePH:'\u0623\u062F\u062E\u0644 \u0627\u0633\u0645\u0643',university:'\u0627\u0644\u062C\u0627\u0645\u0639\u0629',selectUni:'\u0627\u062E\u062A\u0631 \u062C\u0627\u0645\u0639\u062A\u0643',language:'\u0627\u0644\u0644\u063A\u0629',getStarted:'\u0627\u0628\u062F\u0623 \u0627\u0644\u0622\u0646',
 welGoogleCta:'\u0627\u0644\u0645\u062A\u0627\u0628\u0639\u0629 \u0628\u0627\u0633\u062A\u062E\u062F\u0627\u0645 Google',welOr:'\u0623\u0648',welSignedInAs:'\u0645\u0633\u062C\u0651\u0644 \u0627\u0644\u062F\u062E\u0648\u0644 \u0628\u0627\u0633\u0645',
 uni_latakia:'\u062C\u0627\u0645\u0639\u0629 \u0627\u0644\u0644\u0627\u0630\u0642\u064A\u0629',uni_sham:'\u062C\u0627\u0645\u0639\u0629 \u0627\u0644\u0634\u0627\u0645 \u0627\u0644\u062E\u0627\u0635\u0629',uni_aast:'\u0627\u0644\u0623\u0643\u0627\u062F\u064A\u0645\u064A\u0629 \u0627\u0644\u0639\u0631\u0628\u064A\u0629 \u0644\u0644\u0639\u0644\u0648\u0645 \u0648\u0627\u0644\u062A\u0643\u0646\u0648\u0644\u0648\u062C\u064A\u0627',uni_manara:'\u062C\u0627\u0645\u0639\u0629 \u0627\u0644\u0645\u0646\u0627\u0631\u0629',uni_gemtq:'\u0627\u0644\u0623\u0643\u0627\u062F\u064A\u0645\u064A\u0629 \u0627\u0644\u0633\u0648\u0631\u064A\u0629 \u0644\u0644\u062A\u062F\u0631\u064A\u0628 \u0627\u0644\u0628\u062D\u0631\u064A \u2014 GEMTQ',
-nHome:'\u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629',nSchedule:'\u0627\u0644\u062C\u062F\u0648\u0644',nTasks:'\u0627\u0644\u0645\u0647\u0627\u0645',nGPA:'\u0627\u0644\u0645\u0639\u062F\u0644',nSettings:'\u0627\u0644\u0625\u0639\u062F\u0627\u062F\u0627\u062A',
+nHome:'\u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629',nSchedule:'\u0627\u0644\u062C\u062F\u0648\u0644',nTasks:'\u0627\u0644\u0645\u0647\u0627\u0645',nGPA:'\u0627\u0644\u0645\u0639\u062F\u0644',nSettings:'\u0627\u0644\u0625\u0639\u062F\u0627\u062F\u0627\u062A',nAccount:'\u0627\u0644\u062D\u0633\u0627\u0628',loginGoogle:'\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644 \u0628\u0640 Google',logout:'\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062E\u0631\u0648\u062C',authSuccess:'\u062A\u0645 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644',authFail:'\u0641\u0634\u0644 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644',logoutSuccess:'\u062A\u0645 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062E\u0631\u0648\u062C',accountSignIn:'\u0633\u062C\u0651\u0644 \u0627\u0644\u062F\u062E\u0648\u0644 \u0644\u0645\u0632\u0627\u0645\u0646\u0629 \u0628\u064A\u0627\u0646\u0627\u062A\u0643',accountSignInSub:'\u0645\u0647\u0627\u0645\u0643 \u0648\u062C\u062F\u0648\u0644\u0643 \u0648\u0645\u0639\u062F\u0644\u0643 \u2014 \u0645\u062D\u0641\u0648\u0638\u0629 \u0641\u064A \u0627\u0644\u0633\u062D\u0627\u0628\u0629 \u0648\u062A\u0639\u0645\u0644 \u0639\u0644\u0649 \u0623\u064A \u062C\u0647\u0627\u0632',syncNow:'\U0001f504 \u0645\u0632\u0627\u0645\u0646\u0629 \u0627\u0644\u0622\u0646',syncing:'\u23f3 \u062C\u0627\u0631\u064A \u0627\u0644\u0645\u0632\u0627\u0645\u0646\u0629\u2026',signingOut:'\u23f3 \u062C\u0627\u0631\u064A \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062E\u0631\u0648\u062C\u2026',
 nextLec:'\u0627\u0644\u0645\u062D\u0627\u0636\u0631\u0629 \u0627\u0644\u0642\u0627\u062F\u0645\u0629',noUp:'\u0644\u0627 \u062A\u0648\u062C\u062F \u0645\u062D\u0627\u0636\u0631\u0627\u062A',enjoyFree:'\u0627\u0633\u062A\u0645\u062A\u0639 \u0628\u0648\u0642\u062A\u0643!',
 pendTasks:'\u0645\u0647\u0627\u0645 \u0645\u0639\u0644\u0642\u0629',attendance:'\u062D\u0636\u0648\u0631',weekProg:'\u0645\u0647\u0627\u0645 \u0627\u0644\u0623\u0633\u0628\u0648\u0639',of:'\u0645\u0646',goals:'\u0645\u0643\u062A\u0645\u0644\u0629',
 morning:'\u0635\u0628\u0627\u062D \u0627\u0644\u062E\u064A\u0631',afternoon:'\u0645\u0633\u0627\u0621 \u0627\u0644\u062E\u064A\u0631',evening:'\u0645\u0633\u0627\u0621 \u0627\u0644\u062E\u064A\u0631',
@@ -2396,7 +2394,7 @@ function applyText(){
   if($('fcProgLabel'))$('fcProgLabel').textContent=t('fcCwProgress');
   $('scTitle').textContent=t('studyStats');
   if($('accountTitle')) $('accountTitle').textContent=t('nAccount');
-  if($('loginBtn')) $('loginBtn').textContent=t('loginGoogle');
+  if($('accountSignInPrompt')) $('accountSignInPrompt').textContent=t('accountSignIn');
   if($('logoutBtn')) $('logoutBtn').textContent=t('logout');
   /* ═══ GROUPS i18n wiring ═══ */
   if($('groupsTitle')) $('groupsTitle').textContent=t('groupsTitle');
@@ -3082,7 +3080,7 @@ function renderSettings(){
   if(document.getElementById('enableNotifBtn'))document.getElementById('enableNotifBtn').addEventListener('click',requestNotifPermission);
   document.getElementById('dataCard').innerHTML='<div class="card-title">'+t('dataMgmt')+'</div><div class="setting-item"><div><div class="setting-label">'+t('expData')+'</div></div><button class="setting-btn" id="exportBtn">'+t('expBtn')+'</button></div><div class="setting-item"><div><div class="setting-label">'+t('impData')+'</div></div><button class="setting-btn" id="importBtn">'+t('impBtn')+'</button></div>';
   document.getElementById('themeToggle').addEventListener('click',()=>{state.theme=state.theme==='dark'?'light':'dark';saveState();applyTheme();renderSettings();});
-  document.getElementById('langSelect').addEventListener('change',e=>{state.lang=e.target.value;saveState();applyLang();applyText();renderNav();renderAll();});
+  document.getElementById('langSelect').addEventListener('change',e=>{state.lang=e.target.value;saveState();applyLang();applyText();renderNav();renderAll();if(typeof SupaDB!=='undefined'&&SupaDB.renderAccountPage)SupaDB.renderAccountPage();});
   document.getElementById('absLimitInput').addEventListener('change',e=>{state.absenceLimit=parseInt(e.target.value)||5;saveState();renderDash();renderSchedule();});
   document.getElementById('resetAbsBtn').addEventListener('click',()=>{state.absences={};state._attSubmitted='';saveState();renderDash();renderSchedule();toast(t('absReset'));});
   document.getElementById('clearSchedBtn').addEventListener('click',()=>{customConfirm(t('clearSchedConfirm'),state.lang==='ar'?'نعم':'Yes',state.lang==='ar'?'لا':'No',()=>{state.schedule={};state.absences={};state._attSubmitted='';saveState();renderSchedule();renderDash();renderAttendanceWidget();toast(t('clearSchedDone'));});});
@@ -4048,11 +4046,11 @@ const SupaDB = (() => {
     const welBtn  = document.getElementById('welcomeGoogleBtn');
     if (acctBtn) {
       acctBtn.disabled  = false;
-      acctBtn.innerHTML = _GOOGLE_BTN_HTML + ' ' + t('loginGoogle');
+      acctBtn.innerHTML = t('loginGoogle') + ' ' + _GOOGLE_BTN_HTML;
     }
     if (welBtn) {
       welBtn.disabled  = false;
-      welBtn.innerHTML = _GOOGLE_BTN_HTML + ' <span id="welGoogleTxt">' + t('welGoogleCta') + '</span>';
+      welBtn.innerHTML = '<span id="welGoogleTxt">' + t('welGoogleCta') + '</span> ' + _GOOGLE_BTN_HTML;
     }
   }
 
@@ -4072,8 +4070,8 @@ const SupaDB = (() => {
     });
     if (error) {
       toast('✗ ' + error.message, 'error');
-      if (acctBtn) { acctBtn.disabled = false; acctBtn.innerHTML = origAcct != null ? origAcct : (_GOOGLE_BTN_HTML + ' Continue with Google'); }
-      if (welBtn)  { welBtn.disabled  = false; welBtn.innerHTML  = origWel  != null ? origWel  : (_GOOGLE_BTN_HTML + ' <span id="welGoogleTxt">' + t('welGoogleCta') + '</span>'); }
+      if (acctBtn) { acctBtn.disabled = false; acctBtn.innerHTML = origAcct != null ? origAcct : ('Continue with Google ' + _GOOGLE_BTN_HTML); }
+      if (welBtn)  { welBtn.disabled  = false; welBtn.innerHTML  = origWel  != null ? origWel  : ('<span id="welGoogleTxt">' + t('welGoogleCta') + '</span> ' + _GOOGLE_BTN_HTML); }
     }
   }
 
@@ -4722,7 +4720,7 @@ try {
         manualBtn.onclick = async () => {
           if (manualBtn.disabled) return;
           manualBtn.disabled    = true;
-          manualBtn.textContent = '⏳ Syncing…';
+          manualBtn.textContent = t('syncing');
           try {
             await _loadAndMerge();
             await _processSyncQueue();
@@ -4735,7 +4733,7 @@ try {
             toast('✗ Sync failed: ' + (e?.message || 'unknown error'), 'error');
           } finally {
             manualBtn.disabled    = false;
-            manualBtn.textContent = '🔄 Sync Now';
+            manualBtn.textContent = t('syncNow');
           }
         };
       }
@@ -4751,7 +4749,7 @@ try {
           if (logoutBtn.disabled) return;
           logoutBtn.disabled    = true;
           const _origTxt = logoutBtn.textContent;
-          logoutBtn.textContent = '⏳ Signing out…';
+          logoutBtn.textContent = t('signingOut');
           try {
             await signOut();
           } catch (e) {
@@ -4772,6 +4770,7 @@ try {
       out.style.display  = 'block';
       inEl.style.display = 'none';
       load.style.display = 'none';
+      const _sip = document.getElementById('accountSignInPrompt'); if (_sip) _sip.textContent = t('accountSignIn');
       const loginBtn = document.getElementById('loginBtn');
       if (loginBtn) loginBtn.onclick = () => signInWithGoogle();
     }
@@ -4879,6 +4878,7 @@ try {
     },
     rotateGroupInviteCode: async function(){ const gid=state.groups.current.id; const {data,error}=await _supa.rpc('rotate_group_invite_code',{p_group_id:gid}); if(error) throw error; return data; },
     kickGroupMember: async function(uid){ const gid=state.groups.current.id; const {error}=await _supa.rpc('kick_group_member',{p_group_id:gid,p_user_id:uid}); if(error) throw error; },
+    renderAccountPage: function(){ _renderAccountPage(); },
     deleteGroup: async function(){ const gid=state.groups.current.id; const {error}=await _supa.rpc('delete_group',{p_group_id:gid}); if(error) throw error; },
     /* F2: chat */
     sendGroupMessage: async function(content, opts){
