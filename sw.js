@@ -91,3 +91,43 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
 });
+
+// Handle push notifications
+self.addEventListener('push', (event) => {
+  if (!event.data) return;
+  
+  try {
+    const payload = event.data.json();
+    const options = {
+      body: payload.body || 'UniManager notification',
+      icon: '/unimanager/icons/icon-192.png',
+      badge: '/unimanager/icons/icon-192.png',
+      tag: payload.tag || 'unimanager-notification',
+      requireInteraction: payload.requireInteraction || false,
+      data: payload.data || {}
+    };
+    
+    event.waitUntil(
+      self.registration.showNotification(payload.title || 'UniManager', options)
+    );
+  } catch (e) {
+    console.error('[SW] Push notification error:', e);
+  }
+});
+
+// Handle notification clicks
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  
+  // Open/focus the app window
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (let client of clientList) {
+        if (client.url === '/' || client.url.includes('/unimanager/')) {
+          return client.focus();
+        }
+      }
+      return clients.openWindow('/unimanager/');
+    })
+  );
+});
