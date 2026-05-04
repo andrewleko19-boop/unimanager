@@ -1143,8 +1143,10 @@ body.group-active #pageGroups>.section-title{display:none}
 #chatReplyBar .crb-sender{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:2px}
 #chatReplyBar .crb-preview{font-size:12px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #chatReplyBar .crb-close{background:none;border:none;color:var(--text-muted);font-size:18px;cursor:pointer;padding:0 4px;line-height:1}
-#chatAttachBtn{background:none;border:none;color:var(--text-secondary);font-size:30px;font-weight:300;line-height:1;cursor:pointer;padding:0 6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%}
+#chatAttachBtn{background:none;border:none;color:var(--text-secondary);font-size:0;line-height:1;cursor:pointer;padding:0;flex-shrink:0;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%}
 #chatAttachBtn:active{color:var(--accent);background:rgba(255,255,255,.06)}
+#chatAttachBtn::after{content:none}
+#chatAttachBtn svg{pointer-events:none;display:block}
 #chatUploadProgress{display:none;padding:4px 14px;background:var(--bg-secondary)}
 #chatUploadProgress.visible{display:block}
 #chatUploadProgress .cup-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
@@ -1611,7 +1613,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
           </div>
           <div id="chatUploadProgress"><div class="cup-bar"><div class="cup-fill" id="cupFill"></div></div></div>
           <div class="chat-input-row" id="chatInputRow">
-            <button id="chatAttachBtn" type="button" aria-label="Attach">+</button>
+            <button id="chatAttachBtn" type="button" aria-label="Attach"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="9" y1="2" x2="9" y2="16"/><line x1="2" y1="9" x2="16" y2="9"/></svg></button>
             <input type="text" id="chatInput" maxlength="2000" autocomplete="off">
             <button id="chatSendBtn"></button>
           </div>
@@ -4946,6 +4948,7 @@ try {
     },
     rotateGroupInviteCode: async function(){ const gid=state.groups.current.id; const {data,error}=await _supa.rpc('rotate_group_invite_code',{p_group_id:gid}); if(error) throw error; return data; },
     kickGroupMember: async function(uid){ const gid=state.groups.current.id; const {error}=await _supa.rpc('kick_group_member',{p_group_id:gid,p_user_id:uid}); if(error) throw error; },
+    fetchMemberNames: async function(uids){ if(!uids||!uids.length) return {}; const {data}=await _supa.from('user_settings').select('user_id,name').in('user_id',uids); const map={}; if(data) data.forEach(r=>{ map[r.user_id]=r.name||null; }); return map; },
     renderAccountPage: function(){ _renderAccountPage(); },
     deleteGroup: async function(){ const gid=state.groups.current.id; const {error}=await _supa.rpc('delete_group',{p_group_id:gid}); if(error) throw error; },
     /* F2: chat */
@@ -5076,7 +5079,8 @@ function saveState() {
       '.gsm-member-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg-card);border-radius:8px;margin-bottom:6px;font-size:.82rem;color:var(--text-primary)}'+
       '[dir="rtl"] .gsm-member-row{flex-direction:row-reverse}'+
       '.gsm-kick-btn{padding:5px 10px;background:var(--red-bg);color:var(--red);border:none;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer}'+
-      '.gsm-kick-btn:hover{opacity:.85}';
+      '.gsm-kick-btn:hover{opacity:.85}'+
+      '.gsm-admin-badge{display:inline-block;margin-inline-start:6px;padding:2px 7px;border-radius:20px;background:var(--accent-soft);color:var(--accent);font-size:.68rem;font-weight:700;vertical-align:middle}';
     document.head.appendChild(s);
   })();
 
@@ -5716,17 +5720,31 @@ if (_chatInput) {
     _renderGsmMembers();
     openModal('groupSettingsModal');
   }
-  function _renderGsmMembers(){
+  async function _renderGsmMembers(){
     const c = $('gsmMembersList'); if(!c) return;
     const members = state.groups.members || [];
     const myUid   = (SupaDB.getUser() && SupaDB.getUser().id) || null;
     if(!members.length){ c.innerHTML = '<div style="color:var(--text-muted);font-size:.82rem">—</div>'; return; }
-    c.innerHTML = members.map(m => {
+
+    /* fetch missing display_names from user_settings */
+    const missing = members.filter(m => !m.display_name && m.user_id !== myUid);
+    if(missing.length){
+      try {
+        const nameMap = await SupaDB.fetchMemberNames(missing.map(m => m.user_id));
+        state.groups.members = state.groups.members.map(m => ({
+          ...m, display_name: m.display_name || nameMap[m.user_id] || null
+        }));
+      } catch(e){ /* silent fallback to shortId */ }
+    }
+
+    const final = state.groups.members || [];
+    c.innerHTML = final.map(m => {
       const isAdmin = m.role === 'admin';
       const isYou   = m.user_id === myUid;
       const shortId = m.user_id ? m.user_id.slice(0, 8) : '—';
-      const label   = (isYou ? t('memberYou') : (t('roleMember')+' · '+escapeHTML(shortId))) + (isAdmin ? ' · '+t('roleAdmin') : '');
-      return '<div class="gsm-member-row"><span>'+label+'</span>'+
+      const name    = isYou ? t('memberYou') : escapeHTML(m.display_name || shortId);
+      const badge   = isAdmin ? ' <span class="gsm-admin-badge">'+t('roleAdmin')+'</span>' : '';
+      return '<div class="gsm-member-row"><span>'+name+badge+'</span>'+
         (!isAdmin ? '<button class="gsm-kick-btn" data-uid="'+escapeHTML(m.user_id)+'">'+t('kick')+'</button>' : '')+
       '</div>';
     }).join('');
