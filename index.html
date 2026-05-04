@@ -3705,15 +3705,27 @@ function renderGroupExams(){
    body = textarea, footer = last-updated). Demo notes shown when fully empty. */
 function renderGroupNotes(){
   const c=document.getElementById('groupSubjectNotesList');
-  /* Subjects pulled from group SHARED schedule (not personal) */
+  /* Subjects pulled from group SHARED schedule (not personal).
+     IMPORTANT: sharedSchedule keys are lowercase 3-letter day codes
+     ('sat','sun','mon','tue','wed','thu','fri') — NOT the full names in
+     the global DAYS array. Using DAYS here was the root cause of the
+     "no subjects" empty state showing even when the schedule had data.
+     Also filter to theoretical lectures only — practical/activity
+     sessions don't need shared note-taking. */
+  const GRP_DAYS=['sat','sun','mon','tue','wed','thu','fri'];
   const subs=new Set();
   const sched=state.groups.sharedSchedule||{};
-  for(const d of DAYS){if(sched[d])Object.values(sched[d]).forEach(l=>{if(l&&l.subject)subs.add(l.subject);});}
-  /* Also include any subject that already has notes */
-  Object.keys(state.groups.sharedNotes||{}).forEach(s=>subs.add(s));
+  for(const d of GRP_DAYS){
+    if(!sched[d])continue;
+    Object.values(sched[d]).forEach(l=>{
+      if(l&&l.subject&&l.type==='theoretical')subs.add(l.subject);
+    });
+  }
 
-  /* Empty state — no demo data. Notes only appear once subjects are added to
-     the shared schedule (or notes have been previously written). */
+  /* Empty state — only when there are genuinely zero theoretical subjects
+     in the shared schedule. Notes for subjects that were once theoretical
+     but are now practical/removed remain in state.groups.sharedNotes
+     (preserved on the backend) but don't surface here. */
   if(!subs.size){
     c.innerHTML='<div class="empty-state" style="padding:48px 12px"><div class="empty-state-icon">\uD83D\uDCDD</div><div class="empty-state-text">'+(t('noSharedNotes')||'')+'</div></div>';
     return;
