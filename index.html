@@ -3079,6 +3079,7 @@ function checkDeadlines(){
   if(!('Notification' in window)||Notification.permission!=='granted')return;
   const now=Date.now();
   const notified=JSON.parse(localStorage.getItem('unimanager_notified')||'{}');
+  const toNotify=[];
   // Check tasks
   state.tasks.forEach(tk=>{
     if(tk.completed||!tk.deadline)return;
@@ -3086,12 +3087,12 @@ function checkDeadlines(){
     const diff=dl-now;
     // 24h warning
     if(diff>0&&diff<=24*3600*1000&&!notified['t24_'+tk.id]){
-      new Notification('UniManager',{body:'⏰ '+tk.name+' — due in less than 24 hours!',icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>'});
+      toNotify.push({title:'UniManager',body:'⏰ '+tk.name+' — due in less than 24 hours!',id:'t24_'+tk.id});
       notified['t24_'+tk.id]=true;
     }
     // 1h warning
     if(diff>0&&diff<=3600*1000&&!notified['t1_'+tk.id]){
-      new Notification('UniManager',{body:'🔴 '+tk.name+' — due in less than 1 hour!',icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>'});
+      toNotify.push({title:'UniManager',body:'🔴 '+tk.name+' — due in less than 1 hour!',id:'t1_'+tk.id});
       notified['t1_'+tk.id]=true;
     }
   });
@@ -3102,21 +3103,29 @@ function checkDeadlines(){
     const diffDays=Math.ceil(diff/(24*3600*1000));
     // 2 days before
     if(diffDays===2&&!notified['e2_'+ex.id]){
-      new Notification('UniManager',{body:'⚠️ '+ex.subject+' exam in 2 days!',requireInteraction:false});
+      toNotify.push({title:'UniManager',body:'⚠️ '+ex.subject+' exam in 2 days!',id:'e2_'+ex.id,requireInteraction:false});
       notified['e2_'+ex.id]=true;
     }
     // 1 day before (tomorrow)
     if(diffDays===1&&!notified['e1_'+ex.id]){
-      new Notification('UniManager',{body:'⚠️ '+ex.subject+' exam tomorrow!',requireInteraction:false});
+      toNotify.push({title:'UniManager',body:'⚠️ '+ex.subject+' exam tomorrow!',id:'e1_'+ex.id,requireInteraction:false});
       notified['e1_'+ex.id]=true;
     }
     // A few hours before
     if(diff>0&&diff<6*3600*1000&&!notified['eh_'+ex.id]){
-      new Notification('UniManager',{body:'🚨 '+ex.subject+' exam in a few hours!',requireInteraction:true});
+      toNotify.push({title:'UniManager',body:'🚨 '+ex.subject+' exam in a few hours!',id:'eh_'+ex.id,requireInteraction:true});
       notified['eh_'+ex.id]=true;
     }
   });
   localStorage.setItem('unimanager_notified',JSON.stringify(notified));
+  // Send to SW for display
+  if(toNotify.length>0&&'serviceWorker' in navigator){
+    navigator.serviceWorker.ready.then(reg=>{
+      toNotify.forEach(n=>{
+        reg.showNotification(n.title,{body:n.body,badge:'/unimanager/icons/icon-192.png',icon:'/unimanager/icons/icon-192.png',tag:n.id,requireInteraction:n.requireInteraction||false});
+      });
+    }).catch(e=>console.log('[Notif] SW error:',e));
+  }
 }
 
 /* ===== CUSTOM CONFIRM ===== */
