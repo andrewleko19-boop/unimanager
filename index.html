@@ -3343,7 +3343,11 @@ function startSleepReminderCheck(){
     if(diff>0&&diff<=30&&!sleepReminderFired){
       sleepReminderFired=true;
       toast(t('sleepReminderMsg'),'info');
-      if('Notification' in window&&Notification.permission==='granted'){new Notification('UniManager',{body:t('sleepReminderMsg')});}
+      if('Notification' in window&&Notification.permission==='granted'&&'serviceWorker' in navigator){
+        navigator.serviceWorker.ready.then(reg=>{
+          reg.showNotification('UniManager',{body:t('sleepReminderMsg'),icon:'/unimanager/icons/icon-192.png',badge:'/unimanager/icons/icon-192.png',tag:'sleep-reminder'});
+        }).catch(e=>console.log('[Sleep] SW error:',e));
+      }
     }
     if(diff<0||diff>30)sleepReminderFired=false;
   },60000);
