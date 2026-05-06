@@ -494,6 +494,9 @@ select.form-input option{background-color:var(--bg-secondary)!important;color:va
 /* Overlay to close dropdown on mobile tap-outside */
 .csel-backdrop{position:fixed;inset:0;z-index:299;background:transparent;display:none}
 .csel-backdrop.show{display:block}
+#update-banner{display:none;position:fixed;bottom:var(--tab-height);left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--accent);color:#fff;padding:.6rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;z-index:99;font-size:.875rem;}
+#update-banner.visible{display:flex;}
+#update-banner button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;padding:.3rem .75rem;border-radius:.5rem;font-size:.8rem;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 
 /* ===== NOTIF PERMISSION MODAL ===== */
 #notifPermOverlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .25s}
@@ -1753,6 +1756,10 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   <div id="techList"></div>
 </div>
 </div>
+<div id="update-banner" role="status" aria-live="polite">
+  <span id="update-banner-msg"></span>
+  <button id="update-banner-btn"></button>
+</div>
 <nav class="bottom-nav" id="bottomNav"></nav>
 </div>
 
@@ -2230,7 +2237,8 @@ groupsAdminRoleLabel:'\uD83D\uDC51 Group admin',
 grp2Soon:'Soon !',grp2Pinned:'Pinned',
 grp2StatTasks:'Tasks done',grp2StatHours:'Study hours',
 timeRangeReq:'Please select start and end time',
-timeRangeInvalid:'End time must be after start time'
+timeRangeInvalid:'End time must be after start time',
+updateAvailable:'A new update is available',updateNow:'Update Now'
 },ar:{
 welSub:'\u0631\u0641\u064A\u0642\u0643 \u0627\u0644\u062C\u0627\u0645\u0639\u064A',yourName:'\u0627\u0633\u0645\u0643',namePH:'\u0623\u062F\u062E\u0644 \u0627\u0633\u0645\u0643',university:'\u0627\u0644\u062C\u0627\u0645\u0639\u0629',selectUni:'\u0627\u062E\u062A\u0631 \u062C\u0627\u0645\u0639\u062A\u0643',language:'\u0627\u0644\u0644\u063A\u0629',getStarted:'\u0627\u0628\u062F\u0623 \u0627\u0644\u0622\u0646',
 welGoogleCta:'\u0627\u0644\u0645\u062A\u0627\u0628\u0639\u0629 \u0628\u0627\u0633\u062A\u062E\u062F\u0627\u0645 Google',welOr:'\u0623\u0648',welSignedInAs:'\u0645\u0633\u062C\u0651\u0644 \u0627\u0644\u062F\u062E\u0648\u0644 \u0628\u0627\u0633\u0645',
@@ -2319,7 +2327,8 @@ groupsAdminRoleLabel:'\uD83D\uDC51 \u0645\u0634\u0631\u0641 \u0627\u0644\u0645\u
 grp2Soon:'\u0642\u0631\u064A\u0628 !',grp2Pinned:'\u0645\u062B\u0628\u062A',
 grp2StatTasks:'\u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u0645\u0643\u062A\u0645\u0644\u0629',grp2StatHours:'\u0633\u0627\u0639\u0627\u062A \u0627\u0644\u062F\u0631\u0627\u0633\u0629',
 timeRangeReq:'\u0627\u0644\u0631\u062C\u0627\u0621 \u062A\u062D\u062F\u064A\u062F \u0648\u0642\u062A \u0627\u0644\u0628\u062F\u0627\u064A\u0629 \u0648\u0627\u0644\u0646\u0647\u0627\u064A\u0629',
-timeRangeInvalid:'\u0648\u0642\u062A \u0627\u0644\u0646\u0647\u0627\u064A\u0629 \u064A\u062C\u0628 \u0623\u0646 \u064A\u0643\u0648\u0646 \u0628\u0639\u062F \u0648\u0642\u062A \u0627\u0644\u0628\u062F\u0627\u064A\u0629'
+timeRangeInvalid:'\u0648\u0642\u062A \u0627\u0644\u0646\u0647\u0627\u064A\u0629 \u064A\u062C\u0628 \u0623\u0646 \u064A\u0643\u0648\u0646 \u0628\u0639\u062F \u0648\u0642\u062A \u0627\u0644\u0628\u062F\u0627\u064A\u0629',
+updateAvailable:'\u064A\u062A\u0648\u0641\u0631 \u062A\u062D\u062F\u064A\u062B \u062C\u062F\u064A\u062F',updateNow:'\u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0622\u0646'
 }};
 function t(k){return(LL[state.lang||'en']||LL.en)[k]||LL.en[k]||k;}
 
@@ -6391,28 +6400,44 @@ init();
 </script>
 <script>
   // Service Worker registration
-  if ('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
         .register('/unimanager/sw.js', { scope: '/unimanager/' })
         .then((reg) => {
           console.log('[PWA] SW registered, scope:', reg.scope);
 
-          // Listen for updates — prompt-less auto-activate on next reload
+          function showUpdateBanner() {
+            const banner = document.getElementById('update-banner');
+            const msg = document.getElementById('update-banner-msg');
+            const btn = document.getElementById('update-banner-btn');
+            if (!banner) return;
+            msg.textContent = t('updateAvailable');
+            btn.textContent = t('updateNow');
+            banner.classList.add('visible');
+            btn.onclick = () => {
+              if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
+            };
+          }
+
+          // If a waiting SW already exists on page load (e.g. user came back)
+          if (reg.waiting && navigator.serviceWorker.controller) {
+            showUpdateBanner();
+          }
+
           reg.addEventListener('updatefound', () => {
             const sw = reg.installing;
             if (!sw) return;
             sw.addEventListener('statechange', () => {
               if (sw.state === 'installed' && navigator.serviceWorker.controller) {
-                // New version available — will take over on next navigation
-                console.log('[PWA] Update ready');
+                showUpdateBanner();
               }
             });
           });
         })
         .catch((err) => console.warn('[PWA] SW registration failed:', err));
 
-      // Reload once the new SW takes control (smooth update)
+      // Reload once the new SW takes control
       let reloaded = false;
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (reloaded) return;
