@@ -494,7 +494,7 @@ select.form-input option{background-color:var(--bg-secondary)!important;color:va
 /* Overlay to close dropdown on mobile tap-outside */
 .csel-backdrop{position:fixed;inset:0;z-index:299;background:transparent;display:none}
 .csel-backdrop.show{display:block}
-#update-banner{display:none;position:fixed;bottom:var(--tab-height);left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--accent);color:#fff;padding:.6rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;z-index:99;font-size:.875rem;}
+#update-banner{display:none;position:fixed;bottom:var(--tab-height);left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--accent);color:#fff;padding:.6rem 1rem;align-items:center;justify-content:space-between;gap:.75rem;z-index:99;font-size:.875rem;}
 #update-banner.visible{display:flex;}
 #update-banner button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;padding:.3rem .75rem;border-radius:.5rem;font-size:.8rem;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 
@@ -6407,22 +6407,23 @@ init();
         .then((reg) => {
           console.log('[PWA] SW registered, scope:', reg.scope);
 
-          function showUpdateBanner() {
+          function showUpdateBanner(waitingSW) {
             const banner = document.getElementById('update-banner');
             const msg = document.getElementById('update-banner-msg');
             const btn = document.getElementById('update-banner-btn');
-            if (!banner) return;
+            if (!banner || !waitingSW) return;
             msg.textContent = t('updateAvailable');
             btn.textContent = t('updateNow');
             banner.classList.add('visible');
             btn.onclick = () => {
-              if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
+              waitingSW.postMessage('SKIP_WAITING');
+              window.location.reload();
             };
           }
 
           // If a waiting SW already exists on page load (e.g. user came back)
           if (reg.waiting && navigator.serviceWorker.controller) {
-            showUpdateBanner();
+            showUpdateBanner(reg.waiting);
           }
 
           reg.addEventListener('updatefound', () => {
@@ -6430,7 +6431,7 @@ init();
             if (!sw) return;
             sw.addEventListener('statechange', () => {
               if (sw.state === 'installed' && navigator.serviceWorker.controller) {
-                showUpdateBanner();
+                showUpdateBanner(reg.waiting);
               }
             });
           });
