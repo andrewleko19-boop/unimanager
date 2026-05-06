@@ -494,7 +494,7 @@ select.form-input option{background-color:var(--bg-secondary)!important;color:va
 /* Overlay to close dropdown on mobile tap-outside */
 .csel-backdrop{position:fixed;inset:0;z-index:299;background:transparent;display:none}
 .csel-backdrop.show{display:block}
-#update-banner{display:none;position:fixed;bottom:var(--tab-height);left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--accent);color:#fff;padding:.6rem 1rem;align-items:center;justify-content:space-between;gap:.75rem;z-index:99;font-size:.875rem;}
+#update-banner{display:none;position:fixed;bottom:var(--tab-height);left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--accent);color:#fff;padding:.6rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;z-index:99;font-size:.875rem;}
 #update-banner.visible{display:flex;}
 #update-banner button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;padding:.3rem .75rem;border-radius:.5rem;font-size:.8rem;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 
@@ -2893,7 +2893,7 @@ function renderGPAHistory(){const sec=document.getElementById('gpaHistorySection
 /* ===== POMODORO ===== */
 const POMO_MODES=[{label:'25/5',work:25,brk:5},{label:'50/10',work:50,brk:10},{label:'90/15',work:90,brk:15}];
 function renderPomoModes(){const c=document.getElementById('pomoModes');c.innerHTML=POMO_MODES.map((m,i)=>'<button'+(pomoMode.work===m.work?' class="active"':'')+' data-pi="'+i+'">'+m.label+'</button>').join('');c.querySelectorAll('button').forEach(b=>{b.addEventListener('click',()=>{const m=POMO_MODES[parseInt(b.dataset.pi)];pomoMode=m;pomoSeconds=m.work*60;pomoOnBreak=false;updatePomoDisplay();renderPomoModes();});});}
-function updatePomoSubjects(){const sel=document.getElementById('pomoSubject');const subs=new Set();state.subjects.forEach(s=>{if(s.name)subs.add(s.name);});for(const d of DAYS){if(state.schedule[d])Object.values(state.schedule[d]).forEach(l=>{if(l&&l.subject)subs.add(l.subject);});}sel.innerHTML='<option value="">Select Subject</option>'+[...subs].map(s=>'<option value="'+s+'">'+s+'</option>').join('');if(sel._cselRebuild)sel._cselRebuild();else upgradeSelect(sel);}
+function updatePomoSubjects(){const sel=document.getElementById('pomoSubject');const subs=new Set();state.subjects.forEach(s=>{if(s.name)subs.add(s.name);});for(const d of DAYS){if(state.schedule[d])state.slots.forEach(s=>{const k=s.start+'-'+s.end;const l=state.schedule[d][k];if(l&&l.subject)subs.add(l.subject);});}sel.innerHTML='<option value="">Select Subject</option>'+[...subs].map(s=>'<option value="'+s+'">'+s+'</option>').join('');if(sel._cselRebuild)sel._cselRebuild();else upgradeSelect(sel);}
 function updatePomoDisplay(){const m=Math.floor(pomoSeconds/60),s=pomoSeconds%60;document.getElementById('pomoTime').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');document.getElementById('pomoLabel').textContent=pomoOnBreak?'Break':'Focus Session';document.getElementById('pomoSessions').textContent=pomoSessionCount;const today=new Date().toISOString().slice(0,10);const total=(state.studyLog||[]).filter(l=>l.date===today).reduce((s,l)=>s+l.minutes,0);document.getElementById('pomoTotal').textContent=total+'m';}
 document.getElementById('pomoStartBtn').addEventListener('click',()=>{if(pomoRunning)return;pomoRunning=true;document.getElementById('pomoStartBtn').style.display='none';document.getElementById('pomoStopBtn').style.display='';pomoInterval=setInterval(()=>{pomoSeconds--;if(pomoSeconds<=0){clearInterval(pomoInterval);pomoRunning=false;if(!pomoOnBreak){pomoSessionCount++;const subj=document.getElementById('pomoSubject').value||'General';const today=new Date().toISOString().slice(0,10);state.studyLog.push({subject:subj,date:today,minutes:pomoMode.work});saveState();SupaDB.saveStudySession({subject:subj,date:today,minutes:pomoMode.work});playPomoSound();toast('Session complete! Take a break.');pomoOnBreak=true;pomoSeconds=pomoMode.brk*60;}else{pomoOnBreak=false;pomoSeconds=pomoMode.work*60;toast('Break over! Ready for next session.');}document.getElementById('pomoStartBtn').style.display='';document.getElementById('pomoStopBtn').style.display='none';renderDash();renderPomoAnalytics();}updatePomoDisplay();},1000);});
 document.getElementById('pomoStopBtn').addEventListener('click',()=>{clearInterval(pomoInterval);pomoRunning=false;// Log partial session
@@ -2905,7 +2905,7 @@ document.getElementById('pomoResetBtn').addEventListener('click',()=>{clearInter
 function renderSubjectNotes(){
   const c=document.getElementById('subjectNotesList');
   const subs=new Set();
-  for(const d of DAYS){if(state.schedule[d])Object.values(state.schedule[d]).forEach(l=>{if(l&&l.subject)subs.add(l.subject);});}
+  for(const d of DAYS){if(state.schedule[d])state.slots.forEach(s=>{const k=s.start+'-'+s.end;const l=state.schedule[d][k];if(l&&l.subject)subs.add(l.subject);});}
   state.subjects.forEach(s=>{if(s.name)subs.add(s.name);});
   if(!subs.size){c.innerHTML='<div class="empty-state"><div class="empty-state-icon">\uD83D\uDCDD</div><div class="empty-state-text">'+t('noSlots')+'</div></div>';return;}
   if(!state.subjectNotes)state.subjectNotes={};
@@ -6407,23 +6407,22 @@ init();
         .then((reg) => {
           console.log('[PWA] SW registered, scope:', reg.scope);
 
-          function showUpdateBanner(waitingSW) {
+          function showUpdateBanner() {
             const banner = document.getElementById('update-banner');
             const msg = document.getElementById('update-banner-msg');
             const btn = document.getElementById('update-banner-btn');
-            if (!banner || !waitingSW) return;
+            if (!banner) return;
             msg.textContent = t('updateAvailable');
             btn.textContent = t('updateNow');
             banner.classList.add('visible');
             btn.onclick = () => {
-              waitingSW.postMessage('SKIP_WAITING');
-              window.location.reload();
+              if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
             };
           }
 
           // If a waiting SW already exists on page load (e.g. user came back)
           if (reg.waiting && navigator.serviceWorker.controller) {
-            showUpdateBanner(reg.waiting);
+            showUpdateBanner();
           }
 
           reg.addEventListener('updatefound', () => {
@@ -6431,7 +6430,7 @@ init();
             if (!sw) return;
             sw.addEventListener('statechange', () => {
               if (sw.state === 'installed' && navigator.serviceWorker.controller) {
-                showUpdateBanner(reg.waiting);
+                showUpdateBanner();
               }
             });
           });

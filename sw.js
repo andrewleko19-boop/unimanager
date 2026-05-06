@@ -30,11 +30,13 @@ const RUNTIME_BYPASS_PATTERNS = [
 ];
 
 // On install: pre-cache the app shell.
+// NOTE: No skipWaiting() here — the new SW enters waiting state so the
+// in-app update banner can appear. skipWaiting() is triggered only by
+// the banner button via postMessage('SKIP_WAITING').
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => cache.addAll(PRECACHE_URLS))
-      .then(() => self.skipWaiting()) // activate new SW immediately on next page load
   );
 });
 
