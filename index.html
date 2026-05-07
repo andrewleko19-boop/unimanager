@@ -1978,7 +1978,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.3.0';
+const APP_VERSION = 'v1.4.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2183,7 +2183,7 @@ resetAbs:'Reset Absences',resetAbsDesc:'Clear all absence records',resetAbsBtn:'
 clearSched:'Clear Schedule Data',clearSchedDesc:'Remove all lectures from schedule',clearSchedBtn:'Clear',clearSchedConfirm:'Are you sure you want to clear all schedule and lecture data? This action cannot be undone.',clearSchedDone:'Schedule data cleared',
 motiv:["Consistency beats intensity.","The best time to start is now.","Code it, break it, fix it, ship it.","Small progress is still progress.","Trust the process.","Every expert was once a beginner.","Focus on understanding.","Your future self will thank you.","Debugging is detective work.","One more iteration."],
 welcome:'Welcome, ',noPinnedTask:'No pending tasks \u2014 you\'re all clear \uD83C\uDFAF',
-examIn:'Exam in',days:'days',daysRemaining:'days remaining',studyToday:'Study Today',upcoming:'Upcoming',
+examIn:'Exam in',days:'days',daysRemaining:'days remaining',daysRemainingPlural:'days remaining',studyToday:'Study Today',upcoming:'Upcoming',
 absences:'Absences',absenceSum:'Absence Summary',maxReached:'\u26D4 Absence limit reached for ',finalCalc:'Final Grade Calculator',
 fcScore:'Score',fcMax:'Max',fcWeight:'Weight %',
 fcComp0:'7th Week Exam',fcComp1:'12th Week Exam',fcComp2:'Course Work',
@@ -2196,7 +2196,7 @@ fcBrComp:'Component',fcBrContrib:'Contribution',fcBrTotal:'Coursework Total',fcB
 // Daily Focus Challenge
 challengeTitle:'Daily Focus Challenge',challengePoints:'Focus Points',challengeDone:'✓ Challenge Completed!',challengeComplete:'Mark Complete',challenges:['Write 3 goals for today.','Review yesterday\'s notes for 5 minutes.','Study for 25 minutes without any interruptions.','Summarize what you learned today in 3 sentences.','Plan tomorrow\'s schedule before sleeping.','Read one topic you\'ve been putting off.','Organize your notes for one subject.','Do 5 practice problems from any subject.','Review all your deadlines and tasks.','Turn off social media for 1 hour and focus.'],
 // Sleep
-sleepTitle:'Sleep & Wellness',sleepBedtime:'Target Bedtime',sleepWakeup:'Target Wake-up',sleepReminderLabel:'Bedtime Reminder',sleepReminderDesc:'Notify 30 min before bedtime',sleepQualityTitle:'Last Night\'s Sleep Quality',sleepScheduleLine:'😴 Bedtime: {bed} | ⏰ Wake-up: {wake}',sleepAvg:'7-day avg',sleepReminderMsg:'Time to wind down. Bedtime in 30 minutes.',sleepExcellent:'😊',sleepGood:'😐',sleepBad:'😞',sleepSave:'Save Sleep Settings',
+sleepTitle:'Sleep & Wellness',sleepBedtime:'Target Bedtime',sleepWakeup:'Target Wake-up',sleepReminderLabel:'Bedtime Reminder',sleepReminderDesc:'Notify 30 min before bedtime',sleepQualityTitle:'Last Night\'s Sleep Quality',sleepScheduleLine:'😴 Bedtime: {bed} | ⏰ Wake-up: {wake}',sleepAvg:'7-day avg',sleepReminderMsg:'Time to wind down. Bedtime in 30 minutes.',sleepExcellent:'😊',sleepGood:'😐',sleepBad:'😞',sleepSave:'Save Sleep Settings',sleepNoData:'Log your sleep first',sleepInsightGreat:'Great sleep this week, keep your routine 👌',sleepInsightOk:'Average sleep quality, try fixing your sleep schedule 🙂',sleepInsightBad:'Rough week of sleep, try avoiding screens before bed 😟',sleepTipBad:'Try turning off your phone 1 hour before bed.',sleepTipOk:'A dark, cool room helps you sleep better.',sleepTipGood:'Great routine, keep it up!',
 // Pomodoro analytics
 pomoAnalyticsTitle:'Study Analytics',pomoWeekThis:'This week',pomoWeekPrev:'vs last week',pomoDeepFocus:'Deep Focus Mode',pomoSubjAll:'All Subjects',pomoSoundLabel:'Session Sound',pomoSoundDesc:'Play tone when session ends',
 // Study Techniques
@@ -2277,7 +2277,7 @@ resetAbs:'\u0645\u0633\u062D \u0627\u0644\u063A\u064A\u0627\u0628',resetAbsDesc:
 clearSched:'\u0645\u0633\u062D \u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u062C\u062F\u0648\u0644',clearSchedDesc:'\u062D\u0630\u0641 \u062C\u0645\u064A\u0639 \u0627\u0644\u0645\u062D\u0627\u0636\u0631\u0627\u062A \u0645\u0646 \u0627\u0644\u062C\u062F\u0648\u0644',clearSchedBtn:'\u0645\u0633\u062D',clearSchedConfirm:'\u0647\u0644 \u0623\u0646\u062A \u0645\u062A\u0623\u0643\u062F \u0645\u0646 \u0645\u0633\u062D \u062C\u0645\u064A\u0639 \u0627\u0644\u0645\u062D\u0627\u0636\u0631\u0627\u062A \u0648\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u062C\u062F\u0648\u0644\u061F \u0644\u0627 \u064A\u0645\u0643\u0646 \u0627\u0644\u062A\u0631\u0627\u062C\u0639 \u0639\u0646 \u0647\u0630\u0627 \u0627\u0644\u0625\u062C\u0631\u0627\u0621.',clearSchedDone:'\u062A\u0645 \u0645\u0633\u062D \u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u062C\u062F\u0648\u0644',
 motiv:["\u0627\u0644\u0627\u0633\u062A\u0645\u0631\u0627\u0631\u064A\u0629 \u062A\u062A\u0641\u0648\u0642.","\u0623\u0641\u0636\u0644 \u0648\u0642\u062A \u0644\u0644\u0628\u062F\u0621 \u0647\u0648 \u0627\u0644\u0622\u0646.","\u0627\u0643\u062A\u0628 \u0627\u0644\u0643\u0648\u062F\u060C \u0623\u0635\u0644\u062D\u0647.","\u0627\u0644\u062A\u0642\u062F\u0645 \u0627\u0644\u0628\u0633\u064A\u0637 \u062A\u0642\u062F\u0645.","\u062B\u0642 \u0628\u0627\u0644\u0639\u0645\u0644\u064A\u0629.","\u0643\u0644 \u062E\u0628\u064A\u0631 \u0643\u0627\u0646 \u0645\u0628\u062A\u062F\u0626\u0627\u064B.","\u0631\u0643\u0632 \u0639\u0644\u0649 \u0627\u0644\u0641\u0647\u0645.","\u0646\u0633\u062E\u062A\u0643 \u0627\u0644\u0645\u0633\u062A\u0642\u0628\u0644\u064A\u0629 \u0633\u062A\u0634\u0643\u0631\u0643.","\u062A\u0635\u062D\u064A\u062D \u0627\u0644\u0623\u062E\u0637\u0627\u0621 \u062A\u062D\u0642\u064A\u0642.","\u062A\u0643\u0631\u0627\u0631 \u0648\u0627\u062D\u062F \u0625\u0636\u0627\u0641\u064A."],
 welcome:'\u0623\u0647\u0644\u0627\u064B\u060C ',noPinnedTask:'\u0644\u0627 \u062A\u0648\u062C\u062F \u0645\u0647\u0627\u0645 \uD83C\uDFAF',
-examIn:'\u0627\u0645\u062A\u062D\u0627\u0646 \u062E\u0644\u0627\u0644',days:'\u0623\u064A\u0627\u0645',daysRemaining:'\u064A\u0648\u0645 \u0645\u062A\u0628\u0642\u064A',studyToday:'\u062F\u0631\u0627\u0633\u0629 \u0627\u0644\u064A\u0648\u0645',upcoming:'\u0642\u0627\u062F\u0645\u0629',
+examIn:'امتحان في',days:'أيام',daysRemaining:'يوم متبقي',daysRemainingPlural:'أيام متبقية',studyToday:'دراسة اليوم',upcoming:'قادمة',
 absences:'\u063A\u064A\u0627\u0628\u0627\u062A',absenceSum:'\u0645\u0644\u062E\u0635 \u0627\u0644\u063A\u064A\u0627\u0628',maxReached:'\u26D4 \u062A\u0645 \u0628\u0644\u0648\u063A \u062D\u062F \u0627\u0644\u063A\u064A\u0627\u0628: ',finalCalc:'\u062D\u0627\u0633\u0628\u0629 \u062F\u0631\u062C\u0629 \u0627\u0644\u0641\u0627\u064A\u0646\u0644',
 fcScore:'\u0627\u0644\u062F\u0631\u062C\u0629',fcMax:'\u0627\u0644\u0642\u0635\u0648\u0649',fcWeight:'\u0627\u0644\u0648\u0632\u0646 %',
 fcComp0:'\u0627\u0645\u062A\u062D\u0627\u0646 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0627\u0644\u0633\u0627\u0628\u0639',fcComp1:'\u0627\u0645\u062A\u062D\u0627\u0646 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0627\u0644\u062B\u0627\u0646\u064A \u0639\u0634\u0631',fcComp2:'\u0623\u0639\u0645\u0627\u0644 \u0641\u0635\u0644\u064A\u0629',
@@ -2288,7 +2288,7 @@ fcWeightOk:'\u2713 \u0645\u062C\u0645\u0648\u0639 \u0627\u0644\u0623\u0648\u0632
 fcCwProgress:'\u062A\u0642\u062F\u0645 \u0623\u0639\u0645\u0627\u0644 \u0627\u0644\u0633\u0646\u0629',
 fcBrComp:'\u0627\u0644\u0645\u0643\u0648\u0646',fcBrContrib:'\u0627\u0644\u0645\u0633\u0627\u0647\u0645\u0629',fcBrTotal:'\u0645\u062C\u0645\u0648\u0639 \u0623\u0639\u0645\u0627\u0644 \u0627\u0644\u0633\u0646\u0629',fcBrRemaining:'\u0627\u0644\u0645\u062A\u0628\u0642\u064A \u0644\u0644\u0647\u062F\u0641',fcBrFinalNeeded:'\u0627\u0644\u062F\u0631\u062C\u0629 \u0627\u0644\u0645\u0637\u0644\u0648\u0628\u0629 \u0628\u0627\u0644\u0641\u0627\u064A\u0646\u0644',subNotes:'\u0645\u0644\u0627\u062D\u0638\u0627\u062A \u0627\u0644\u0645\u0648\u0627\u062F',notesPlaceholder:'\u0645\u0644\u0627\u062D\u0638\u0627\u062A \u0633\u0631\u064A\u0639\u0629...',studyStats:'\u062F\u0631\u0627\u0633\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639',noStudyData:'\u0644\u0627 \u062A\u0648\u062C\u062F \u062C\u0644\u0633\u0627\u062A.',notifLabel:'\u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062A',notifDesc:'\u062A\u0646\u0628\u064A\u0647\u0627\u062A \u0627\u0644\u0645\u0648\u0627\u0639\u064A\u062F',notifOn:'\u0645\u0641\u0639\u0644\u0629',notifOff:'\u0645\u0639\u0637\u0644\u0629',notifGranted:'\u062A\u0645 \u062A\u0641\u0639\u064A\u0644 \u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062A',notifDenied:'\u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062A \u0645\u062D\u0638\u0648\u0631\u0629',notifPermTitle:'\u0627\u0644\u0633\u0645\u0627\u062D \u0628\u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062A',notifPermMsg:'UniManager \u064A\u0631\u064A\u062F \u0625\u0631\u0633\u0627\u0644 \u0625\u0634\u0639\u0627\u0631\u0627\u062A \u0625\u0644\u064A\u0643 \u0644\u0644\u0645\u0648\u0627\u0639\u064A\u062F \u0648\u0627\u0644\u0627\u0645\u062A\u062D\u0627\u0646\u0627\u062A \u0627\u0644\u0642\u0627\u062F\u0645\u0629.',notifAllow:'\u0633\u0645\u0627\u062D',notifBlock:'\u062D\u0638\u0631',
 challengeTitle:'\u062A\u062D\u062F\u064A \u0627\u0644\u062A\u0631\u0643\u064A\u0632 \u0627\u0644\u064A\u0648\u0645\u064A',challengePoints:'\u0646\u0642\u0627\u0637 \u0627\u0644\u062A\u0631\u0643\u064A\u0632',challengeDone:'\u2713 \u062A\u0645 \u0625\u0643\u0645\u0627\u0644 \u0627\u0644\u062A\u062D\u062F\u064A!',challengeComplete:'\u0623\u0643\u0645\u0644\u062A \u0627\u0644\u062A\u062D\u062F\u064A',challenges:['\u0627\u0643\u062A\u0628 \u062B\u0644\u0627\u062B\u0629 \u0623\u0647\u062F\u0627\u0641 \u0644\u0647\u0630\u0627 \u0627\u0644\u064A\u0648\u0645.','\u0631\u0627\u062C\u0639 \u0645\u0644\u0627\u062D\u0638\u0627\u062A \u0627\u0644\u0623\u0645\u0633 \u0644\u0645\u062F\u0629 5 \u062F\u0642\u0627\u0626\u0642.','\u0627\u062F\u0631\u0633 25 \u062F\u0642\u064A\u0642\u0629 \u062F\u0648\u0646 \u0623\u064A \u0645\u0642\u0627\u0637\u0639\u0629.','\u0644\u062E\u0651\u0635 \u0645\u0627 \u062A\u0639\u0644\u0645\u062A\u0647 \u0627\u0644\u064A\u0648\u0645 \u0641\u064A 3 \u062C\u0645\u0644.','\u062E\u0637\u0637 \u062C\u062F\u0648\u0644 \u0627\u0644\u063A\u062F \u0642\u0628\u0644 \u0627\u0644\u0646\u0648\u0645.','\u0627\u0642\u0631\u0623 \u0645\u0648\u0636\u0648\u0639\u0627\u064B \u0643\u0646\u062A \u062A\u0624\u062C\u0644\u0647.','\u0646\u0638\u0651\u0645 \u0645\u0644\u0627\u062D\u0638\u0627\u062A\u0643 \u0644\u0645\u0627\u062F\u0629 \u0648\u0627\u062D\u062F\u0629.','\u062D\u0644 5 \u0645\u0633\u0627\u0626\u0644 \u062A\u0637\u0628\u064A\u0642\u064A\u0629 \u0645\u0646 \u0623\u064A \u0645\u0627\u062F\u0629.','\u0631\u0627\u062C\u0639 \u062C\u0645\u064A\u0639 \u0645\u0648\u0627\u0639\u064A\u062F\u0643 \u0648\u0645\u0647\u0627\u0645\u0643.','\u0623\u063A\u0644\u0642 \u0627\u0644\u0633\u0648\u0634\u064A\u0627\u0644 \u0645\u064A\u062F\u064A\u0627 \u0633\u0627\u0639\u0629 \u0648\u0631\u0643\u0651\u0632.'],
-sleepTitle:'\u0627\u0644\u0646\u0648\u0645 \u0648\u0627\u0644\u0631\u0627\u062D\u0629',sleepBedtime:'\u0645\u0648\u0639\u062F \u0627\u0644\u0646\u0648\u0645',sleepWakeup:'\u0645\u0648\u0639\u062F \u0627\u0644\u0627\u0633\u062A\u064A\u0642\u0627\u0638',sleepReminderLabel:'\u062A\u0630\u0643\u064A\u0631 \u0627\u0644\u0646\u0648\u0645',sleepReminderDesc:'\u0625\u0634\u0639\u0627\u0631 \u0642\u0628\u0644 30 \u062F\u0642\u064A\u0642\u0629 \u0645\u0646 \u0627\u0644\u0646\u0648\u0645',sleepQualityTitle:'\u062C\u0648\u062F\u0629 \u0646\u0648\u0645\u0643 \u0627\u0644\u0628\u0627\u0631\u062D\u0629',sleepScheduleLine:'\uD83D\uDE34 \u0627\u0644\u0646\u0648\u0645: {bed} | \u23F0 \u0627\u0644\u0627\u0633\u062A\u064A\u0642\u0627\u0638: {wake}',sleepAvg:'\u0645\u062A\u0648\u0633\u0637 7 \u0623\u064A\u0627\u0645',sleepReminderMsg:'\u062D\u0627\u0646 \u0648\u0642\u062A \u0627\u0644\u0627\u0633\u062A\u0631\u062E\u0627\u0621. \u0645\u0648\u0639\u062F \u0646\u0648\u0645\u0643 \u0628\u0639\u062F 30 \u062F\u0642\u064A\u0642\u0629.',sleepExcellent:'\uD83D\uDE0A',sleepGood:'\uD83D\uDE10',sleepBad:'\uD83D\uDE1E',sleepSave:'\u062D\u0641\u0638 \u0625\u0639\u062F\u0627\u062F\u0627\u062A \u0627\u0644\u0646\u0648\u0645',
+sleepTitle:'النوم والراحة',sleepBedtime:'موعد النوم',sleepWakeup:'موعد الاستيقاظ',sleepReminderLabel:'تذكير النوم',sleepReminderDesc:'إشعار قبل 30 دقيقة من النوم',sleepQualityTitle:'جودة نومك البارحة',sleepScheduleLine:'😴 النوم: {bed} | ⏰ الاستيقاظ: {wake}',sleepAvg:'متوسط 7 أيام',sleepReminderMsg:'حان وقت الاسترخاء. موعد نومك بعد 30 دقيقة.',sleepExcellent:'😊',sleepGood:'😐',sleepBad:'😞',sleepSave:'حفظ إعدادات النوم',sleepNoData:'سجّل نومك أولاً',sleepInsightGreat:'نومك ممتاز هذا الأسبوع، حافظ على روتينك 👌',sleepInsightOk:'جودة نومك متوسطة، جرب تثبّت مواعيد نومك 🙂',sleepInsightBad:'نومك مضطرب هذا الأسبوع، حاول تبتعد عن الشاشات قبل النوم 😟',sleepTipBad:'جرب تطفّي الموبايل قبل النوم بساعة.',sleepTipOk:'غرفة مظلمة وباردة تساعد على النوم.',sleepTipGood:'روتينك ممتاز، استمر!',
 pomoAnalyticsTitle:'\u062A\u062D\u0644\u064A\u0644\u0627\u062A \u0627\u0644\u0645\u0630\u0627\u0643\u0631\u0629',pomoWeekThis:'\u0647\u0630\u0627 \u0627\u0644\u0623\u0633\u0628\u0648\u0639',pomoWeekPrev:'\u0645\u0642\u0627\u0631\u0646\u0629 \u0628\u0627\u0644\u0633\u0627\u0628\u0642',pomoDeepFocus:'\u0648\u0636\u0639 \u0627\u0644\u062A\u0631\u0643\u064A\u0632 \u0627\u0644\u0639\u0645\u064A\u0642',pomoSubjAll:'\u0643\u0644 \u0627\u0644\u0645\u0648\u0627\u062F',pomoSoundLabel:'\u0635\u0648\u062A \u0627\u0644\u062C\u0644\u0633\u0629',pomoSoundDesc:'\u062A\u0634\u063A\u064A\u0644 \u0646\u063A\u0645\u0629 \u0639\u0646\u062F \u0627\u0646\u062A\u0647\u0627\u0621 \u0627\u0644\u062C\u0644\u0633\u0629',
 skillsNav:'\u0645\u0647\u0627\u0631\u0627\u062A',techLibTitle:'\u062A\u0642\u0646\u064A\u0627\u062A \u0627\u0644\u0645\u0630\u0627\u0643\u0631\u0629',techFavLabel:'\u062A\u0642\u0646\u064A\u062A\u0643 \u0627\u0644\u0645\u0641\u0636\u0644\u0629',techApplyNow:'\u0627\u0641\u062A\u062D',techNoFav:'\u0644\u0645 \u062A\u062E\u062A\u0631 \u0645\u0641\u0636\u0644\u0629 \u2014 \u0627\u0636\u063A\u0637 \u2B50 \u0639\u0644\u0649 \u062A\u0642\u0646\u064A\u0629!',
 tech0Name:'\u062A\u0642\u0646\u064A\u0629 \u0641\u0627\u064A\u0646\u0645\u0627\u0646',tech0Desc:'\u0627\u0634\u0631\u062D \u0627\u0644\u0645\u0641\u0647\u0648\u0645 \u0643\u0623\u0646\u0643 \u062A\u0639\u0644\u0645\u0647 \u0644\u0637\u0641\u0644 \u0639\u0645\u0631\u0647 12 \u0633\u0646\u0629. \u0625\u0630\u0627 \u0644\u0645 \u062A\u0633\u062A\u0637\u0639\u060C \u0641\u0623\u0646\u062A \u0644\u0645 \u062A\u0641\u0647\u0645\u0647 \u0628\u0639\u062F.',tech0Steps:['\u0627\u062E\u062A\u0631 \u0645\u0641\u0647\u0648\u0645\u0627\u064B \u062A\u0631\u064A\u062F \u062A\u0639\u0644\u0645\u0647.','\u0627\u0643\u062A\u0628\u0647 \u0643\u0623\u0646\u0643 \u062A\u0634\u0631\u062D\u0647 \u0644\u0637\u0641\u0644.','\u062D\u062F\u062F \u0627\u0644\u062B\u063A\u0631\u0627\u062A \u0648\u0627\u0631\u062C\u0639 \u0644\u0644\u0645\u0635\u062F\u0631.','\u0628\u0633\u0651\u0637 \u0648\u0627\u0633\u062A\u062E\u062F\u0645 \u0627\u0644\u062A\u0634\u0628\u064A\u0647\u0627\u062A.','\u0647\u0644 \u062A\u0633\u062A\u0637\u064A\u0639 \u0634\u0631\u062D\u0647 \u0628\u062C\u0645\u0644\u0629 \u0648\u0627\u062D\u062F\u0629\u061F'],
@@ -2355,7 +2355,7 @@ function loadState(){try{const raw=localStorage.getItem('unimanager');if(!raw)re
 if(typeof s.groups!=='object'||Array.isArray(s.groups)||s.groups===null){s.groups={current:null,members:[],sharedSchedule:{},sharedExams:[],sharedNotes:{}};}else{if(!('current' in s.groups))s.groups.current=null;if(!Array.isArray(s.groups.members))s.groups.members=[];if(typeof s.groups.sharedSchedule!=='object'||Array.isArray(s.groups.sharedSchedule))s.groups.sharedSchedule={};if(!Array.isArray(s.groups.sharedExams))s.groups.sharedExams=[];if(typeof s.groups.sharedNotes!=='object'||Array.isArray(s.groups.sharedNotes))s.groups.sharedNotes={};}
 return s;}catch(e){return defaultState();}}
 let state=loadState(),activeDay=getTodayIndex(),editingSlot=null,editingDay=null,currentFilter='all',gpaMode='percentage',cdInt=null;
-let pomoInterval=null,pomoRunning=false,pomoSeconds=25*60,pomoMode={work:25,brk:5},pomoOnBreak=false,pomoSessionCount=0;
+let pomoInterval=null,pomoRunning=false,pomoSeconds=25*60,pomoMode={work:25,brk:5},pomoOnBreak=false,pomoSessionCount=0,pomoStartTime=null,pomoTotalSeconds=25*60;
 
 function getTodayIndex(){const d=new Date().getDay();return d===6?0:d+1;}
 function getNow(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
@@ -2675,13 +2675,13 @@ function getSmartSummary(){
   const now=Date.now();
   const activeSubs=getActiveSubjects();
   // 1. Exam within 3 days
-  for(const ex of (state.exams||[])){const d=Math.ceil((new Date(ex.date)-now)/864e5);if(d>=0&&d<=3)return{text:'\u26A0\uFE0F '+escapeHTML(ex.subject)+' '+t('examIn')+' '+d+' '+t('days'),cls:'danger'};}
+  for(const ex of (state.exams||[])){const d=Math.ceil((new Date(ex.date)-now)/864e5);if(d>=0&&d<=3){let examText;if(state.lang==='ar'){const s=escapeHTML(ex.subject);examText=d===1?'امتحان '+s+' غداً':d===2?'امتحان '+s+' بعد يومين':'امتحان '+s+' بعد '+d+' أيام';}else{examText=escapeHTML(ex.subject)+' '+t('examIn')+' '+d+' '+t('days');}return{text:'⚠️ '+examText,cls:'danger'};}}
   // 2. Task due within 24h
-  for(const tk of state.tasks){if(!tk.completed&&tk.deadline){const d=new Date(tk.deadline)-now;if(d>0&&d<864e5)return{text:'\uD83D\uDD34 '+escapeHTML(tk.name)+' — due tomorrow',cls:'warn'};}}
+  for(const tk of state.tasks){if(!tk.completed&&tk.deadline){const d=new Date(tk.deadline)-now;if(d>0&&d<864e5)return{text:'🔴 '+escapeHTML(tk.name)+' — due tomorrow',cls:'warn'};}}
   // 3. Absence limit — only for subjects still in schedule
-  for(const [subj,cnt] of Object.entries(state.absences||{})){if(cnt>=state.absenceLimit&&activeSubs.has(subj))return{text:t('maxReached')+escapeHTML(subj),cls:'danger'};}
+  for(const [key,cnt] of Object.entries(state.absences||{})){const subj=key.lastIndexOf('-')>-1?key.substring(0,key.lastIndexOf('-')):key;if(cnt>=state.absenceLimit&&activeSubs.has(subj))return{text:t('maxReached')+escapeHTML(subj),cls:'danger'};}
   // 4. Default motivational
-  const mv=t('motiv');return{text:'\uD83D\uDCA1 '+mv[new Date().getDate()%mv.length],cls:'info'};
+  const mv=t('motiv');return{text:'💡 '+mv[new Date().getDate()%mv.length],cls:'info'};
 }
 
 /* ===== DASHBOARD ===== */
@@ -2704,9 +2704,10 @@ function renderDash(){
     if(examAlert._diffMs < 864e5){
       const hrs=Math.floor(examAlert._diffMs/36e5);
       const mins=Math.floor((examAlert._diffMs%36e5)/6e4);
-      det = (hrs>=1 ? hrs+'h '+mins+'m' : mins+'m') + ' \u2014 ' + examAlert.date + (examAlert.time?' '+examAlert.time:'');
+      det = (hrs>=1 ? hrs+'h '+mins+'m' : mins+'m') + ' \u2014 ' + examAlert.date + (examAlert.time?' - '+examAlert.time:'');
     } else {
-      det = examAlert._days+' '+t('daysRemaining')+' \u2014 '+examAlert.date + (examAlert.time?' '+examAlert.time:'');
+      const drLabel=state.lang==='ar'&&examAlert._days>1?t('daysRemainingPlural'):t('daysRemaining');
+      det = examAlert._days+' '+drLabel+' \u2014 '+examAlert.date + (examAlert.time?' - '+examAlert.time:'');
     }
     document.getElementById('heroDetail').textContent=det;
   } else {
@@ -2731,9 +2732,8 @@ function renderDash(){
   const upExams=(state.exams||[]).filter(e=>_examDT(e).getTime()>nowMs).length;
   document.getElementById('statExams').textContent=upExams;
 
-  // Weekly progress — tasks completed this week vs total
-  const weekStart=new Date();weekStart.setDate(weekStart.getDate()-weekStart.getDay());weekStart.setHours(0,0,0,0);
-  const weekTasks=state.tasks.filter(x=>x.completedAt&&new Date(x.completedAt)>=weekStart).length;
+  // Weekly progress — tasks completed vs total
+  const weekTasks=state.tasks.filter(x=>x.completed).length;
   const totalWeekTasks=state.tasks.length;
   const pct=totalWeekTasks?Math.round(weekTasks/totalWeekTasks*100):0;
   document.getElementById('progressText').textContent=weekTasks+' '+t('of')+' '+totalWeekTasks+' '+t('goals');
@@ -2750,12 +2750,14 @@ function renderDash(){
   // Absence summary — only subjects still in schedule
   const absDiv=document.getElementById('absenceSummary');
   const activeSubs=getActiveSubjects();
-  const absEntries=Object.entries(state.absences||{}).filter(([subj,c])=>c>0&&activeSubs.has(subj));
+  const absEntries=Object.entries(state.absences||{}).filter(([key,c])=>{const subj=key.lastIndexOf('-')>-1?key.substring(0,key.lastIndexOf('-')):key;return c>0&&activeSubs.has(subj);});
   if(absEntries.length){
     let html='<div class="card"><div class="card-title">'+t('absenceSum')+'</div>';
-    absEntries.forEach(([subj,cnt])=>{
+    absEntries.forEach(([key,cnt])=>{
+      const di=key.lastIndexOf('-');const subjName=di>-1?key.substring(0,di):key;const typeKey=di>-1?key.substring(di+1):'';
+      const typeLbl=typeKey?' ('+t(typeKey)+')':'';
       const lim=state.absenceLimit;const cls=cnt>=lim?'danger':cnt>=lim*0.75?'warn':'ok';
-      html+='<div class="absence-card"><div class="ac-name">'+escapeHTML(subj)+'</div><div class="ac-count '+cls+'">'+cnt+' / '+lim+'</div></div>';
+      html+='<div class="absence-card"><div class="ac-name">'+escapeHTML(subjName)+typeLbl+'</div><div class="ac-count '+cls+'">'+cnt+' / '+lim+'</div></div>';
     });
     html+='</div>';absDiv.innerHTML=html;
   } else absDiv.innerHTML='';
@@ -2776,17 +2778,17 @@ function renderSchedule(){
   c.innerHTML=state.slots.map((s,i)=>{const k=s.start+'-'+s.end;const l=(state.schedule[dk]&&state.schedule[dk][k])||null;let ac='',ah='',absBadge='';
     if(_attFresh&&l&&l.attendance==='yes'){ac=' attended';ah='<div class="slot-attendance yes">\u2713</div>';}
     else if(_attFresh&&l&&l.attendance==='no'){ac=' missed';ah='<div class="slot-attendance no">\u2717</div>';}
-    if(l&&l.subject){const cnt=state.absences[l.subject]||0;const lim=state.absenceLimit;if(cnt>0)absBadge=' <span style="font-size:.65rem;color:'+(cnt>=lim?'var(--red)':cnt>=lim*0.75?'var(--orange)':'var(--text-muted)')+'">'+t('absences')+': '+cnt+'/'+lim+'</span>';}
+    if(l&&l.subject){const absKey=l.subject+'-'+(l.type||'');const cnt=(state.absences||{})[absKey]||0;const lim=state.absenceLimit;if(cnt>0)absBadge=' <span style="font-size:.65rem;color:'+(cnt>=lim?'var(--red)':cnt>=lim*0.75?'var(--orange)':'var(--text-muted)')+'">'+t('absences')+': '+cnt+'/'+lim+'</span>';}
     return'<div class="slot-card'+(l?' has-lecture':'')+ac+'" data-slot="'+i+'" data-key="'+k+'"><div class="slot-time">'+s.start+'<br>'+s.end+'</div><div class="slot-info">'+(l?'<div class="slot-subject"><span class="slot-subject-text">'+escapeHTML(l.subject)+'</span>'+(l.type?'<span class="slot-type">'+t(l.type)+'</span>':'')+'</div><div class="slot-meta">'+[l.professor,l.room].filter(Boolean).map(escapeHTML).join(' \xB7 ')+absBadge+'</div>':'<div class="slot-empty">'+t('tapAdd')+'</div>')+'</div>'+ah+'</div>';}).join('');
   c.querySelectorAll('.slot-card').forEach(card=>{card.addEventListener('click',()=>{const k=card.dataset.key;editingSlot=k;editingDay=dk;const l=(state.schedule[dk]&&state.schedule[dk][k])||null;document.getElementById('lecSubject').value=l?l.subject:'';const lt=document.getElementById('lecType');lt.value=l&&l.type?l.type:'theoretical';if(lt._cselSync)lt._cselSync();document.getElementById('lecProf').value=l?l.professor:'';document.getElementById('lecRoom').value=l?l.room:'';document.getElementById('lmTitle').textContent=l?t('editLec'):t('addLec');document.getElementById('deleteLecBtn').style.display=l?'block':'none';openModal('lectureModal');});});
 }
 document.getElementById('saveLecBtn').addEventListener('click',()=>{const s=document.getElementById('lecSubject').value.trim();if(!s){toast(t('subReq'),'error');return;}if(!state.schedule[editingDay])state.schedule[editingDay]={};const ex=state.schedule[editingDay][editingSlot];state.schedule[editingDay][editingSlot]={subject:s,type:document.getElementById('lecType').value,professor:document.getElementById('lecProf').value.trim(),room:document.getElementById('lecRoom').value.trim(),attendance:ex?ex.attendance:null};saveState();closeModal('lectureModal');renderSchedule();renderDash();updatePomoSubjects();toast(t('lecSaved'));});
 document.getElementById('deleteLecBtn').addEventListener('click',()=>{if(state.schedule[editingDay])delete state.schedule[editingDay][editingSlot];saveState();closeModal('lectureModal');renderSchedule();renderDash();updatePomoSubjects();renderSubjectNotes();toast(t('lecRem'));});
-function setA(d,k,v,subj){if(state.schedule[d]&&state.schedule[d][k]){state.schedule[d][k].attendance=v;
-  if(v==='no'&&subj){if(!state.absences)state.absences={};state.absences[subj]=(state.absences[subj]||0)+1;
-    const cnt=state.absences[subj],lim=state.absenceLimit;
-    if(cnt>=lim)toast('\u26A0\uFE0F '+t('maxReached')+subj,'error');
-    else if(cnt>=lim*0.75)toast('\u26A0\uFE0F '+subj+': '+cnt+'/'+lim+' '+t('absences'),'warning');
+function setA(d,k,v,subj,type){if(state.schedule[d]&&state.schedule[d][k]){state.schedule[d][k].attendance=v;
+  if(v==='no'&&subj){if(!state.absences)state.absences={};const absKey=subj+'-'+(type||'');state.absences[absKey]=(state.absences[absKey]||0)+1;
+    const cnt=state.absences[absKey],lim=state.absenceLimit;
+    if(cnt>=lim)toast('⚠️ '+t('maxReached')+subj,'error');
+    else if(cnt>=lim*0.75)toast('⚠️ '+subj+': '+cnt+'/'+lim+' '+t('absences'),'warning');
   }
   saveState();}}
 
@@ -2815,7 +2817,7 @@ function renderAttendanceWidget(){
     const checks=w.querySelectorAll('.aw-check');
     checks.forEach((el,i)=>{
       const item=lecs[i];const attended=el.classList.contains('checked');
-      setA(dk,item.key,attended?'yes':'no',item.lec.subject);
+      setA(dk,item.key,attended?'yes':'no',item.lec.subject,item.lec.type);
     });
     state._attSubmitted=todayKey;saveState();
     renderSchedule();renderDash();renderAttendanceWidget();
@@ -2892,21 +2894,67 @@ function renderGPAHistory(){const sec=document.getElementById('gpaHistorySection
 
 /* ===== POMODORO ===== */
 const POMO_MODES=[{label:'25/5',work:25,brk:5},{label:'50/10',work:50,brk:10},{label:'90/15',work:90,brk:15}];
-function renderPomoModes(){const c=document.getElementById('pomoModes');c.innerHTML=POMO_MODES.map((m,i)=>'<button'+(pomoMode.work===m.work?' class="active"':'')+' data-pi="'+i+'">'+m.label+'</button>').join('');c.querySelectorAll('button').forEach(b=>{b.addEventListener('click',()=>{const m=POMO_MODES[parseInt(b.dataset.pi)];pomoMode=m;pomoSeconds=m.work*60;pomoOnBreak=false;updatePomoDisplay();renderPomoModes();});});}
-function updatePomoSubjects(){const sel=document.getElementById('pomoSubject');const subs=new Set();state.subjects.forEach(s=>{if(s.name)subs.add(s.name);});for(const d of DAYS){if(state.schedule[d])Object.values(state.schedule[d]).forEach(l=>{if(l&&l.subject)subs.add(l.subject);});}sel.innerHTML='<option value="">Select Subject</option>'+[...subs].map(s=>'<option value="'+s+'">'+s+'</option>').join('');if(sel._cselRebuild)sel._cselRebuild();else upgradeSelect(sel);}
+function renderPomoModes(){const c=document.getElementById('pomoModes');c.innerHTML=POMO_MODES.map((m,i)=>'<button'+(pomoMode.work===m.work?' class="active"':'')+' data-pi="'+i+'">'+m.label+'</button>').join('');c.querySelectorAll('button').forEach(b=>{b.addEventListener('click',()=>{const m=POMO_MODES[parseInt(b.dataset.pi)];pomoMode=m;pomoSeconds=m.work*60;pomoTotalSeconds=m.work*60;pomoOnBreak=false;updatePomoDisplay();renderPomoModes();});});}
+function updatePomoSubjects(){const sel=document.getElementById('pomoSubject');const subs=new Set();for(const d of DAYS){if(state.schedule[d])state.slots.forEach(s=>{const k=s.start+'-'+s.end;const l=state.schedule[d][k];if(l&&l.subject)subs.add(l.subject);});}sel.innerHTML='<option value="">Select Subject</option>'+[...subs].map(s=>'<option value="'+s+'">'+s+'</option>').join('');if(sel._cselRebuild)sel._cselRebuild();else upgradeSelect(sel);}
 function updatePomoDisplay(){const m=Math.floor(pomoSeconds/60),s=pomoSeconds%60;document.getElementById('pomoTime').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');document.getElementById('pomoLabel').textContent=pomoOnBreak?'Break':'Focus Session';document.getElementById('pomoSessions').textContent=pomoSessionCount;const today=new Date().toISOString().slice(0,10);const total=(state.studyLog||[]).filter(l=>l.date===today).reduce((s,l)=>s+l.minutes,0);document.getElementById('pomoTotal').textContent=total+'m';}
-document.getElementById('pomoStartBtn').addEventListener('click',()=>{if(pomoRunning)return;pomoRunning=true;document.getElementById('pomoStartBtn').style.display='none';document.getElementById('pomoStopBtn').style.display='';pomoInterval=setInterval(()=>{pomoSeconds--;if(pomoSeconds<=0){clearInterval(pomoInterval);pomoRunning=false;if(!pomoOnBreak){pomoSessionCount++;const subj=document.getElementById('pomoSubject').value||'General';const today=new Date().toISOString().slice(0,10);state.studyLog.push({subject:subj,date:today,minutes:pomoMode.work});saveState();SupaDB.saveStudySession({subject:subj,date:today,minutes:pomoMode.work});playPomoSound();toast('Session complete! Take a break.');pomoOnBreak=true;pomoSeconds=pomoMode.brk*60;}else{pomoOnBreak=false;pomoSeconds=pomoMode.work*60;toast('Break over! Ready for next session.');}document.getElementById('pomoStartBtn').style.display='';document.getElementById('pomoStopBtn').style.display='none';renderDash();renderPomoAnalytics();}updatePomoDisplay();},1000);});
-document.getElementById('pomoStopBtn').addEventListener('click',()=>{clearInterval(pomoInterval);pomoRunning=false;// Log partial session
-if(!pomoOnBreak){const subj=document.getElementById('pomoSubject').value||'General';const today=new Date().toISOString().slice(0,10);const elapsed=Math.floor((pomoMode.work*60-pomoSeconds)/60);if(elapsed>=1){state.studyLog.push({subject:subj,date:today,minutes:elapsed});saveState();SupaDB.saveStudySession({subject:subj,date:today,minutes:elapsed}).catch(()=>{});}}document.getElementById('pomoStartBtn').style.display='';document.getElementById('pomoStopBtn').style.display='none';renderPomoAnalytics();});
-document.getElementById('pomoResetBtn').addEventListener('click',()=>{clearInterval(pomoInterval);pomoRunning=false;pomoSeconds=pomoMode.work*60;pomoOnBreak=false;document.getElementById('pomoStartBtn').style.display='';document.getElementById('pomoStopBtn').style.display='none';updatePomoDisplay();});
+document.getElementById('pomoStartBtn').addEventListener('click',()=>{
+  if(pomoRunning)return;
+  pomoRunning=true;
+  pomoStartTime=Date.now()-((pomoTotalSeconds-pomoSeconds)*1000);
+  document.getElementById('pomoStartBtn').style.display='none';
+  document.getElementById('pomoStopBtn').style.display='';
+  function pomoFinish(){
+    clearInterval(pomoInterval);pomoInterval=null;pomoRunning=false;pomoStartTime=null;
+    if(!pomoOnBreak){
+      pomoSessionCount++;
+      const subj=document.getElementById('pomoSubject').value||'General';
+      const today=new Date().toISOString().slice(0,10);
+      state.studyLog.push({subject:subj,date:today,minutes:pomoMode.work});
+      saveState();SupaDB.saveStudySession({subject:subj,date:today,minutes:pomoMode.work});
+      playPomoSound();toast('Session complete! Take a break.');
+      pomoOnBreak=true;pomoSeconds=pomoMode.brk*60;pomoTotalSeconds=pomoMode.brk*60;
+    } else {
+      pomoOnBreak=false;pomoSeconds=pomoMode.work*60;pomoTotalSeconds=pomoMode.work*60;
+      toast('Break over! Ready for next session.');
+    }
+    document.getElementById('pomoStartBtn').style.display='';
+    document.getElementById('pomoStopBtn').style.display='none';
+    updatePomoDisplay();renderDash();renderPomoAnalytics();
+  }
+  pomoInterval=setInterval(()=>{
+    const elapsed=Math.floor((Date.now()-pomoStartTime)/1000);
+    pomoSeconds=pomoTotalSeconds-elapsed;
+    if(pomoSeconds<=0){pomoSeconds=0;updatePomoDisplay();pomoFinish();return;}
+    updatePomoDisplay();
+  },1000);
+});
+document.getElementById('pomoStopBtn').addEventListener('click',()=>{
+  clearInterval(pomoInterval);pomoInterval=null;pomoRunning=false;
+  if(!pomoOnBreak){
+    const subj=document.getElementById('pomoSubject').value||'General';
+    const today=new Date().toISOString().slice(0,10);
+    const elapsed=Math.floor((pomoTotalSeconds-pomoSeconds)/60);
+    if(elapsed>=1){state.studyLog.push({subject:subj,date:today,minutes:elapsed});saveState();SupaDB.saveStudySession({subject:subj,date:today,minutes:elapsed}).catch(()=>{});}
+  }
+  pomoStartTime=null;
+  document.getElementById('pomoStartBtn').style.display='';
+  document.getElementById('pomoStopBtn').style.display='none';
+  renderPomoAnalytics();
+});
+document.getElementById('pomoResetBtn').addEventListener('click',()=>{
+  clearInterval(pomoInterval);pomoInterval=null;pomoRunning=false;pomoStartTime=null;
+  pomoSeconds=pomoMode.work*60;pomoTotalSeconds=pomoMode.work*60;pomoOnBreak=false;
+  document.getElementById('pomoStartBtn').style.display='';
+  document.getElementById('pomoStopBtn').style.display='none';
+  updatePomoDisplay();
+});
 
 
 /* ===== SUBJECT NOTES ===== */
 function renderSubjectNotes(){
   const c=document.getElementById('subjectNotesList');
   const subs=new Set();
-  for(const d of DAYS){if(state.schedule[d])Object.values(state.schedule[d]).forEach(l=>{if(l&&l.subject)subs.add(l.subject);});}
-  state.subjects.forEach(s=>{if(s.name)subs.add(s.name);});
+  for(const d of DAYS){if(state.schedule[d])state.slots.forEach(s=>{const k=s.start+'-'+s.end;const l=state.schedule[d][k];if(l&&l.subject)subs.add(l.subject);});}
   if(!subs.size){c.innerHTML='<div class="empty-state"><div class="empty-state-icon">\uD83D\uDCDD</div><div class="empty-state-text">'+t('noSlots')+'</div></div>';return;}
   if(!state.subjectNotes)state.subjectNotes={};
   c.innerHTML=[...subs].map(s=>'<div class="sn-item"><div class="sn-label">'+escapeHTML(s)+'</div><textarea class="sn-textarea" data-subj="'+escapeHTML(s)+'" placeholder="'+t('notesPlaceholder')+'">'+escapeHTML(state.subjectNotes[s]||'')+'</textarea></div>').join('');
@@ -3161,17 +3209,20 @@ function checkDeadlines(){
     const diffDays=Math.ceil(diff/(24*3600*1000));
     // 2 days before
     if(diffDays===2&&!notified['e2_'+ex.id]){
-      toNotify.push({title:'UniManager',body:'⚠️ '+ex.subject+' exam in 2 days!',id:'e2_'+ex.id,requireInteraction:false});
+      const body=state.lang==='ar'?'⚠️ امتحان '+ex.subject+' بعد يومين':'⚠️ '+ex.subject+' exam in 2 days!';
+      toNotify.push({title:'UniManager',body,id:'e2_'+ex.id,requireInteraction:false});
       notified['e2_'+ex.id]=true;
     }
     // 1 day before (tomorrow)
     if(diffDays===1&&!notified['e1_'+ex.id]){
-      toNotify.push({title:'UniManager',body:'⚠️ '+ex.subject+' exam tomorrow!',id:'e1_'+ex.id,requireInteraction:false});
+      const body=state.lang==='ar'?'⚠️ امتحان '+ex.subject+' غداً':'⚠️ '+ex.subject+' exam tomorrow!';
+      toNotify.push({title:'UniManager',body,id:'e1_'+ex.id,requireInteraction:false});
       notified['e1_'+ex.id]=true;
     }
     // A few hours before
     if(diff>0&&diff<6*3600*1000&&!notified['eh_'+ex.id]){
-      toNotify.push({title:'UniManager',body:'🚨 '+ex.subject+' exam in a few hours!',id:'eh_'+ex.id,requireInteraction:true});
+      const body=state.lang==='ar'?'🚨 امتحان '+ex.subject+' خلال ساعات!':'🚨 '+ex.subject+' exam in a few hours!';
+      toNotify.push({title:'UniManager',body,id:'eh_'+ex.id,requireInteraction:true});
       notified['eh_'+ex.id]=true;
     }
   });
@@ -3316,13 +3367,44 @@ function renderSleepCard(){
   const today=new Date().toISOString().slice(0,10);
   const sq=JSON.parse(localStorage.getItem('unimanager_sleep_quality')||'[]');
   const todayQ=sq.find(x=>x.date===today);
-  // Avg last 7 days
-  const now=new Date();const days=[];for(let i=6;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);days.push(d.toISOString().slice(0,10));}
-  const vals={good:3,excellent:3,ok:2,bad:1};// reuse with emoji keys
-  const recentQ=sq.filter(x=>days.includes(x.date));
-  const avgQ=recentQ.length?Math.round(recentQ.reduce((a,x)=>a+(x.quality==='😊'?3:x.quality==='😐'?2:1),0)/recentQ.length):null;
+  const now=new Date();const days=[];
+  for(let i=6;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);days.push(d.toISOString().slice(0,10));}
+  const qVal=q=>q===t('sleepExcellent')?3:q===t('sleepGood')?2:q===t('sleepBad')?1:0;
+  const dayData=days.map(date=>{const e=sq.find(x=>x.date===date);return e?{date,val:qVal(e.quality),q:e.quality}:{date,val:0,q:null};});
+  const recentQ=dayData.filter(x=>x.val>0);
+  const BAR_W=24,BAR_GAP=4,CHART_H=40,MAX_H=32;
+  const totalW=7*BAR_W+6*BAR_GAP;
+  const isRTL=state.lang==='ar';
+  const barData=isRTL?[...dayData].reverse():dayData;
+  const bars=barData.map((d,i)=>{
+    if(!d.val)return'<rect x="'+(i*(BAR_W+BAR_GAP))+'" y="'+(CHART_H-6)+'" width="'+BAR_W+'" height="6" rx="3" fill="var(--border)" opacity="0.5"/>';
+    const h=d.val===3?MAX_H:d.val===2?Math.round(MAX_H*0.5):Math.round(MAX_H*0.2);
+    const col=d.val===3?'#22c55e':d.val===2?'#f97316':'#ef4444';
+    return'<rect x="'+(i*(BAR_W+BAR_GAP))+'" y="'+(CHART_H-h)+'" width="'+BAR_W+'" height="'+h+'" rx="3" fill="'+col+'"/>';
+  }).join('');
+  const sparkline=recentQ.length
+    ?'<svg width="'+totalW+'" height="'+CHART_H+'" style="display:block;margin:8px auto 0">'+bars+'</svg>'
+    :'<div style="font-size:.75rem;color:var(--text-muted);text-align:center;margin-top:8px">'+t('sleepNoData')+'</div>';
+  let insightText='',tipText='';
+  if(recentQ.length){
+    const avg=recentQ.reduce((a,x)=>a+x.val,0)/recentQ.length;
+    insightText=avg>=2.5?t('sleepInsightGreat'):avg>=1.5?t('sleepInsightOk'):t('sleepInsightBad');
+    const lastQ=sq.filter(x=>x.date<=today).sort((a,b)=>b.date.localeCompare(a.date))[0];
+    if(lastQ){const lv=qVal(lastQ.quality);tipText=lv===1?t('sleepTipBad'):lv===2?t('sleepTipOk'):t('sleepTipGood');}
+  }
   const schedLine=t('sleepScheduleLine').replace('{bed}',ss.bedtime||'--:--').replace('{wake}',ss.wakeup||'--:--');
-  c.innerHTML='<div class="sleep-card"><div class="sleep-card-title">'+t('sleepQualityTitle')+'</div><div class="sleep-schedule-line">'+schedLine+'</div><div class="sleep-quality-btns"><button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepExcellent')?' active':'')+'" data-q="'+t('sleepExcellent')+'">'+t('sleepExcellent')+'</button><button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepGood')?' active':'')+'" data-q="'+t('sleepGood')+'">'+t('sleepGood')+'</button><button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepBad')?' active':'')+'" data-q="'+t('sleepBad')+'">'+t('sleepBad')+'</button></div>'+(avgQ?'<div class="sleep-avg">'+t('sleepAvg')+': '+(avgQ===3?'😊':avgQ===2?'😐':'😞')+'</div>':'')+'</div>';
+  c.innerHTML='<div class="sleep-card">'+
+    '<div class="sleep-card-title">'+t('sleepQualityTitle')+'</div>'+
+    '<div class="sleep-schedule-line">'+schedLine+'</div>'+
+    '<div class="sleep-quality-btns">'+
+      '<button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepExcellent')?' active':'')+'" data-q="'+t('sleepExcellent')+'">'+t('sleepExcellent')+'</button>'+
+      '<button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepGood')?' active':'')+'" data-q="'+t('sleepGood')+'">'+t('sleepGood')+'</button>'+
+      '<button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepBad')?' active':'')+'" data-q="'+t('sleepBad')+'">'+t('sleepBad')+'</button>'+
+    '</div>'+
+    sparkline+
+    (insightText?'<div style="font-size:.78rem;color:var(--text-muted);text-align:center;margin-top:8px;line-height:1.4">'+insightText+'</div>':'')+
+    (tipText?'<div style="font-size:.72rem;color:var(--accent);text-align:center;margin-top:4px;opacity:.85">'+tipText+'</div>':'')+
+  '</div>';
   c.querySelectorAll('.sq-btn').forEach(btn=>{btn.addEventListener('click',()=>{const newSq=sq.filter(x=>x.date!==today);newSq.push({date:today,quality:btn.dataset.q});localStorage.setItem('unimanager_sleep_quality',JSON.stringify(newSq));renderSleepCard();});});
 }
 
