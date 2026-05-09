@@ -1978,7 +1978,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.7.0';
+const APP_VERSION = 'v1.8.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -5405,22 +5405,33 @@ function saveState() {
     const seedId = m.sender_id || m.sender_name || 'unknown';
     const senderColor = _grp2ColorFor(seedId);
 
-    /* 30px side avatar — only for "other" rows. Hidden via CSS for self. */
+    /* 30px side avatar — WhatsApp/Telegram style: shown ONLY on the first
+       message of a same-sender streak. For "other" rows that continue a
+       streak (skipHeader === true), append a transparent 30px spacer so the
+       bubble stays horizontally aligned with the first message's bubble.
+       Self rows get nothing (CSS already hides .grp2-msg-av on .self). */
     if(!self){
-      const av30 = document.createElement('div');
-      av30.className = 'grp2-msg-av';
-      av30.style.background = senderColor;
-      if(m.sender_avatar){
-        const img = document.createElement('img');
-        img.src = m.sender_avatar; img.alt = '';
-        img.style.cssText = 'width:100%;height:100%;border-radius:50%;object-fit:cover';
-        const fallbackInit = _grp2Initials(m.sender_name || '?');
-        img.onerror = function(){ this.parentNode.textContent = fallbackInit; };
-        av30.appendChild(img);
+      if(skipHeader){
+        const spacer = document.createElement('div');
+        spacer.style.cssText = 'width:30px;flex-shrink:0';
+        spacer.setAttribute('aria-hidden', 'true');
+        wrap.appendChild(spacer);
       } else {
-        av30.textContent = _grp2Initials(m.sender_name || '?');
+        const av30 = document.createElement('div');
+        av30.className = 'grp2-msg-av';
+        av30.style.background = senderColor;
+        if(m.sender_avatar){
+          const img = document.createElement('img');
+          img.src = m.sender_avatar; img.alt = '';
+          img.style.cssText = 'width:100%;height:100%;border-radius:50%;object-fit:cover';
+          const fallbackInit = _grp2Initials(m.sender_name || '?');
+          img.onerror = function(){ this.parentNode.textContent = fallbackInit; };
+          av30.appendChild(img);
+        } else {
+          av30.textContent = _grp2Initials(m.sender_name || '?');
+        }
+        wrap.appendChild(av30);
       }
-      wrap.appendChild(av30);
     }
 
     /* Column container for sender header + bubble + time stack */
