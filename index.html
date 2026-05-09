@@ -1978,7 +1978,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.6.0';
+const APP_VERSION = 'v1.7.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2682,7 +2682,11 @@ function getSmartSummary(){
   const now=Date.now();
   const activeSubs=getActiveSubjects();
   // 1. Exam within 3 days
-  for(const ex of (state.exams||[])){const d=Math.ceil((new Date(ex.date)-now)/864e5);if(d>=0&&d<=3){let examText;if(state.lang==='ar'){const s=escapeHTML(ex.subject);examText=d===1?'امتحان '+s+' غداً':d===2?'امتحان '+s+' بعد يومين':'امتحان '+s+' بعد '+d+' أيام';}else{examText=escapeHTML(ex.subject)+' '+t('examIn')+' '+d+' '+t('days');}return{text:'⚠️ '+examText,cls:'danger'};}}
+  for(const ex of (state.exams||[])){const dt = _examDT(ex);
+const diffMs = dt - now;
+if (diffMs <= 0) continue;         // ✅ لا نعرض امتحانات انتهت فعلاً
+if (Math.ceil(diffMs / 864e5) === 0) continue;   // ✅ لا تظهر امتحاناً بقي أقل من 24 ساعة
+const d = Math.ceil(diffMs / 864e5);if(d>=0&&d<=3){let examText;if(state.lang==='ar'){const s=escapeHTML(ex.subject);examText=d===1?'امتحان '+s+' غداً':d===2?'امتحان '+s+' بعد يومين':'امتحان '+s+' بعد '+d+' أيام';}else{examText=escapeHTML(ex.subject)+' '+t('examIn')+' '+d+' '+t('days');}return{text:'⚠️ '+examText,cls:'danger'};}}
   // 2. Task due within 24h
   for(const tk of state.tasks){if(!tk.completed&&tk.deadline){const d=new Date(tk.deadline)-now;if(d>0&&d<864e5)return{text:'🔴 '+escapeHTML(tk.name)+' — due tomorrow',cls:'warn'};}}
   // 3. Absence limit — only for subjects still in schedule
