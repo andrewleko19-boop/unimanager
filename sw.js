@@ -11,12 +11,12 @@ const CACHE_NAME = `unimanager-${CACHE_VERSION}`;
 // Files to pre-cache on install. Anything not listed here is fetched on demand
 // and only cached after first successful fetch.
 const PRECACHE_URLS = [
-  '/unimanager/',
-  '/unimanager/index.html',
-  '/unimanager/manifest.json',
-  '/unimanager/icons/icon-192.png',
-  '/unimanager/icons/icon-512.png',
-  '/unimanager/icons/apple-touch-icon-180.png',
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
+  '/icons/apple-touch-icon-180.png',
 ];
 
 // Supabase/realtime requests should NEVER be served from cache — they're
@@ -102,8 +102,8 @@ self.addEventListener('push', (event) => {
     const payload = event.data.json();
     const options = {
       body: payload.body || 'UniManager notification',
-      icon: '/unimanager/icons/icon-192.png',
-      badge: '/unimanager/icons/icon-192.png',
+      icon: '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
       tag: payload.tag || 'unimanager-notification',
       requireInteraction: payload.requireInteraction || false,
       data: payload.data || {}
@@ -125,11 +125,11 @@ self.addEventListener('notificationclick', (event) => {
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
       for (let client of clientList) {
-        if (client.url === '/' || client.url.includes('/unimanager/')) {
+        if (client.url === '/' || client.url.includes('/')) {
           return client.focus();
         }
       }
-      return clients.openWindow('/unimanager/');
+      return clients.openWindow('/');
     })
   );
 });
