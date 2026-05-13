@@ -1,6 +1,6 @@
 // sw.js — UniManager Service Worker
 //
-// ⚠️ Bump CACHE_VERSION in lockstep with APP_VERSION in index.html when deploying.
+// ⚠️ Bup CACHE_VERSION in lockstep with APP_VERSION in index.html when deploying.
 // CI's check-versions.mjs enforces this — but if you're editing this file by
 // hand, remember: forgetting to bump here means returning users see stale code
 // indefinitely (the SW keeps serving old index.html from cache).
