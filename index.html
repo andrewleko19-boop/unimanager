@@ -1978,7 +1978,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.8.0';
+const APP_VERSION = 'v1.9.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -3649,8 +3649,7 @@ function renderGroupOverview(){
   const statsEl=document.getElementById('groupStatsGrid');
   if(statsEl){
     const examCount=(state.groups.sharedExams||[]).length;
-    const notesCount=Object.keys(state.groups.sharedNotes||{}).length;
-    /* Tasks completion: personal task list as proxy until group tasks exist */
+    const GRP_DAYS=['sat','sun','mon','tue','wed','thu','fri'];const theoreticalSubs=new Set();const sched=state.groups.sharedSchedule||{};for(const d of GRP_DAYS){if(!sched[d])continue;Object.values(sched[d]).forEach(l=>{if(l&&l.subject&&l.type==='theoretical')theoreticalSubs.add(l.subject);});}const notesCount=theoreticalSubs.size;    /* Tasks completion: personal task list as proxy until group tasks exist */
     const personalTasks=(state.tasks||[]);
     const done=personalTasks.filter(x=>x&&x.completed).length;
     const completionPct=personalTasks.length?Math.round((done/personalTasks.length)*100)+'%':'\u2014';
