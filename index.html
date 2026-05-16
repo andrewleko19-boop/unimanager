@@ -2020,7 +2020,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.11.0';
+const APP_VERSION = 'v1.12.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2646,6 +2646,46 @@ function closeSideDrawer(){
   document.body.style.touchAction = '';
 }
 
+/* ===== BACK BUTTON NAVIGATION ===== */
+window.addEventListener('popstate', function() {
+  // Priority 1: close any open modal
+  var openMod = document.querySelector('.modal-overlay.open');
+  if (openMod) {
+    closeModal(openMod.id);
+    history.pushState({nav:'app'}, '');
+    return;
+  }
+  // Priority 2: exit fullscreen chat
+  if (document.body.classList.contains('chat-fullscreen-open')) {
+    if (window.exitFullscreenChat) window.exitFullscreenChat();
+    history.pushState({nav:'app'}, '');
+    return;
+  }
+  // Priority 3: close side drawer
+  var drawer = document.getElementById('sideDrawer');
+  if (drawer && drawer.classList.contains('open')) {
+    closeSideDrawer();
+    history.pushState({nav:'app'}, '');
+    return;
+  }
+  // Priority 4: return to home tab if on any other tab
+  var activeBtn = document.querySelector('.nav-item.active');
+  var activeTab = activeBtn ? activeBtn.dataset.tab : 'pageHome';
+  if (activeTab && activeTab !== 'pageHome') {
+    document.querySelectorAll('.nav-item').forEach(function(x){ x.classList.remove('active'); });
+    document.querySelectorAll('.tab-page').forEach(function(x){ x.classList.remove('active'); });
+    var homeBtn = document.querySelector('.nav-item[data-tab="pageHome"]');
+    if (homeBtn) homeBtn.classList.add('active');
+    var homePage = document.getElementById('pageHome');
+    if (homePage) homePage.classList.add('active');
+    document.getElementById('fabAddTask').style.display = 'none';
+    document.body.classList.remove('group-active');
+    history.pushState({nav:'app'}, '');
+    return;
+  }
+  // Priority 5: on home tab with nothing open → let browser exit app naturally
+});
+
 /* ===== INIT ===== */
 function hideInitLoader(){
   const el=document.getElementById('initLoader');
@@ -2677,6 +2717,7 @@ async function init(){
     document.getElementById('welcomeScreen').classList.add('hidden');
     document.getElementById('mainApp').style.display='flex';
     applyTheme();renderNav();renderAll();startClock();startCountdowns();setupSubTabs();renderPomoModes();updatePomoSubjects();initNotifications();startSleepReminderCheck();
+    history.pushState({nav:'app'}, '');
     hideInitLoader();
   }else if(!hasSession){
     // Brand-new visitor — show unified welcome screen.
@@ -2709,7 +2750,7 @@ sLang.addEventListener('change',()=>{state.lang=sLang.value;applyLang();applyTex
 /* Welcome-screen Google sign-in button */
 const welcomeGoogleBtn=document.getElementById('welcomeGoogleBtn');
 if(welcomeGoogleBtn)welcomeGoogleBtn.onclick=()=>SupaDB.signInWithGoogle();
-sBtn.addEventListener('click',async()=>{state.name=sName.value.trim();state.university=sUni.value;state.lang=sLang.value;state.slots=JSON.parse(JSON.stringify(UNI_SLOTS[state.university]||[]));state.setupDone=true;saveState();let _cloudErr=null;if(SupaDB.getUser()){try{await SupaDB.upsertSettings();}catch(e){console.warn('[setup] upsertSettings failed',e);_cloudErr=e;}}document.getElementById('welcomeScreen').classList.add('hidden');document.getElementById('mainApp').style.display='flex';applyTheme();applyLang();applyText();renderNav();renderAll();startClock();startCountdowns();setupSubTabs();renderPomoModes();updatePomoSubjects();initNotifications();startSleepReminderCheck();if(_cloudErr){toast('⚠ Profile saved locally but cloud sync failed — will retry automatically','warning');}else{toast(t('welcome')+state.name+'!');}});
+sBtn.addEventListener('click',async()=>{state.name=sName.value.trim();state.university=sUni.value;state.lang=sLang.value;state.slots=JSON.parse(JSON.stringify(UNI_SLOTS[state.university]||[]));state.setupDone=true;saveState();let _cloudErr=null;if(SupaDB.getUser()){try{await SupaDB.upsertSettings();}catch(e){console.warn('[setup] upsertSettings failed',e);_cloudErr=e;}}document.getElementById('welcomeScreen').classList.add('hidden');document.getElementById('mainApp').style.display='flex';applyTheme();applyLang();applyText();renderNav();renderAll();startClock();startCountdowns();setupSubTabs();renderPomoModes();updatePomoSubjects();initNotifications();startSleepReminderCheck();history.pushState({nav:'app'}, '');if(_cloudErr){toast('⚠ Profile saved locally but cloud sync failed — will retry automatically','warning');}else{toast(t('welcome')+state.name+'!');}});
 function startClock(){const el=document.getElementById('headerClock');const tick=()=>{el.textContent=new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:false});};tick();setInterval(tick,30000);}
 
 /* ===== SUB TABS ===== */
@@ -4584,6 +4625,7 @@ const SupaDB = (() => {
         document.getElementById('welcomeScreen').classList.add('hidden');
         document.getElementById('mainApp').style.display = 'flex';
         renderNav(); renderAll();
+        history.pushState({nav:'app'}, '');
         hideInitLoader();
         toast('✓ Local data synced to cloud', 'success');
       } else if (isNewUser) {
@@ -4608,6 +4650,7 @@ const SupaDB = (() => {
         document.getElementById('welcomeScreen').classList.add('hidden');
         document.getElementById('mainApp').style.display = 'flex';
         renderNav(); renderAll();
+        history.pushState({nav:'app'}, '');
         hideInitLoader();
       }
 
@@ -4618,6 +4661,7 @@ const SupaDB = (() => {
       if (state.setupDone) {
         document.getElementById('welcomeScreen').classList.add('hidden');
         document.getElementById('mainApp').style.display = 'flex';
+        history.pushState({nav:'app'}, '');
         renderNav(); renderAll();
       }
       hideInitLoader();
