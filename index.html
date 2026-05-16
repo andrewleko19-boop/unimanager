@@ -2020,7 +2020,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.13.0';
+const APP_VERSION = 'v1.14.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2407,7 +2407,6 @@ let state=loadState(),activeDay=getTodayIndex(),editingSlot=null,editingDay=null
 let pomoInterval=null,pomoRunning=false,pomoSeconds=25*60,pomoMode={work:25,brk:5},pomoOnBreak=false,pomoSessionCount=0,pomoStartTime=null,pomoTotalSeconds=25*60;
 // Tab history for back button navigation
 let tabHistory = [];
-let isNavigatingBack = false;
 
 function getTodayIndex(){const d=new Date().getDay();return d===6?0:d+1;}
 function getNow(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
@@ -2564,17 +2563,22 @@ function applyText(){
 /* ===== NAV ===== */
 /* GROUPS: pageGroups slots in between Tasks and GPA per spec */
 const NAV_ICONS={pageHome:'<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/>',pageSchedule:'<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',pageAssignments:'<path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>',pageGroups:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',pageCalculator:'<path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>',pageSkills:'<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>',pageSettings:'<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/>',pageAccount:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>'};
-function renderNav(){const labels={pageHome:t('nHome'),pageSchedule:t('nSchedule'),pageAssignments:t('nTasks'),pageGroups:t('nGroups'),pageCalculator:t('nGPA'),pageSkills:t('skillsNav'),pageSettings:t('nSettings'),pageAccount:t('nAccount')};const nav=document.getElementById('bottomNav');const cur=nav.querySelector('.nav-item.active')?.dataset.tab||'pageHome';const BOTTOM_TABS=['pageHome','pageSchedule','pageGroups','pageAccount'];nav.innerHTML=BOTTOM_TABS.map(tab=>[tab,NAV_ICONS[tab]]).map(([tab,icon])=>'<button class="nav-item'+(tab===cur?' active':'')+'" data-tab="'+tab+'"><svg viewBox="0 0 24 24">'+icon+'</svg><span>'+labels[tab]+'</span></button>').join('');nav.querySelectorAll('.nav-item').forEach(b=>{b.addEventListener('click',()=>{// Record current tab before switching (if not navigating back)
-    if (!isNavigatingBack) {
-      const currentTab = document.querySelector('.nav-item.active')?.dataset.tab;
-      if (currentTab && currentTab !== b.dataset.tab) {
-        tabHistory.push(currentTab);
-        // Keep history size reasonable
-        if (tabHistory.length > 50) tabHistory.shift();
-      }
-    }nav.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-page').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.tab).classList.add('active');document.getElementById('fabAddTask').style.display=b.dataset.tab==='pageAssignments'?'flex':'none';/* Toggle group-active body class so the dark page bg only applies inside Groups */if(b.dataset.tab==='pageGroups'){renderGroups();}else{document.body.classList.remove('group-active');}/* Refresh the account page on entry so a recent sign-in (e.g. OAuth round-trip) or sign-out always reflects in the UI without needing a page reload. */if(b.dataset.tab==='pageAccount'&&typeof SupaDB!=='undefined'&&SupaDB.renderAccountPage){SupaDB.renderAccountPage();}
-    // Reset navigating back flag after navigation completes
-    isNavigatingBack = false;});});}
+function renderNav(){const labels={pageHome:t('nHome'),pageSchedule:t('nSchedule'),pageAssignments:t('nTasks'),pageGroups:t('nGroups'),pageCalculator:t('nGPA'),pageSkills:t('skillsNav'),pageSettings:t('nSettings'),pageAccount:t('nAccount')};const nav=document.getElementById('bottomNav');const cur=nav.querySelector('.nav-item.active')?.dataset.tab||'pageHome';const BOTTOM_TABS=['pageHome','pageSchedule','pageGroups','pageAccount'];nav.innerHTML=BOTTOM_TABS.map(tab=>[tab,NAV_ICONS[tab]]).map(([tab,icon])=>'<button class="nav-item'+(tab===cur?' active':'')+'" data-tab="'+tab+'"><svg viewBox="0 0 24 24">'+icon+'</svg><span>'+labels[tab]+'</span></button>').join('');nav.querySelectorAll('.nav-item').forEach(b=>{
+  b.addEventListener('click', () => {
+    const currentTab = document.querySelector('.nav-item.active')?.dataset.tab;
+    if (currentTab && currentTab !== b.dataset.tab) {
+      tabHistory.push(currentTab);
+      if (tabHistory.length > 50) tabHistory.shift();
+    }
+    
+    nav.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-page').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.tab).classList.add('active');
+    document.getElementById('fabAddTask').style.display = b.dataset.tab === 'pageAssignments' ? 'flex' : 'none';
+    if (b.dataset.tab === 'pageGroups') { renderGroups(); } else { document.body.classList.remove('group-active'); }
+    if (b.dataset.tab === 'pageAccount' && typeof SupaDB !== 'undefined' && SupaDB.renderAccountPage) { SupaDB.renderAccountPage(); }
+  });});}
 
 // دالة تحديث شارة (badge) المهام في القائمة الجانبية
 function updateTaskBadge() {
@@ -2682,37 +2686,47 @@ window.addEventListener('popstate', function() {
     return;
   }
   // Priority 4: go back to previous tab using tabHistory
-var activeBtn = document.querySelector('.nav-item.active');
-var activeTab = activeBtn ? activeBtn.dataset.tab : 'pageHome';
+  var activeBtn = document.querySelector('.nav-item.active');
+  var activeTab = activeBtn ? activeBtn.dataset.tab : 'pageHome';
 
-// If we have tab history, go to the previous tab
-if (tabHistory && tabHistory.length > 0) {
-  var previousTab = tabHistory.pop();
-  if (previousTab && previousTab !== activeTab) {
-    isNavigatingBack = true;
-    var prevNavBtn = document.querySelector('.nav-item[data-tab="' + previousTab + '"]');
-    if (prevNavBtn) {
-      prevNavBtn.click();
-      // Push a new state so further back presses work correctly
+  if (tabHistory && tabHistory.length > 0) {
+    var previousTab = tabHistory.pop();
+    if (previousTab) {
+      // Direct DOM switch — no .click() to avoid side-effects
+      document.querySelectorAll('.nav-item').forEach(function(x){ x.classList.remove('active'); });
+      document.querySelectorAll('.tab-page').forEach(function(x){ x.classList.remove('active'); });
+      var prevBtn = document.querySelector('.nav-item[data-tab="' + previousTab + '"]');
+      if (prevBtn) prevBtn.classList.add('active');
+      var prevPage = document.getElementById(previousTab);
+      if (prevPage) prevPage.classList.add('active');
+      var fabEl = document.getElementById('fabAddTask');
+      if (fabEl) fabEl.style.display = (previousTab === 'pageAssignments') ? 'flex' : 'none';
+      if (previousTab === 'pageGroups') {
+        if (typeof renderGroups === 'function') renderGroups();
+      } else {
+        document.body.classList.remove('group-active');
+      }
+      if (previousTab === 'pageAccount' && typeof SupaDB !== 'undefined' && SupaDB.renderAccountPage) {
+        SupaDB.renderAccountPage();
+      }
       history.pushState({nav:'app'}, '');
       return;
     }
   }
-}
 
-// If no history or already on first tab, try to go to home tab if not already there
-if (activeTab && activeTab !== 'pageHome') {
-  document.querySelectorAll('.nav-item').forEach(function(x){ x.classList.remove('active'); });
-  document.querySelectorAll('.tab-page').forEach(function(x){ x.classList.remove('active'); });
-  var homeBtn = document.querySelector('.nav-item[data-tab="pageHome"]');
-  if (homeBtn) homeBtn.classList.add('active');
-  var homePage = document.getElementById('pageHome');
-  if (homePage) homePage.classList.add('active');
-  document.getElementById('fabAddTask').style.display = 'none';
-  document.body.classList.remove('group-active');
-  history.pushState({nav:'app'}, '');
-  return;
-}
+  // Fallback: no history and not on home → go to home
+  if (activeTab && activeTab !== 'pageHome') {
+    document.querySelectorAll('.nav-item').forEach(function(x){ x.classList.remove('active'); });
+    document.querySelectorAll('.tab-page').forEach(function(x){ x.classList.remove('active'); });
+    var homeBtn = document.querySelector('.nav-item[data-tab="pageHome"]');
+    if (homeBtn) homeBtn.classList.add('active');
+    var homePage = document.getElementById('pageHome');
+    if (homePage) homePage.classList.add('active');
+    document.getElementById('fabAddTask').style.display = 'none';
+    document.body.classList.remove('group-active');
+    history.pushState({nav:'app'}, '');
+    return;
+  }
   // Priority 5: on home tab with nothing open → let browser exit app naturally
 });
 
