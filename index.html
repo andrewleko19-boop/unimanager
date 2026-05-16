@@ -1306,6 +1306,31 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   #initLoader .tagline,#initLoader .loader-wrap,#initLoader .version-badge{animation:none !important}
   #initLoader .loader-fill{width:60%}
 }
+/* Hamburger */
+.hamburger-btn{background:none;border:none;color:var(--text-primary);cursor:pointer;padding:6px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.hamburger-btn:hover{background:var(--bg-secondary);}
+
+/* Overlay */
+#sideDrawerOverlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:149;opacity:0;pointer-events:none;transition:opacity .25s;}
+#sideDrawerOverlay.open{opacity:1;pointer-events:all;}
+
+/* Side Drawer */
+#sideDrawer{position:fixed;top:0;left:0;height:100%;width:80%;max-width:300px;background:var(--bg-secondary);z-index:150;display:flex;flex-direction:column;box-shadow:4px 0 24px rgba(0,0,0,.3);transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);}
+#sideDrawer.open{transform:translateX(0);}
+[dir="rtl"] #sideDrawer{left:auto;right:0;transform:translateX(100%);box-shadow:-4px 0 24px rgba(0,0,0,.3);}
+[dir="rtl"] #sideDrawer.open{transform:translateX(0);}
+
+/* Drawer Header */
+.side-drawer-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);min-height:var(--header-height);}
+#sideDrawerTitle{font-weight:700;font-size:1rem;color:var(--text-primary);}
+
+/* Drawer Nav Items */
+#sideDrawerNav{display:flex;flex-direction:column;padding:8px 0;overflow-y:auto;}
+.side-nav-item{display:flex;align-items:center;gap:14px;padding:14px 20px;background:transparent;border:none;width:100%;text-align:start;cursor:pointer;color:var(--text-secondary);font-size:.88rem;font-weight:500;transition:background .15s,color .15s;position:relative;}
+.side-nav-item svg{width:22px;height:22px;flex-shrink:0;stroke:currentColor;fill:none;}
+.side-nav-item:hover{background:var(--bg-card);}
+.side-nav-item.active{color:var(--accent);}
+.side-nav-item.active svg{stroke:var(--accent);}
 
 </style>
 
@@ -1399,7 +1424,14 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 <!-- MAIN APP -->
 <div class="app" id="mainApp" style="display:none">
-<div class="header"><div style="display:flex;align-items:center;gap:8px"><div><div class="header-title">UniManager</div><div class="header-greeting" id="headerGreeting"></div></div><span class="online-dot checking" id="onlineIndicator" title="Checking..."></span></div><div style="font-family:var(--font-mono);font-size:.78rem;color:var(--text-secondary)" id="headerClock"></div></div>
+<div class="header"><div style="display:flex;align-items:center;gap:8px"><div><div class="header-title">UniManager</div><div class="header-greeting" id="headerGreeting"></div></div><span class="online-dot checking" id="onlineIndicator" title="Checking..."></span></div><div style="display:flex;align-items:center;gap:12px">
+  <div style="font-family:var(--font-mono);font-size:.78rem;color:var(--text-secondary)" id="headerClock"></div>
+  <button class="hamburger-btn" id="sideDrawerToggle" aria-label="Menu">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg></button></div></div>
 <div class="tab-content">
 <!-- HOME -->
 <div class="tab-page active" id="pageHome">
@@ -1761,6 +1793,16 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   <button id="update-banner-btn"></button>
 </div>
 <nav class="bottom-nav" id="bottomNav"></nav>
+<div id="sideDrawerOverlay"></div>
+
+<div id="sideDrawer">
+  <div class="side-drawer-header">
+    <span id="sideDrawerTitle"></span>
+    <button class="modal-close" id="sideDrawerClose">×</button>
+  </div>
+  <nav id="sideDrawerNav"></nav>
+</div>
+
 </div>
 
 <!-- MODALS -->
@@ -1978,7 +2020,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.9.0';
+const APP_VERSION = 'v1.10.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2214,7 +2256,7 @@ tech2Name:'Spaced Repetition',tech2Desc:'Review material at increasing intervals
 tech3Name:'Cornell Notes',tech3Desc:'A structured note-taking system that forces you to engage with the material during and after the lecture.',tech3Steps:['Divide page: narrow left column (cues), wide right (notes).','Take notes on the right during class.','After class: write key questions on the left.','Cover right side and answer from cues.','Write a 3-sentence summary at the bottom.'],
 tech4Name:'Pomodoro Technique',tech4Desc:'Work in focused 25-minute bursts followed by short breaks. Fights procrastination and keeps your brain fresh.',tech4Steps:['Choose a single task to focus on.','Set timer for 25 minutes — no distractions.','Work until the timer rings.','Take a 5-minute break.','After 4 sessions, take a 20-30 min long break.'],schedTabSched:'Schedule',schedTabExams:'Exams',schedTabNotes:'Notes',examCountdown:'Exam Countdown',daysLeft:'days left',hoursLeft:'hours left',examPassed:'Exam passed',
 /* ===== GROUPS i18n (EN) ===== */
-nGroups:'Groups',groupsTitle:'Study Groups',
+nGroups:'Groups',nDrawer:'Menu',groupsTitle:'Study Groups',
 noGroupYet:"You're not in a group yet. Create one or join with a code from a classmate.",
 createGroupTitle:'Create a New Group',createGroupDesc:'You\'ll become the admin and get an invite code to share.',
 joinGroupTitle:'Join with Invite Code',joinGroupDesc:'Ask a classmate for their 6-character code.',
@@ -2304,7 +2346,7 @@ tech2Name:'\u0627\u0644\u062A\u0643\u0631\u0627\u0631 \u0627\u0644\u0645\u062A\u
 tech3Name:'\u0645\u0644\u0627\u062D\u0638\u0627\u062A \u0643\u0648\u0631\u0646\u064A\u0644',tech3Desc:'\u0646\u0638\u0627\u0645 \u062A\u062F\u0648\u064A\u0646 \u0645\u0646\u0638\u0645 \u064A\u062C\u0628\u0631\u0643 \u0639\u0644\u0649 \u0627\u0644\u062A\u0641\u0627\u0639\u0644 \u0645\u0639 \u0627\u0644\u0645\u0627\u062F\u0629 \u062E\u0644\u0627\u0644 \u0627\u0644\u0645\u062D\u0627\u0636\u0631\u0629 \u0648\u0628\u0639\u062F\u0647\u0627.',tech3Steps:['\u0642\u0633\u0651\u0645 \u0627\u0644\u0635\u0641\u062D\u0629: \u0639\u0645\u0648\u062F \u0623\u064A\u0633\u0631 \u0644\u0644\u0643\u0644\u0645\u0627\u062A \u0627\u0644\u0645\u0641\u062A\u0627\u062D\u064A\u0629\u060C \u0639\u0645\u0648\u062F \u0623\u064A\u0645\u0646 \u0644\u0644\u0645\u0644\u0627\u062D\u0638\u0627\u062A.','\u062F\u0648\u0651\u0646 \u0627\u0644\u0645\u0644\u0627\u062D\u0638\u0627\u062A \u0639\u0644\u0649 \u0627\u0644\u064A\u0645\u064A\u0646 \u062E\u0644\u0627\u0644 \u0627\u0644\u0645\u062D\u0627\u0636\u0631\u0629.','\u0628\u0639\u062F \u0627\u0644\u0645\u062D\u0627\u0636\u0631\u0629: \u0627\u0643\u062A\u0628 \u0623\u0633\u0626\u0644\u0629 \u0639\u0644\u0649 \u0627\u0644\u064A\u0633\u0627\u0631.','\u063A\u0637\u0651\u0650 \u0627\u0644\u064A\u0645\u064A\u0646 \u0648\u0623\u062C\u0628 \u0645\u0646 \u0627\u0644\u0623\u0633\u0626\u0644\u0629.','\u0627\u0643\u062A\u0628 \u0645\u0644\u062E\u0635\u0627\u064B \u0645\u0646 3 \u062C\u0645\u0644 \u0641\u064A \u0627\u0644\u0623\u0633\u0641\u0644.'],
 tech4Name:'\u062A\u0642\u0646\u064A\u0629 \u0628\u0648\u0645\u0648\u062F\u0648\u0631\u0648',tech4Desc:'\u0627\u0639\u0645\u0644 \u0641\u064A \u062C\u0644\u0633\u0627\u062A 25 \u062F\u0642\u064A\u0642\u0629 \u0645\u062A\u0648\u0627\u0635\u0644\u0629 \u062A\u062A\u0628\u0639\u0647\u0627 \u0627\u0633\u062A\u0631\u0627\u062D\u0627\u062A \u0642\u0635\u064A\u0631\u0629. \u064A\u062D\u0627\u0631\u0628 \u0627\u0644\u062A\u0633\u0648\u064A\u0641 \u0648\u064A\u062D\u0627\u0641\u0638 \u0639\u0644\u0649 \u0646\u0634\u0627\u0637 \u0639\u0642\u0644\u0643.',tech4Steps:['\u0627\u062E\u062A\u0631 \u0645\u0647\u0645\u0629 \u0648\u0627\u062D\u062F\u0629 \u0641\u0642\u0637.','\u0627\u0636\u0628\u0637 \u0627\u0644\u0645\u0624\u0642\u062A 25 \u062F\u0642\u064A\u0642\u0629.','\u0627\u0639\u0645\u0644 \u062D\u062A\u0649 \u064A\u0646\u062A\u0647\u064A \u0627\u0644\u0648\u0642\u062A.','\u062E\u0630 5 \u062F\u0642\u0627\u0626\u0642 \u0627\u0633\u062A\u0631\u0627\u062D\u0629.','\u0628\u0639\u062F 4 \u062C\u0644\u0633\u0627\u062A\u060C \u062E\u0630 30 \u062F\u0642\u064A\u0642\u0629 \u0631\u0627\u062D\u0629 \u0637\u0648\u064A\u0644\u0629.'],schedTabSched:'\u0627\u0644\u062C\u062F\u0648\u0644',schedTabExams:'\u0627\u0644\u0627\u0645\u062A\u062D\u0627\u0646\u0627\u062A',schedTabNotes:'\u0645\u0644\u0627\u062D\u0638\u0627\u062A',examCountdown:'\u0639\u062F \u062A\u0646\u0627\u0632\u0644\u064A',daysLeft:'\u064A\u0648\u0645 \u0645\u062A\u0628\u0642\u064A',hoursLeft:'\u0633\u0627\u0639\u0629 \u0645\u062A\u0628\u0642\u064A\u0629',examPassed:'\u0627\u0646\u062A\u0647\u0649',
 /* ===== GROUPS i18n (AR) ===== */
-nGroups:'\u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0627\u062A',groupsTitle:'\u0645\u062C\u0645\u0648\u0639\u0627\u062A \u0627\u0644\u062F\u0631\u0627\u0633\u0629',
+nGroups:'\u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0627\u062A',nDrawer:'\u0627\u0644\u0642\u0627\u0626\u0645\u0629',groupsTitle:'\u0645\u062C\u0645\u0648\u0639\u0627\u062A \u0627\u0644\u062F\u0631\u0627\u0633\u0629',
 noGroupYet:'\u0623\u0646\u062A \u0644\u0633\u062A \u0641\u064A \u0623\u064A \u0645\u062C\u0645\u0648\u0639\u0629. \u0623\u0646\u0634\u0626 \u0645\u062C\u0645\u0648\u0639\u0629 \u0623\u0648 \u0627\u0646\u0636\u0645 \u0628\u0631\u0645\u0632 \u062F\u0639\u0648\u0629 \u0645\u0646 \u0632\u0645\u064A\u0644.',
 createGroupTitle:'\u0625\u0646\u0634\u0627\u0621 \u0645\u062C\u0645\u0648\u0639\u0629 \u062C\u062F\u064A\u062F\u0629',createGroupDesc:'\u0633\u062A\u0635\u0628\u062D \u0627\u0644\u0645\u0634\u0631\u0641 \u0648\u062A\u062D\u0635\u0644 \u0639\u0644\u0649 \u0631\u0645\u0632 \u062F\u0639\u0648\u0629 \u0644\u0645\u0634\u0627\u0631\u0643\u062A\u0647.',
 joinGroupTitle:'\u0627\u0644\u0627\u0646\u0636\u0645\u0627\u0645 \u0628\u0631\u0645\u0632 \u062F\u0639\u0648\u0629',joinGroupDesc:'\u0627\u0637\u0644\u0628 \u0645\u0646 \u0632\u0645\u064A\u0644 \u0631\u0645\u0632 \u0627\u0644\u062F\u0639\u0648\u0629 (6 \u062D\u0631\u0648\u0641).',
@@ -2519,7 +2561,64 @@ function applyText(){
 /* ===== NAV ===== */
 /* GROUPS: pageGroups slots in between Tasks and GPA per spec */
 const NAV_ICONS={pageHome:'<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/>',pageSchedule:'<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',pageAssignments:'<path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>',pageGroups:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',pageCalculator:'<path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>',pageSkills:'<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>',pageSettings:'<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/>',pageAccount:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>'};
-function renderNav(){const labels={pageHome:t('nHome'),pageSchedule:t('nSchedule'),pageAssignments:t('nTasks'),pageGroups:t('nGroups'),pageCalculator:t('nGPA'),pageSkills:t('skillsNav'),pageSettings:t('nSettings'),pageAccount:t('nAccount')};const nav=document.getElementById('bottomNav');const cur=nav.querySelector('.nav-item.active')?.dataset.tab||'pageHome';nav.innerHTML=Object.entries(NAV_ICONS).map(([tab,icon])=>'<button class="nav-item'+(tab===cur?' active':'')+'" data-tab="'+tab+'"><svg viewBox="0 0 24 24">'+icon+'</svg><span>'+labels[tab]+'</span></button>').join('');nav.querySelectorAll('.nav-item').forEach(b=>{b.addEventListener('click',()=>{nav.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-page').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.tab).classList.add('active');document.getElementById('fabAddTask').style.display=b.dataset.tab==='pageAssignments'?'flex':'none';/* Toggle group-active body class so the dark page bg only applies inside Groups */if(b.dataset.tab==='pageGroups'){renderGroups();}else{document.body.classList.remove('group-active');}/* Refresh the account page on entry so a recent sign-in (e.g. OAuth round-trip) or sign-out always reflects in the UI without needing a page reload. */if(b.dataset.tab==='pageAccount'&&typeof SupaDB!=='undefined'&&SupaDB.renderAccountPage){SupaDB.renderAccountPage();}});});}
+function renderNav(){const labels={pageHome:t('nHome'),pageSchedule:t('nSchedule'),pageAssignments:t('nTasks'),pageGroups:t('nGroups'),pageCalculator:t('nGPA'),pageSkills:t('skillsNav'),pageSettings:t('nSettings'),pageAccount:t('nAccount')};const nav=document.getElementById('bottomNav');const cur=nav.querySelector('.nav-item.active')?.dataset.tab||'pageHome';const BOTTOM_TABS=['pageHome','pageSchedule','pageGroups','pageAccount'];nav.innerHTML=BOTTOM_TABS.map(tab=>[tab,NAV_ICONS[tab]]).map(([tab,icon])=>'<button class="nav-item'+(tab===cur?' active':'')+'" data-tab="'+tab+'"><svg viewBox="0 0 24 24">'+icon+'</svg><span>'+labels[tab]+'</span></button>').join('');nav.querySelectorAll('.nav-item').forEach(b=>{b.addEventListener('click',()=>{nav.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-page').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.tab).classList.add('active');document.getElementById('fabAddTask').style.display=b.dataset.tab==='pageAssignments'?'flex':'none';/* Toggle group-active body class so the dark page bg only applies inside Groups */if(b.dataset.tab==='pageGroups'){renderGroups();}else{document.body.classList.remove('group-active');}/* Refresh the account page on entry so a recent sign-in (e.g. OAuth round-trip) or sign-out always reflects in the UI without needing a page reload. */if(b.dataset.tab==='pageAccount'&&typeof SupaDB!=='undefined'&&SupaDB.renderAccountPage){SupaDB.renderAccountPage();}});});}
+
+function renderSideNav(){
+  const DRAWER_TABS = ['pageAssignments','pageCalculator','pageSkills','pageSettings'];
+  const labels = {
+    pageAssignments: t('nTasks'),
+    pageCalculator: t('nGPA'),
+    pageSkills: t('skillsNav'),
+    pageSettings: t('nSettings')
+  };
+  const nav = document.getElementById('sideDrawerNav');
+  const titleEl = document.getElementById('sideDrawerTitle');
+  if(titleEl) titleEl.textContent = t('nDrawer');
+
+  // حدد التبويب النشط حالياً (إن كان من درج)
+  const curActive = document.querySelector('.tab-page.active');
+  const curTab = curActive ? curActive.id : '';
+
+  nav.innerHTML = DRAWER_TABS.map(tab =>
+    '<button class="side-nav-item'+(tab===curTab?' active':'')+'" data-tab="'+tab+'">'+
+    '<svg viewBox="0 0 24 24">'+NAV_ICONS[tab]+'</svg>'+
+    '<span>'+labels[tab]+'</span>'+
+    '</button>'
+  ).join('');
+
+  nav.querySelectorAll('.side-nav-item').forEach(b => {
+    b.addEventListener('click', () => {
+      // أزل active من كل التبويبات والـ nav items
+      document.querySelectorAll('.tab-page').forEach(x => x.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+      document.querySelectorAll('.side-nav-item').forEach(x => x.classList.remove('active'));
+      // فعّل التبويب المطلوب
+      document.getElementById(b.dataset.tab).classList.add('active');
+      b.classList.add('active');
+      // FAB
+      document.getElementById('fabAddTask').style.display = b.dataset.tab==='pageAssignments' ? 'flex' : 'none';
+      // أغلق الـ drawer
+      closeSideDrawer();
+    });
+  });
+
+  // أعد رسم الـ badge على عنصر المهام في الدرج
+  updateTaskBadge();
+}
+
+function openSideDrawer(){
+  document.getElementById('sideDrawer').classList.add('open');
+  document.getElementById('sideDrawerOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.body.style.touchAction = 'none';
+}
+
+function closeSideDrawer(){
+  document.getElementById('sideDrawer').classList.remove('open');
+  document.getElementById('sideDrawerOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.body.style.touchAction = '';
+}
 
 /* ===== INIT ===== */
 function hideInitLoader(){
@@ -2671,7 +2770,7 @@ function setupSubTabs(){
 }
 
 /* ===== RENDER ALL ===== */
-function renderAll(){renderHeader();renderDash();renderAttendanceWidget();renderDayTabs();renderSchedule();renderFilters();renderTasks();renderGPAToggle();renderGPA();renderSettings();renderSlotEditor();renderExams();renderGPAHistory();renderStudyChart();renderChallenge();renderSleepCard();renderPomoAnalytics();renderTechLib();renderFavTechHome();renderGroups();upgradeAllSelects();}
+function renderAll(){renderHeader();renderDash();renderAttendanceWidget();renderDayTabs();renderSchedule();renderFilters();renderTasks();renderGPAToggle();renderGPA();renderSettings();renderSlotEditor();renderExams();renderGPAHistory();renderStudyChart();renderChallenge();renderSleepCard();renderPomoAnalytics();renderTechLib();renderFavTechHome();renderGroups();upgradeAllSelects();renderSideNav();}
 function renderHeader(){const h=new Date().getHours();document.getElementById('headerGreeting').textContent=(h<12?t('morning'):h<17?t('afternoon'):t('evening'))+', '+state.name;}
 
 /* ===== SMART SUMMARY ===== */
@@ -2732,8 +2831,8 @@ function renderDash(){
   // Stats
   const pend=state.tasks.filter(x=>!x.completed).length;
   document.getElementById('statTasks').textContent=pend;
-  const ob=document.querySelector('.nav-item[data-tab="pageAssignments"] .nav-badge');if(ob)ob.remove();
-  if(pend>0){const b=document.createElement('div');b.className='nav-badge';b.textContent=pend;const ne=document.querySelector('.nav-item[data-tab="pageAssignments"]');if(ne)ne.appendChild(b);}
+  const ob=document.querySelector('.side-nav-item[data-tab="pageAssignments"] .nav-badge');if(ob)ob.remove();
+  if(pend>0){const b=document.createElement('div');b.className='nav-badge';b.textContent=pend;const ne=document.querySelector('.side-nav-item[data-tab="pageAssignments"]');if(ne)ne.appendChild(b);}
   // Study today
   const today=new Date().toISOString().slice(0,10);
   const studyMins=(state.studyLog||[]).filter(l=>l.date===today).reduce((s,l)=>s+l.minutes,0);
@@ -3285,6 +3384,11 @@ document.getElementById('saveNameBtn').addEventListener('click',()=>{const n=doc
 document.getElementById('saveUniBtn').addEventListener('click',()=>{state.university=document.getElementById('editUniSelect').value;state.slots=JSON.parse(JSON.stringify(UNI_SLOTS[state.university]||[]));saveState();renderAll();closeModal('uniModal');toast(t('uniChg'));});
 document.getElementById('importFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=sanitizeImport(JSON.parse(ev.target.result));if(!d||typeof d!=='object')throw new Error('bad');if(d.setupDone){state=d;saveState();applyLang();applyText();applyTheme();renderNav();renderAll();toast(t('dataImp'));}else toast(t('invBack'),'error');}catch(err){toast(t('parseFail'),'error');}};r.readAsText(f);e.target.value='';});
 document.querySelectorAll('.modal-overlay').forEach(ov=>{ov.addEventListener('click',e=>{if(e.target===ov)closeModal(ov.id);});});
+document.getElementById('sideDrawerToggle').addEventListener('click', openSideDrawer);
+document.getElementById('sideDrawerOverlay').addEventListener('click', closeSideDrawer);
+document.getElementById('sideDrawerClose').addEventListener('click', closeSideDrawer);
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSideDrawer(); });
+
 /* ===== DEEP FOCUS & SOUND ===== */
 let deepFocusMode=false;
 let pomoSoundEnabled=JSON.parse(localStorage.getItem('unimanager_pomo_sound')||'true');
@@ -3970,7 +4074,7 @@ function renderGroupNotes(){
       const gid=await SupaDB.joinGroupByCode(code);
       if(!gid){toast(t('invalidCode'),'error');return;}
       codeEl.value='';
-      renderGroups();renderNav();
+      renderGroups();renderNav();renderSideNav();
       toast(t('groupJoined'));
     }catch(e){
       console.warn('[groups] join failed',e);
@@ -4002,7 +4106,7 @@ function renderGroupNotes(){
         await SupaDB.leaveGroup();
         state.groups={current:null,members:[],sharedSchedule:{},sharedExams:[],sharedNotes:{}};
         saveState();
-        renderGroups();renderNav();
+        renderGroups();renderNav();renderSideNav();
         toast(t('leaveDone'));
       }catch(e){console.warn('[groups] leave failed',e);toast('\u2717 '+((e&&e.message)||'Leave failed'),'error');}
     });
