@@ -585,7 +585,7 @@ select.form-input option{background-color:var(--bg-secondary)!important;color:va
 .sleep-card-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-secondary);margin-bottom:10px}
 .sleep-schedule-line{font-size:.82rem;color:var(--text-secondary);margin-bottom:12px}
 .sleep-quality-btns{display:flex;gap:8px;margin-bottom:10px}
-.sq-btn{flex:1;padding:10px 6px;border-radius:var(--radius-xs);border:1.5px solid var(--border);background:var(--bg-input);font-size:1.1rem;cursor:pointer;transition:all .2s;text-align:center}
+.sq-btn{flex:1;padding:10px 6px;border-radius:var(--radius-xs);border:1.5px solid var(--border);background:var(--bg-input);cursor:pointer;transition:all .2s;text-align:center}
 .sq-btn.active{border-color:var(--accent);background:var(--accent-soft)}
 .sq-btn:active{transform:scale(.95)}
 .sleep-avg{font-size:.75rem;color:var(--text-secondary);text-align:center}
@@ -614,7 +614,8 @@ select.form-input option{background-color:var(--bg-secondary)!important;color:va
 .tech-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden;transition:border-color .2s}
 .tech-card.open{border-color:var(--border-active)}
 .tech-header{display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.tech-icon{font-size:1.3rem;flex-shrink:0}
+.icon{display:inline-block;vertical-align:middle;flex-shrink:0}
+.tech-icon{width:1.3rem;height:1.3rem;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center}
 .tech-name{flex:1;font-weight:600;font-size:.9rem}
 .tech-fav{font-size:1rem;padding:4px;border-radius:4px;cursor:pointer;flex-shrink:0;transition:transform .2s}
 .tech-fav:active{transform:scale(.8)}
@@ -1362,6 +1363,108 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 <meta name="msapplication-TileImage" content="/unimanager/icons/icon-192.png">
 </head>
 <body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </symbol>
+  <symbol id="ic-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/>
+  </symbol>
+  <symbol id="ic-graduation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+  </symbol>
+  <symbol id="ic-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+  </symbol>
+  <symbol id="ic-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24z"/>
+  </symbol>
+  <symbol id="ic-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+  </symbol>
+  <symbol id="ic-bulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/>
+    <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14z"/>
+  </symbol>
+  <symbol id="ic-person" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+  </symbol>
+  <symbol id="ic-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+    <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+  </symbol>
+  <symbol id="ic-star" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+  </symbol>
+  <symbol id="ic-star-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+  </symbol>
+  <symbol id="ic-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </symbol>
+  <symbol id="ic-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.14"/>
+    <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.14"/>
+  </symbol>
+  <symbol id="ic-repeat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+    <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+  </symbol>
+  <symbol id="ic-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+  </symbol>
+  <symbol id="ic-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+    <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+  </symbol>
+  <symbol id="ic-timer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="13" r="8"/><polyline points="12 9 12 13 14 15"/>
+    <path d="M5 3l1.5 1.5"/><path d="M19 3l-1.5 1.5"/><line x1="12" y1="1" x2="12" y2="3"/>
+  </symbol>
+  <symbol id="ic-face-good" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/>
+    <line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
+  </symbol>
+  <symbol id="ic-face-neutral" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/><line x1="8" y1="14" x2="16" y2="14"/>
+    <line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
+  </symbol>
+  <symbol id="ic-face-bad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/>
+    <line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
+  </symbol>
+  <symbol id="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </symbol>
+  <symbol id="ic-alarm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/>
+    <path d="M5 3L2.5 5.5"/><path d="M19 3l2.5 2.5"/>
+  </symbol>
+  <symbol id="ic-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+    <polyline points="21 15 16 10 5 21"/>
+  </symbol>
+  <symbol id="ic-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+    <polyline points="13 2 13 9 20 9"/>
+  </symbol>
+  <symbol id="ic-paperclip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+  </symbol>
+  <symbol id="ic-crown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7z"/><line x1="5" y1="20" x2="19" y2="20"/>
+  </symbol>
+  <symbol id="ic-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+  </symbol>
+  <symbol id="ic-lightning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+  </symbol>
+</svg>
 <!-- Initial loading overlay — full splash. Covers the app until we know the auth state.
      Prevents the welcomeScreen from flashing for users with an active session.
      Background orbs + grid live inside #initLoader so they're removed when the splash
@@ -1412,7 +1515,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   <span id="welGoogleTxt">Continue with Google</span>
 </button>
 <div class="welcome-signed-in" id="welcomeSignedIn">
-  <div class="wsi-check">✓</div>
+  <div class="wsi-check"><svg aria-hidden="true" class="icon" width="12" height="12"><use href="#ic-check"/></svg></div>
   <div class="wsi-text"><span id="welSignedInLabel">Signed in as</span> <span class="wsi-email" id="welSignedInEmail"></span></div>
 </div>
 <div class="welcome-divider" id="welcomeDivider"><span id="welOrTxt">or</span></div>
@@ -1447,7 +1550,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   <div id="sleepHomeCard"></div>
   <!-- Pomodoro Timer Card -->
   <div class="card" id="pomoCard">
-    <div class="card-title">⏱ Study Timer</div>
+    <div class="card-title"><svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px"><use href="#ic-timer"/></svg> Study Timer</div>
     <div class="form-group" style="margin-bottom:10px"><select class="form-input" id="pomoSubject" style="padding:10px 40px 10px 14px;font-size:.82rem"></select></div>
     <div class="pomo-modes" id="pomoModes"></div>
     <div class="pomo-display"><div class="pomo-time" id="pomoTime">25:00</div><div class="pomo-label" id="pomoLabel">Focus Session</div></div>
@@ -1644,7 +1747,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
               <div class="crb-sender" id="crbSender"></div>
               <div class="crb-preview" id="crbPreview"></div>
             </div>
-            <button class="crb-close" id="crbClose">×</button>
+            <button class="crb-close" id="crbClose"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button>
           </div>
           <div id="chatUploadProgress"><div class="cup-bar"><div class="cup-fill" id="cupFill"></div></div></div>
           <div class="chat-input-row" id="chatInputRow">
@@ -1737,7 +1840,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   <!-- ─── LOGGED OUT ─── -->
   <div id="authSignedOut" style="display:none">
     <div class="card" style="text-align:center;padding:24px 20px">
-      <div style="font-size:2.4rem;margin-bottom:12px">🎓</div>
+      <div style="margin-bottom:16px;display:flex;justify-content:center"><svg aria-hidden="true" class="icon" width="52" height="52" style="color:var(--accent)"><use href="#ic-graduation"/></svg></div>
       <div id="accountSignInPrompt" style="font-weight:700;margin-bottom:6px">Sign in to sync your data</div>
       <div id="accountSignInSubText" style="font-size:.82rem;color:var(--text-secondary);margin-bottom:20px">Your tasks, schedule, and GPA — stored in the cloud and accessible from any device.</div>
       <button class="btn-google" id="loginBtn">
@@ -1750,7 +1853,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   <!-- ─── LOGGED IN ─── -->
   <div id="authSignedIn" style="display:none">
     <div class="account-user-card">
-      <div class="account-avatar" id="accountAvatar">👤</div>
+      <div class="account-avatar" id="accountAvatar"><svg aria-hidden="true" class="icon" width="28" height="28"><use href="#ic-person"/></svg></div>
       <div class="account-user-info">
         <div class="account-user-name" id="userNameDisplay"></div>
         <div class="account-user-email" id="userEmailDisplay"></div>
@@ -1798,7 +1901,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 <div id="sideDrawer">
   <div class="side-drawer-header">
     <span id="sideDrawerTitle"></span>
-    <button class="modal-close" id="sideDrawerClose">×</button>
+    <button class="modal-close" id="sideDrawerClose"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button>
   </div>
   <nav id="sideDrawerNav" aria-label="Side menu"></nav>
 </div>
@@ -1806,17 +1909,17 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 </div>
 
 <!-- MODALS -->
-<div class="modal-overlay" id="lectureModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="lmTitle"></div><button class="modal-close" onclick="closeModal('lectureModal')">×</button></div><div class="form-group"><label id="lmSubL"></label><input type="text" class="form-input" id="lecSubject"></div><div class="form-group"><label id="lmTypeL">Lecture Type</label><select class="form-input" id="lecType"><option value="theoretical" id="oTheo">Theoretical</option><option value="practical" id="oPrac">Practical</option></select></div><div class="form-group"><label id="lmProfL"></label><input type="text" class="form-input" id="lecProf"></div><div class="form-group"><label id="lmRoomL"></label><input type="text" class="form-input" id="lecRoom"></div><button class="btn-primary" id="saveLecBtn"></button><button class="btn-danger" id="deleteLecBtn" style="display:none"></button></div></div>
-<div class="modal-overlay" id="taskModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="tmTitle"></div><button class="modal-close" onclick="closeModal('taskModal')">×</button></div><div class="form-group"><label id="tmNameL"></label><input type="text" class="form-input" id="taskName"></div><div class="form-group"><label id="tmSubL"></label><input type="text" class="form-input" id="taskSubject"></div><div class="form-group"><label id="tmDlL"></label><input type="datetime-local" class="form-input" id="taskDeadline"></div><div class="form-group"><label id="tmPrL"></label><select class="form-input" id="taskPriority"><option value="low" id="oLow"></option><option value="medium" selected id="oMed"></option><option value="high" id="oHigh"></option></select></div><button class="btn-primary" id="saveTaskBtn"></button></div></div>
-<div class="modal-overlay" id="nameModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="nmTitle"></div><button class="modal-close" onclick="closeModal('nameModal')">×</button></div><div class="form-group"><label id="nmL"></label><input type="text" class="form-input" id="editNameInput"></div><button class="btn-primary" id="saveNameBtn"></button></div></div>
-<div class="modal-overlay" id="uniModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="umTitle"></div><button class="modal-close" onclick="closeModal('uniModal')">×</button></div><div class="form-group"><label id="umL"></label><select class="form-input" id="editUniSelect"><option value="latakia"></option><option value="sham"></option><option value="aast"></option><option value="manara"></option><option value="gemtq"></option></select></div><button class="btn-primary" id="saveUniBtn"></button></div></div>
-<div class="modal-overlay" id="examModal"><div class="modal"><div class="modal-header"><div class="modal-title">Add Exam</div><button class="modal-close" onclick="closeModal('examModal')">×</button></div><div class="form-group"><label>Subject</label><input type="text" class="form-input" id="examSubject" placeholder="e.g. Data Structures"></div><div class="form-group"><label>Date</label><input type="date" class="form-input" id="examDate"></div><div class="form-group"><label>Time</label><input type="time" class="form-input" id="examTime" value="09:00"></div><div class="form-group"><label>Type</label><select class="form-input" id="examType"><option value="midterm">Midterm</option><option value="final">Final</option><option value="quiz">Quiz</option></select></div><button class="btn-primary" id="saveExamBtn">Add Exam</button></div></div>
+<div class="modal-overlay" id="lectureModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="lmTitle"></div><button class="modal-close" onclick="closeModal('lectureModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="lmSubL"></label><input type="text" class="form-input" id="lecSubject"></div><div class="form-group"><label id="lmTypeL">Lecture Type</label><select class="form-input" id="lecType"><option value="theoretical" id="oTheo">Theoretical</option><option value="practical" id="oPrac">Practical</option></select></div><div class="form-group"><label id="lmProfL"></label><input type="text" class="form-input" id="lecProf"></div><div class="form-group"><label id="lmRoomL"></label><input type="text" class="form-input" id="lecRoom"></div><button class="btn-primary" id="saveLecBtn"></button><button class="btn-danger" id="deleteLecBtn" style="display:none"></button></div></div>
+<div class="modal-overlay" id="taskModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="tmTitle"></div><button class="modal-close" onclick="closeModal('taskModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="tmNameL"></label><input type="text" class="form-input" id="taskName"></div><div class="form-group"><label id="tmSubL"></label><input type="text" class="form-input" id="taskSubject"></div><div class="form-group"><label id="tmDlL"></label><input type="datetime-local" class="form-input" id="taskDeadline"></div><div class="form-group"><label id="tmPrL"></label><select class="form-input" id="taskPriority"><option value="low" id="oLow"></option><option value="medium" selected id="oMed"></option><option value="high" id="oHigh"></option></select></div><button class="btn-primary" id="saveTaskBtn"></button></div></div>
+<div class="modal-overlay" id="nameModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="nmTitle"></div><button class="modal-close" onclick="closeModal('nameModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="nmL"></label><input type="text" class="form-input" id="editNameInput"></div><button class="btn-primary" id="saveNameBtn"></button></div></div>
+<div class="modal-overlay" id="uniModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="umTitle"></div><button class="modal-close" onclick="closeModal('uniModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="umL"></label><select class="form-input" id="editUniSelect"><option value="latakia"></option><option value="sham"></option><option value="aast"></option><option value="manara"></option><option value="gemtq"></option></select></div><button class="btn-primary" id="saveUniBtn"></button></div></div>
+<div class="modal-overlay" id="examModal"><div class="modal"><div class="modal-header"><div class="modal-title">Add Exam</div><button class="modal-close" onclick="closeModal('examModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label>Subject</label><input type="text" class="form-input" id="examSubject" placeholder="e.g. Data Structures"></div><div class="form-group"><label>Date</label><input type="date" class="form-input" id="examDate"></div><div class="form-group"><label>Time</label><input type="time" class="form-input" id="examTime" value="09:00"></div><div class="form-group"><label>Type</label><select class="form-input" id="examType"><option value="midterm">Midterm</option><option value="final">Final</option><option value="quiz">Quiz</option></select></div><button class="btn-primary" id="saveExamBtn">Add Exam</button></div></div>
 
 <!-- ═══════════════ GROUP MODALS ═══════════════ -->
 <!-- Shared Lecture modal: admin-only editor for group_shared_schedule slots.
      Mirrors the structure of lectureModal but writes to state.groups.sharedSchedule. -->
 <div class="modal-overlay" id="groupLectureModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="glmTitle"></div><button class="modal-close" onclick="closeModal('groupLectureModal')">×</button></div>
+  <div class="modal-header"><div class="modal-title" id="glmTitle"></div><button class="modal-close" onclick="closeModal('groupLectureModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
   <div class="form-group"><label id="glmSubL"></label><input type="text" class="form-input" id="gLecSubject"></div>
   <div class="form-group"><label id="glmTypeL"></label>
   <div class="glm-type-row">
@@ -1840,7 +1943,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 <!-- Shared Exam modal: admin-only. Mirrors examModal. -->
 <div class="modal-overlay" id="groupExamModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="gemTitle"></div><button class="modal-close" onclick="closeModal('groupExamModal')">×</button></div>
+  <div class="modal-header"><div class="modal-title" id="gemTitle"></div><button class="modal-close" onclick="closeModal('groupExamModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
   <div class="form-group"><label id="gemSubL"></label><input type="text" class="form-input" id="gExamSubject" placeholder="e.g. Data Structures"></div>
   <div class="form-group"><label id="gemDateL"></label><input type="date" class="form-input" id="gExamDate"></div>
   <div class="form-group"><label id="gemTypeL"></label><select class="form-input" id="gExamType"><option value="midterm">Midterm</option><option value="final">Final</option><option value="quiz">Quiz</option></select></div>
@@ -1849,7 +1952,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 <div id="notifPermOverlay">
   <div id="notifPermCard">
-    <div id="notifPermIcon">🔔</div>
+    <div id="notifPermIcon"><svg aria-hidden="true" class="icon" width="40" height="40" style="color:var(--accent)"><use href="#ic-bell"/></svg></div>
     <div id="notifPermTitle"></div>
     <div id="notifPermMsg"></div>
     <div id="notifPermBtns">
@@ -1862,7 +1965,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 <button class="add-task-btn" id="fabAddTask" style="display:none">+</button>
 <!-- ═══ F1: Group Time Slots editor (admin only) ═══ -->
 <div class="modal-overlay" id="timeSlotsModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="tsmTitle"></div><button class="modal-close" onclick="closeModal('timeSlotsModal')">×</button></div>
+  <div class="modal-header"><div class="modal-title" id="tsmTitle"></div><button class="modal-close" onclick="closeModal('timeSlotsModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
   <div id="tsmSlotList" style="margin-bottom:10px"></div>
   <button class="btn-secondary" id="tsmAddBtn" style="width:100%;margin-bottom:10px"></button>
   <button class="btn-primary" id="tsmSaveBtn"></button>
@@ -1870,7 +1973,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 <!-- ═══ F2: Group Settings (admin only) ═══ -->
 <div class="modal-overlay" id="groupSettingsModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="gsmTitle"></div><button class="modal-close" onclick="closeModal('groupSettingsModal')">×</button></div>
+  <div class="modal-header"><div class="modal-title" id="gsmTitle"></div><button class="modal-close" onclick="closeModal('groupSettingsModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
   <div class="gs-section">
     <div class="gs-section-title" id="gsmNameL"></div>
     <div class="gs-inline-row"><input type="text" class="form-input" id="gsmName" maxlength="80"><button class="btn-primary" id="gsmSaveName" style="padding:8px 14px;width:auto"></button></div>
@@ -1947,7 +2050,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 <!-- ═══ F2: Delete Group confirm (type-name) ═══ -->
 <div class="modal-overlay" id="deleteGroupModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="dgmTitle"></div><button class="modal-close" onclick="closeModal('deleteGroupModal')">×</button></div>
+  <div class="modal-header"><div class="modal-title" id="dgmTitle"></div><button class="modal-close" onclick="closeModal('deleteGroupModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
   <div id="dgmMsg" style="font-size:.88rem;color:var(--text-secondary);margin-bottom:10px"></div>
   <div class="form-group"><label id="dgmLabel"></label><input type="text" class="form-input" id="dgmInput"></div>
   <button class="btn-danger" id="dgmConfirmBtn" disabled></button>
@@ -1980,14 +2083,14 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 <div class="action-sheet-backdrop" id="chatAttachSheetBackdrop"></div>
 <div class="action-sheet" id="chatAttachSheet">
   <div class="as-handle"></div>
-  <div class="as-row" id="caGallery"><span id="caGalleryLabel">🖼  Gallery</span></div>
-  <div class="as-row" id="caDocument"><span id="caDocumentLabel">📄  Document</span></div>
+  <div class="as-row" id="caGallery"><svg aria-hidden="true" class="icon" width="16" height="16" style="margin-inline-end:8px;flex-shrink:0"><use href="#ic-image"/></svg><span id="caGalleryLabel">Gallery</span></div>
+  <div class="as-row" id="caDocument"><svg aria-hidden="true" class="icon" width="16" height="16" style="margin-inline-end:8px;flex-shrink:0"><use href="#ic-file"/></svg><span id="caDocumentLabel">Document</span></div>
   <div class="as-row cancel" id="caCancel">Cancel</div>
 </div>
 
 <!-- ═══ Group Info modal (tap chat header) ═══ -->
 <div class="modal-overlay" id="groupInfoModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="gimTitle">Group info</div><button class="modal-close" onclick="closeModal('groupInfoModal')">×</button></div>
+  <div class="modal-header"><div class="modal-title" id="gimTitle">Group info</div><button class="modal-close" onclick="closeModal('groupInfoModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
   <div class="gis-hero">
     <div class="group-pic lg" id="gimPic" data-ctx="info"></div>
     <div class="gis-name" id="gimName">—</div>
@@ -2005,8 +2108,8 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 <div class="action-sheet" id="gpicSheet">
   <div class="as-handle"></div>
   <div class="as-title" id="gpicTitle">Group picture</div>
-  <div class="as-row" id="gpicGallery"><span>🖼  Choose from Gallery</span></div>
-  <div class="as-row danger" id="gpicRemove" style="display:none"><span>🗑  Remove group picture</span></div>
+  <div class="as-row" id="gpicGallery"><svg aria-hidden="true" class="icon" width="16" height="16" style="margin-inline-end:8px;flex-shrink:0"><use href="#ic-image"></use></svg><span>Choose from Gallery</span></div>
+  <div class="as-row danger" id="gpicRemove" style="display:none"><svg aria-hidden="true" class="icon" width="16" height="16" style="margin-inline-end:8px;flex-shrink:0"><use href="#ic-trash"></use></svg><span>Remove group picture</span></div>
   <div class="as-row cancel" id="gpicCancel">Cancel</div>
 </div>
 <input type="file" id="gpicGalleryInput" accept="image/*" style="display:none">
@@ -2020,7 +2123,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.14.0';
+const APP_VERSION = 'v1.15.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2239,13 +2342,13 @@ fcComp0:'7th Week Exam',fcComp1:'12th Week Exam',fcComp2:'Course Work',
 fcFinalW:'Final Weight %',fcTarget:'Target Total',
 fcCalcBtn:'Calculate',
 fcNeeded:'You need on the final:',fcImpossible:'Target is not achievable (>100%)',fcAlready:'You already have enough! 🎉',
-fcWeightOk:'✓ Weights sum to 100%',fcWeightErr:'⚠ Weights must sum to 100% (currently: ',fcWeightErrEnd:'%)',
+fcWeightOk:'Weights sum to 100%',fcWeightErr:'Weights must sum to 100% (currently: ',fcWeightErrEnd:'%)',
 fcCwProgress:'Coursework Progress',
 fcBrComp:'Component',fcBrContrib:'Contribution',fcBrTotal:'Coursework Total',fcBrRemaining:'Remaining to Target',fcBrFinalNeeded:'Final Score Needed',subNotes:'Subject Notes',notesPlaceholder:'Quick notes for this subject...',studyStats:'Weekly Study',noStudyData:'No study sessions this week.',notifLabel:'Notifications',notifDesc:'Get deadline reminders',notifOn:'Enabled',notifOff:'Disabled',notifGranted:'Notifications enabled',notifDenied:'Notifications blocked by browser',notifPermTitle:'Allow Notifications',notifPermMsg:'UniManager wants to send you notifications for deadlines and upcoming exams.',notifAllow:'Allow',notifBlock:'Block',
 // Daily Focus Challenge
-challengeTitle:'Daily Focus Challenge',challengePoints:'Focus Points',challengeDone:'✓ Challenge Completed!',challengeComplete:'Mark Complete',challenges:['Write 3 goals for today.','Review yesterday\'s notes for 5 minutes.','Study for 25 minutes without any interruptions.','Summarize what you learned today in 3 sentences.','Plan tomorrow\'s schedule before sleeping.','Read one topic you\'ve been putting off.','Organize your notes for one subject.','Do 5 practice problems from any subject.','Review all your deadlines and tasks.','Turn off social media for 1 hour and focus.'],
+challengeTitle:'Daily Focus Challenge',challengePoints:'Focus Points',challengeDone:'Challenge Completed!',challengeComplete:'Mark Complete',challenges:['Write 3 goals for today.','Review yesterday\'s notes for 5 minutes.','Study for 25 minutes without any interruptions.','Summarize what you learned today in 3 sentences.','Plan tomorrow\'s schedule before sleeping.','Read one topic you\'ve been putting off.','Organize your notes for one subject.','Do 5 practice problems from any subject.','Review all your deadlines and tasks.','Turn off social media for 1 hour and focus.'],
 // Sleep
-sleepTitle:'Sleep & Wellness',sleepBedtime:'Target Bedtime',sleepWakeup:'Target Wake-up',sleepReminderLabel:'Bedtime Reminder',sleepReminderDesc:'Notify 30 min before bedtime',sleepQualityTitle:'Last Night\'s Sleep Quality',sleepScheduleLine:'😴 Bedtime: {bed} | ⏰ Wake-up: {wake}',sleepAvg:'7-day avg',sleepReminderMsg:'Time to wind down. Bedtime in 30 minutes.',sleepExcellent:'😊',sleepGood:'😐',sleepBad:'😞',sleepSave:'Save Sleep Settings',sleepNoData:'Log your sleep first',sleepInsightGreat:'Great sleep this week, keep your routine 👌',sleepInsightOk:'Average sleep quality, try fixing your sleep schedule 🙂',sleepInsightBad:'Rough week of sleep, try avoiding screens before bed 😟',sleepTipBad:'Try turning off your phone 1 hour before bed.',sleepTipOk:'A dark, cool room helps you sleep better.',sleepTipGood:'Great routine, keep it up!',
+sleepTitle:'Sleep & Wellness',sleepBedtime:'Target Bedtime',sleepWakeup:'Target Wake-up',sleepReminderLabel:'Bedtime Reminder',sleepReminderDesc:'Notify 30 min before bedtime',sleepQualityTitle:'Last Night\'s Sleep Quality',sleepScheduleLine:'Bedtime: {bed} | Wake-up: {wake}',sleepAvg:'7-day avg',sleepReminderMsg:'Time to wind down. Bedtime in 30 minutes.',sleepExcellent:'😊',sleepGood:'😐',sleepBad:'😞',sleepSave:'Save Sleep Settings',sleepNoData:'Log your sleep first',sleepInsightGreat:'Great sleep this week, keep your routine',sleepInsightOk:'Average sleep quality, try fixing your sleep schedule',sleepInsightBad:'Rough week of sleep, try avoiding screens before bed',sleepTipBad:'Try turning off your phone 1 hour before bed.',sleepTipOk:'A dark, cool room helps you sleep better.',sleepTipGood:'Great routine, keep it up!',
 // Pomodoro analytics
 pomoAnalyticsTitle:'Study Analytics',pomoWeekThis:'This week',pomoWeekPrev:'vs last week',pomoDeepFocus:'Deep Focus Mode',pomoSubjAll:'All Subjects',pomoSoundLabel:'Session Sound',pomoSoundDesc:'Play tone when session ends',
 // Study Techniques
@@ -2276,7 +2379,7 @@ noSharedSlots:'No shared schedule yet. Tap a slot to add.',tapAddAdmin:'Tap to a
 noSharedNotes:'No subjects in the shared schedule yet.',noteSavedShared:'Note saved',notesSharedPlaceholder:'Shared notes for this subject \u2014 any member can edit...',
 /* ═══ F1/F2/F3 keys ═══ */
 editTimeSlots:'Edit Time Slots',timeSlotsTitle:'Group Time Slots',addTimeSlot:'+ Add Time Slot',timeSlotsSaved:'Time slots saved',startTime:'Start',endTime:'End',saveTimeSlots:'Save',
-nGroupChat:'Chat',gTabChat:'Chat',chatEmpty:'No messages yet. Say hello \uD83D\uDC4B',chatPlaceholder:'Type a message...',chatSend:'Send',chatLocked:'\uD83D\uDD12 Chat is locked',chatAdminOnlyMsg:'Only the admin can send messages in this group',chatMsgDeleted:'Message deleted',chatDelete:'Delete',adminChip:'\uD83D\uDC51 Admin',chatModeAll:'All members',chatModeAdminOnly:'Admin only',chatModeLocked:'Locked',chatMsgTooLong:'Message too long',chatSendFail:'Failed to send',chatAttach:'Attach file',chatAttachGallery:'🖼  Gallery',chatAttachDoc:'📄  Document',chatReplyTo:'Replying to',chatCancelReply:'Cancel reply',chatFileTooLarge:'File too large (max 10MB)',chatUploading:'Uploading...',chatFileDoc:'Document',chatFileImg:'Image',chatFileVideo:'Video',chatDownload:'Download',
+nGroupChat:'Chat',gTabChat:'Chat',chatEmpty:'No messages yet. Say hello',chatPlaceholder:'Type a message...',chatSend:'Send',chatLocked:'Chat is locked',chatAdminOnlyMsg:'Only the admin can send messages in this group',chatMsgDeleted:'Message deleted',chatDelete:'Delete',adminChip:'Admin',chatModeAll:'All members',chatModeAdminOnly:'Admin only',chatModeLocked:'Locked',chatMsgTooLong:'Message too long',chatSendFail:'Failed to send',chatAttach:'Attach file',chatAttachGallery:'Gallery',chatAttachDoc:'Document',chatReplyTo:'Replying to',chatCancelReply:'Cancel reply',chatFileTooLarge:'File too large (max 10MB)',chatUploading:'Uploading...',chatFileDoc:'Document',chatFileImg:'Image',chatFileVideo:'Video',chatDownload:'Download',
 groupSettings:'\u2699 Group Settings',gsTitle:'Group Settings',gsName:'Group Name',gsDesc:'Description',gsChatMode:'Chat Mode',gsTimeSlots:'Time Slots',gsRotateCode:'Rotate Invite Code',gsRotateConfirm:'Old code will stop working. Continue?',gsMembers:'Members',kick:'Kick',kickConfirm:'Remove this member from the group?',gsDeleteGroup:'Delete Group',gsDeleteConfirm:'Type the group name to confirm deletion',gsDeleteLabel:'Type group name:',gsDelete:'Delete permanently',gsSave:'Save',nameSaved:'Name updated',descSaved:'Description updated',modeSaved:'Chat mode updated',codeRotated:'Invite code rotated',memberKicked:'Member removed',groupDeleted:'Group deleted',gsSaveName:'Save Name',gsSaveDesc:'Save Description',gsDangerZone:'Danger Zone',gsPermissions:'Permissions',gsPermSend:'Who can send messages?',gsPermSendDesc:'Controls the chat input box for members',gsPermInfo:'Who can edit group info?',gsPermInfoDesc:'Name and description',gsPermPic:'Who can change group picture?',gsPermPicDesc:'Group avatar',permEveryone:'Everyone',permAdmins:'Admins',gsmPicHint:'Tap picture to change',
 gimTitleLbl:'Group info',gimMember:'member',gimMembers:'members',gimCreated:'Created',gimYou:'(you)',gimAdminChip:'Admin',gimPermSend:'Send messages',gimPermInfo:'Edit group info',gimPermPic:'Change group picture',gimAdminsOnly:'Admins only',
 changePhoto:'Change Photo',takePhoto:'\uD83D\uDCF7 Take Photo',chooseGallery:'\uD83D\uDDBC Choose from Gallery',removePhoto:'\uD83D\uDDD1 Remove Photo',cancel:'Cancel',photoUpdated:'\u2713 Profile photo updated',photoUpdateFailed:'\u2717 Photo update failed',photoRemoved:'Profile photo removed',photoOfflineError:'\uD83D\uDD34 Change photo requires internet',
@@ -2333,11 +2436,11 @@ fcComp0:'\u0627\u0645\u062A\u062D\u0627\u0646 \u0627\u0644\u0623\u0633\u0628\u06
 fcFinalW:'\u0648\u0632\u0646 \u0627\u0644\u0641\u0627\u064A\u0646\u0644 %',fcTarget:'\u0627\u0644\u062F\u0631\u062C\u0629 \u0627\u0644\u0645\u0633\u062A\u0647\u062F\u0641\u0629',
 fcCalcBtn:'\u0627\u062D\u0633\u0628',
 fcNeeded:'\u062A\u062D\u062A\u0627\u062C \u0641\u064A \u0627\u0644\u0641\u0627\u064A\u0646\u0644:',fcImpossible:'\u0627\u0644\u062F\u0631\u062C\u0629 \u0627\u0644\u0645\u0633\u062A\u0647\u062F\u0641\u0629 \u063A\u064A\u0631 \u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u062A\u062D\u0642\u064A\u0642 (>100%)',fcAlready:'\u0644\u062F\u064A\u0643 \u062F\u0631\u062C\u0629 \u0643\u0627\u0641\u064A\u0629! \uD83C\uDF89',
-fcWeightOk:'\u2713 \u0645\u062C\u0645\u0648\u0639 \u0627\u0644\u0623\u0648\u0632\u0627\u0646 = 100%',fcWeightErr:'\u26A0 \u064A\u062C\u0628 \u0623\u0646 \u064A\u0633\u0627\u0648\u064A \u0645\u062C\u0645\u0648\u0639 \u0627\u0644\u0623\u0648\u0632\u0627\u0646 100% (\u062D\u0627\u0644\u064A\u0627\u064B: ',fcWeightErrEnd:'%)',
+fcWeightOk:'\u0645\u062C\u0645\u0648\u0639 \u0627\u0644\u0623\u0648\u0632\u0627\u0646 = 100%',fcWeightErr:'\u064A\u062C\u0628 \u0623\u0646 \u064A\u0633\u0627\u0648\u064A \u0645\u062C\u0645\u0648\u0639 \u0627\u0644\u0623\u0648\u0632\u0627\u0646 100% (\u062D\u0627\u0644\u064A\u0627\u064B: ',fcWeightErrEnd:'%)',
 fcCwProgress:'\u062A\u0642\u062F\u0645 \u0623\u0639\u0645\u0627\u0644 \u0627\u0644\u0633\u0646\u0629',
 fcBrComp:'\u0627\u0644\u0645\u0643\u0648\u0646',fcBrContrib:'\u0627\u0644\u0645\u0633\u0627\u0647\u0645\u0629',fcBrTotal:'\u0645\u062C\u0645\u0648\u0639 \u0623\u0639\u0645\u0627\u0644 \u0627\u0644\u0633\u0646\u0629',fcBrRemaining:'\u0627\u0644\u0645\u062A\u0628\u0642\u064A \u0644\u0644\u0647\u062F\u0641',fcBrFinalNeeded:'\u0627\u0644\u062F\u0631\u062C\u0629 \u0627\u0644\u0645\u0637\u0644\u0648\u0628\u0629 \u0628\u0627\u0644\u0641\u0627\u064A\u0646\u0644',subNotes:'\u0645\u0644\u0627\u062D\u0638\u0627\u062A \u0627\u0644\u0645\u0648\u0627\u062F',notesPlaceholder:'\u0645\u0644\u0627\u062D\u0638\u0627\u062A \u0633\u0631\u064A\u0639\u0629...',studyStats:'\u062F\u0631\u0627\u0633\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639',noStudyData:'\u0644\u0627 \u062A\u0648\u062C\u062F \u062C\u0644\u0633\u0627\u062A.',notifLabel:'\u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062A',notifDesc:'\u062A\u0646\u0628\u064A\u0647\u0627\u062A \u0627\u0644\u0645\u0648\u0627\u0639\u064A\u062F',notifOn:'\u0645\u0641\u0639\u0644\u0629',notifOff:'\u0645\u0639\u0637\u0644\u0629',notifGranted:'\u062A\u0645 \u062A\u0641\u0639\u064A\u0644 \u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062A',notifDenied:'\u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062A \u0645\u062D\u0638\u0648\u0631\u0629',notifPermTitle:'\u0627\u0644\u0633\u0645\u0627\u062D \u0628\u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062A',notifPermMsg:'UniManager \u064A\u0631\u064A\u062F \u0625\u0631\u0633\u0627\u0644 \u0625\u0634\u0639\u0627\u0631\u0627\u062A \u0625\u0644\u064A\u0643 \u0644\u0644\u0645\u0648\u0627\u0639\u064A\u062F \u0648\u0627\u0644\u0627\u0645\u062A\u062D\u0627\u0646\u0627\u062A \u0627\u0644\u0642\u0627\u062F\u0645\u0629.',notifAllow:'\u0633\u0645\u0627\u062D',notifBlock:'\u062D\u0638\u0631',
-challengeTitle:'\u062A\u062D\u062F\u064A \u0627\u0644\u062A\u0631\u0643\u064A\u0632 \u0627\u0644\u064A\u0648\u0645\u064A',challengePoints:'\u0646\u0642\u0627\u0637 \u0627\u0644\u062A\u0631\u0643\u064A\u0632',challengeDone:'\u2713 \u062A\u0645 \u0625\u0643\u0645\u0627\u0644 \u0627\u0644\u062A\u062D\u062F\u064A!',challengeComplete:'\u0623\u0643\u0645\u0644\u062A \u0627\u0644\u062A\u062D\u062F\u064A',challenges:['\u0627\u0643\u062A\u0628 \u062B\u0644\u0627\u062B\u0629 \u0623\u0647\u062F\u0627\u0641 \u0644\u0647\u0630\u0627 \u0627\u0644\u064A\u0648\u0645.','\u0631\u0627\u062C\u0639 \u0645\u0644\u0627\u062D\u0638\u0627\u062A \u0627\u0644\u0623\u0645\u0633 \u0644\u0645\u062F\u0629 5 \u062F\u0642\u0627\u0626\u0642.','\u0627\u062F\u0631\u0633 25 \u062F\u0642\u064A\u0642\u0629 \u062F\u0648\u0646 \u0623\u064A \u0645\u0642\u0627\u0637\u0639\u0629.','\u0644\u062E\u0651\u0635 \u0645\u0627 \u062A\u0639\u0644\u0645\u062A\u0647 \u0627\u0644\u064A\u0648\u0645 \u0641\u064A 3 \u062C\u0645\u0644.','\u062E\u0637\u0637 \u062C\u062F\u0648\u0644 \u0627\u0644\u063A\u062F \u0642\u0628\u0644 \u0627\u0644\u0646\u0648\u0645.','\u0627\u0642\u0631\u0623 \u0645\u0648\u0636\u0648\u0639\u0627\u064B \u0643\u0646\u062A \u062A\u0624\u062C\u0644\u0647.','\u0646\u0638\u0651\u0645 \u0645\u0644\u0627\u062D\u0638\u0627\u062A\u0643 \u0644\u0645\u0627\u062F\u0629 \u0648\u0627\u062D\u062F\u0629.','\u062D\u0644 5 \u0645\u0633\u0627\u0626\u0644 \u062A\u0637\u0628\u064A\u0642\u064A\u0629 \u0645\u0646 \u0623\u064A \u0645\u0627\u062F\u0629.','\u0631\u0627\u062C\u0639 \u062C\u0645\u064A\u0639 \u0645\u0648\u0627\u0639\u064A\u062F\u0643 \u0648\u0645\u0647\u0627\u0645\u0643.','\u0623\u063A\u0644\u0642 \u0627\u0644\u0633\u0648\u0634\u064A\u0627\u0644 \u0645\u064A\u062F\u064A\u0627 \u0633\u0627\u0639\u0629 \u0648\u0631\u0643\u0651\u0632.'],
-sleepTitle:'النوم والراحة',sleepBedtime:'موعد النوم',sleepWakeup:'موعد الاستيقاظ',sleepReminderLabel:'تذكير النوم',sleepReminderDesc:'إشعار قبل 30 دقيقة من النوم',sleepQualityTitle:'جودة نومك البارحة',sleepScheduleLine:'😴 النوم: {bed} | ⏰ الاستيقاظ: {wake}',sleepAvg:'متوسط 7 أيام',sleepReminderMsg:'حان وقت الاسترخاء. موعد نومك بعد 30 دقيقة.',sleepExcellent:'😊',sleepGood:'😐',sleepBad:'😞',sleepSave:'حفظ إعدادات النوم',sleepNoData:'سجّل نومك أولاً',sleepInsightGreat:'نومك ممتاز هذا الأسبوع، حافظ على روتينك 👌',sleepInsightOk:'جودة نومك متوسطة، جرب تثبّت مواعيد نومك 🙂',sleepInsightBad:'نومك مضطرب هذا الأسبوع، حاول تبتعد عن الشاشات قبل النوم 😟',sleepTipBad:'جرب تطفّي الموبايل قبل النوم بساعة.',sleepTipOk:'غرفة مظلمة وباردة تساعد على النوم.',sleepTipGood:'روتينك ممتاز، استمر!',
+challengeTitle:'\u062A\u062D\u062F\u064A \u0627\u0644\u062A\u0631\u0643\u064A\u0632 \u0627\u0644\u064A\u0648\u0645\u064A',challengePoints:'\u0646\u0642\u0627\u0637 \u0627\u0644\u062A\u0631\u0643\u064A\u0632',challengeDone:'\u062A\u0645 \u0625\u0643\u0645\u0627\u0644 \u0627\u0644\u062A\u062D\u062F\u064A!',challengeComplete:'\u0623\u0643\u0645\u0644\u062A \u0627\u0644\u062A\u062D\u062F\u064A',challenges:['\u0627\u0643\u062A\u0628 \u062B\u0644\u0627\u062B\u0629 \u0623\u0647\u062F\u0627\u0641 \u0644\u0647\u0630\u0627 \u0627\u0644\u064A\u0648\u0645.','\u0631\u0627\u062C\u0639 \u0645\u0644\u0627\u062D\u0638\u0627\u062A \u0627\u0644\u0623\u0645\u0633 \u0644\u0645\u062F\u0629 5 \u062F\u0642\u0627\u0626\u0642.','\u0627\u062F\u0631\u0633 25 \u062F\u0642\u064A\u0642\u0629 \u062F\u0648\u0646 \u0623\u064A \u0645\u0642\u0627\u0637\u0639\u0629.','\u0644\u062E\u0651\u0635 \u0645\u0627 \u062A\u0639\u0644\u0645\u062A\u0647 \u0627\u0644\u064A\u0648\u0645 \u0641\u064A 3 \u062C\u0645\u0644.','\u062E\u0637\u0637 \u062C\u062F\u0648\u0644 \u0627\u0644\u063A\u062F \u0642\u0628\u0644 \u0627\u0644\u0646\u0648\u0645.','\u0627\u0642\u0631\u0623 \u0645\u0648\u0636\u0648\u0639\u0627\u064B \u0643\u0646\u062A \u062A\u0624\u062C\u0644\u0647.','\u0646\u0638\u0651\u0645 \u0645\u0644\u0627\u062D\u0638\u0627\u062A\u0643 \u0644\u0645\u0627\u062F\u0629 \u0648\u0627\u062D\u062F\u0629.','\u062D\u0644 5 \u0645\u0633\u0627\u0626\u0644 \u062A\u0637\u0628\u064A\u0642\u064A\u0629 \u0645\u0646 \u0623\u064A \u0645\u0627\u062F\u0629.','\u0631\u0627\u062C\u0639 \u062C\u0645\u064A\u0639 \u0645\u0648\u0627\u0639\u064A\u062F\u0643 \u0648\u0645\u0647\u0627\u0645\u0643.','\u0623\u063A\u0644\u0642 \u0627\u0644\u0633\u0648\u0634\u064A\u0627\u0644 \u0645\u064A\u062F\u064A\u0627 \u0633\u0627\u0639\u0629 \u0648\u0631\u0643\u0651\u0632.'],
+sleepTitle:'النوم والراحة',sleepBedtime:'موعد النوم',sleepWakeup:'موعد الاستيقاظ',sleepReminderLabel:'تذكير النوم',sleepReminderDesc:'إشعار قبل 30 دقيقة من النوم',sleepQualityTitle:'جودة نومك البارحة',sleepScheduleLine:'النوم: {bed} | الاستيقاظ: {wake}',sleepAvg:'متوسط 7 أيام',sleepReminderMsg:'حان وقت الاسترخاء. موعد نومك بعد 30 دقيقة.',sleepExcellent:'😊',sleepGood:'😐',sleepBad:'😞',sleepSave:'حفظ إعدادات النوم',sleepNoData:'سجّل نومك أولاً',sleepInsightGreat:'نومك ممتاز هذا الأسبوع، حافظ على روتينك',sleepInsightOk:'جودة نومك متوسطة، جرب تثبّت مواعيد نومك',sleepInsightBad:'نومك مضطرب هذا الأسبوع، حاول تبتعد عن الشاشات قبل النوم',sleepTipBad:'جرب تطفّي الموبايل قبل النوم بساعة.',sleepTipOk:'غرفة مظلمة وباردة تساعد على النوم.',sleepTipGood:'روتينك ممتاز، استمر!',
 pomoAnalyticsTitle:'\u062A\u062D\u0644\u064A\u0644\u0627\u062A \u0627\u0644\u0645\u0630\u0627\u0643\u0631\u0629',pomoWeekThis:'\u0647\u0630\u0627 \u0627\u0644\u0623\u0633\u0628\u0648\u0639',pomoWeekPrev:'\u0645\u0642\u0627\u0631\u0646\u0629 \u0628\u0627\u0644\u0633\u0627\u0628\u0642',pomoDeepFocus:'\u0648\u0636\u0639 \u0627\u0644\u062A\u0631\u0643\u064A\u0632 \u0627\u0644\u0639\u0645\u064A\u0642',pomoSubjAll:'\u0643\u0644 \u0627\u0644\u0645\u0648\u0627\u062F',pomoSoundLabel:'\u0635\u0648\u062A \u0627\u0644\u062C\u0644\u0633\u0629',pomoSoundDesc:'\u062A\u0634\u063A\u064A\u0644 \u0646\u063A\u0645\u0629 \u0639\u0646\u062F \u0627\u0646\u062A\u0647\u0627\u0621 \u0627\u0644\u062C\u0644\u0633\u0629',
 skillsNav:'\u0645\u0647\u0627\u0631\u0627\u062A',techLibTitle:'\u062A\u0642\u0646\u064A\u0627\u062A \u0627\u0644\u0645\u0630\u0627\u0643\u0631\u0629',techFavLabel:'\u062A\u0642\u0646\u064A\u062A\u0643 \u0627\u0644\u0645\u0641\u0636\u0644\u0629',techApplyNow:'\u0627\u0641\u062A\u062D',techNoFav:'\u0644\u0645 \u062A\u062E\u062A\u0631 \u0645\u0641\u0636\u0644\u0629 \u2014 \u0627\u0636\u063A\u0637 \u2B50 \u0639\u0644\u0649 \u062A\u0642\u0646\u064A\u0629!',
 tech0Name:'\u062A\u0642\u0646\u064A\u0629 \u0641\u0627\u064A\u0646\u0645\u0627\u0646',tech0Desc:'\u0627\u0634\u0631\u062D \u0627\u0644\u0645\u0641\u0647\u0648\u0645 \u0643\u0623\u0646\u0643 \u062A\u0639\u0644\u0645\u0647 \u0644\u0637\u0641\u0644 \u0639\u0645\u0631\u0647 12 \u0633\u0646\u0629. \u0625\u0630\u0627 \u0644\u0645 \u062A\u0633\u062A\u0637\u0639\u060C \u0641\u0623\u0646\u062A \u0644\u0645 \u062A\u0641\u0647\u0645\u0647 \u0628\u0639\u062F.',tech0Steps:['\u0627\u062E\u062A\u0631 \u0645\u0641\u0647\u0648\u0645\u0627\u064B \u062A\u0631\u064A\u062F \u062A\u0639\u0644\u0645\u0647.','\u0627\u0643\u062A\u0628\u0647 \u0643\u0623\u0646\u0643 \u062A\u0634\u0631\u062D\u0647 \u0644\u0637\u0641\u0644.','\u062D\u062F\u062F \u0627\u0644\u062B\u063A\u0631\u0627\u062A \u0648\u0627\u0631\u062C\u0639 \u0644\u0644\u0645\u0635\u062F\u0631.','\u0628\u0633\u0651\u0637 \u0648\u0627\u0633\u062A\u062E\u062F\u0645 \u0627\u0644\u062A\u0634\u0628\u064A\u0647\u0627\u062A.','\u0647\u0644 \u062A\u0633\u062A\u0637\u064A\u0639 \u0634\u0631\u062D\u0647 \u0628\u062C\u0645\u0644\u0629 \u0648\u0627\u062D\u062F\u0629\u061F'],
@@ -2366,7 +2469,7 @@ noSharedSlots:'\u0644\u0627 \u064A\u0648\u062C\u062F \u062C\u062F\u0648\u0644 \u
 noSharedNotes:'\u0644\u0627 \u062A\u0648\u062C\u062F \u0645\u0648\u0627\u062F \u0641\u064A \u0627\u0644\u062C\u062F\u0648\u0644 \u0627\u0644\u0645\u0634\u062A\u0631\u0643 \u0628\u0639\u062F.',noteSavedShared:'\u062A\u0645 \u062D\u0641\u0638 \u0627\u0644\u0645\u0644\u0627\u062D\u0638\u0629',notesSharedPlaceholder:'\u0645\u0644\u0627\u062D\u0638\u0627\u062A \u0645\u0634\u062A\u0631\u0643\u0629 \u0644\u0647\u0630\u0647 \u0627\u0644\u0645\u0627\u062F\u0629 \u2014 \u0623\u064A \u0639\u0636\u0648 \u064A\u0645\u0643\u0646\u0647 \u0627\u0644\u062A\u0639\u062F\u064A\u0644...',
 /* ═══ F1/F2/F3 keys (AR) ═══ */
 editTimeSlots:'\u062A\u0639\u062F\u064A\u0644 \u0627\u0644\u062D\u0635\u0635 \u0627\u0644\u0632\u0645\u0646\u064A\u0629',timeSlotsTitle:'\u062D\u0635\u0635 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',addTimeSlot:'+ \u0625\u0636\u0627\u0641\u0629 \u062D\u0635\u0629',timeSlotsSaved:'\u062A\u0645 \u062D\u0641\u0638 \u0627\u0644\u062D\u0635\u0635',startTime:'\u0627\u0644\u0628\u062F\u0627\u064A\u0629',endTime:'\u0627\u0644\u0646\u0647\u0627\u064A\u0629',saveTimeSlots:'\u062D\u0641\u0638',
-nGroupChat:'\u0627\u0644\u062F\u0631\u062F\u0634\u0629',gTabChat:'\u0627\u0644\u062F\u0631\u062F\u0634\u0629',chatEmpty:'\u0644\u0627 \u062A\u0648\u062C\u062F \u0631\u0633\u0627\u0626\u0644 \u0628\u0639\u062F. \u0642\u0644 \u0645\u0631\u062D\u0628\u0627 \uD83D\uDC4B',chatPlaceholder:'\u0627\u0643\u062A\u0628 \u0631\u0633\u0627\u0644\u0629...',chatSend:'\u0625\u0631\u0633\u0627\u0644',chatLocked:'\uD83D\uDD12 \u0627\u0644\u062F\u0631\u062F\u0634\u0629 \u0645\u0642\u0641\u0644\u0629',chatAdminOnlyMsg:'\u0627\u0644\u0645\u0634\u0631\u0641 \u0641\u0642\u0637 \u064A\u0645\u0643\u0646\u0647 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0631\u0633\u0627\u0626\u0644',chatMsgDeleted:'\u062A\u0645 \u062D\u0630\u0641 \u0627\u0644\u0631\u0633\u0627\u0644\u0629',chatDelete:'\u062D\u0630\u0641',adminChip:'\uD83D\uDC51 \u0645\u0634\u0631\u0641',chatModeAll:'\u062C\u0645\u064A\u0639 \u0627\u0644\u0623\u0639\u0636\u0627\u0621',chatModeAdminOnly:'\u0627\u0644\u0645\u0634\u0631\u0641 \u0641\u0642\u0637',chatModeLocked:'\u0645\u0642\u0641\u0644',chatMsgTooLong:'\u0627\u0644\u0631\u0633\u0627\u0644\u0629 \u0637\u0648\u064A\u0644\u0629 \u062C\u062F\u0627',chatSendFail:'\u0641\u0634\u0644 \u0627\u0644\u0625\u0631\u0633\u0627\u0644',chatAttach:'\u0625\u0631\u0641\u0627\u0642 \u0645\u0644\u0641',chatAttachGallery:'\uD83D\uDDBC  \u0627\u0644\u0645\u0639\u0631\u0636',chatAttachDoc:'\uD83D\uDCC4  \u0645\u0633\u062A\u0646\u062F',chatReplyTo:'\u0631\u062F \u0639\u0644\u0649',chatCancelReply:'\u0625\u0644\u063A\u0627\u0621 \u0627\u0644\u0631\u062F',chatFileTooLarge:'\u0627\u0644\u0645\u0644\u0641 \u0643\u0628\u064A\u0631 (\u0623\u0642\u0635\u0649 10MB)',chatUploading:'\u062C\u0627\u0631\u064A \u0627\u0644\u0631\u0641\u0639...',chatFileDoc:'\u0645\u0633\u062A\u0646\u062F',chatFileImg:'\u0635\u0648\u0631\u0629',chatFileVideo:'\u0641\u064A\u062F\u064A\u0648',chatDownload:'\u062A\u062D\u0645\u064A\u0644',
+nGroupChat:'\u0627\u0644\u062F\u0631\u062F\u0634\u0629',gTabChat:'\u0627\u0644\u062F\u0631\u062F\u0634\u0629',chatEmpty:'\u0644\u0627 \u062A\u0648\u062C\u062F \u0631\u0633\u0627\u0626\u0644 \u0628\u0639\u062F. \u0642\u0644 \u0645\u0631\u062D\u0628\u0627 ',chatPlaceholder:'\u0627\u0643\u062A\u0628 \u0631\u0633\u0627\u0644\u0629...',chatSend:'\u0625\u0631\u0633\u0627\u0644',chatLocked:'\u0627\u0644\u062F\u0631\u062F\u0634\u0629 \u0645\u0642\u0641\u0644\u0629',chatAdminOnlyMsg:'\u0627\u0644\u0645\u0634\u0631\u0641 \u0641\u0642\u0637 \u064A\u0645\u0643\u0646\u0647 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0631\u0633\u0627\u0626\u0644',chatMsgDeleted:'\u062A\u0645 \u062D\u0630\u0641 \u0627\u0644\u0631\u0633\u0627\u0644\u0629',chatDelete:'\u062D\u0630\u0641',adminChip:'\u0645\u0634\u0631\u0641',chatModeAll:'\u062C\u0645\u064A\u0639 \u0627\u0644\u0623\u0639\u0636\u0627\u0621',chatModeAdminOnly:'\u0627\u0644\u0645\u0634\u0631\u0641 \u0641\u0642\u0637',chatModeLocked:'\u0645\u0642\u0641\u0644',chatMsgTooLong:'\u0627\u0644\u0631\u0633\u0627\u0644\u0629 \u0637\u0648\u064A\u0644\u0629 \u062C\u062F\u0627',chatSendFail:'\u0641\u0634\u0644 \u0627\u0644\u0625\u0631\u0633\u0627\u0644',chatAttach:'\u0625\u0631\u0641\u0627\u0642 \u0645\u0644\u0641',chatAttachGallery:'\u0627\u0644\u0645\u0639\u0631\u0636',chatAttachDoc:'\u0645\u0633\u062A\u0646\u062F',chatReplyTo:'\u0631\u062F \u0639\u0644\u0649',chatCancelReply:'\u0625\u0644\u063A\u0627\u0621 \u0627\u0644\u0631\u062F',chatFileTooLarge:'\u0627\u0644\u0645\u0644\u0641 \u0643\u0628\u064A\u0631 (\u0623\u0642\u0635\u0649 10MB)',chatUploading:'\u062C\u0627\u0631\u064A \u0627\u0644\u0631\u0641\u0639...',chatFileDoc:'\u0645\u0633\u062A\u0646\u062F',chatFileImg:'\u0635\u0648\u0631\u0629',chatFileVideo:'\u0641\u064A\u062F\u064A\u0648',chatDownload:'\u062A\u062D\u0645\u064A\u0644',
 groupSettings:'\u2699 \u0625\u0639\u062F\u0627\u062F\u0627\u062A \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gsTitle:'\u0625\u0639\u062F\u0627\u062F\u0627\u062A \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gsName:'\u0627\u0633\u0645 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gsDesc:'\u0627\u0644\u0648\u0635\u0641',gsChatMode:'\u0648\u0636\u0639 \u0627\u0644\u062F\u0631\u062F\u0634\u0629',gsTimeSlots:'\u0627\u0644\u062D\u0635\u0635 \u0627\u0644\u0632\u0645\u0646\u064A\u0629',gsRotateCode:'\u062A\u063A\u064A\u064A\u0631 \u0631\u0645\u0632 \u0627\u0644\u062F\u0639\u0648\u0629',gsRotateConfirm:'\u0633\u064A\u062A\u0648\u0642\u0641 \u0627\u0644\u0631\u0645\u0632 \u0627\u0644\u0642\u062F\u064A\u0645 \u0639\u0646 \u0627\u0644\u0639\u0645\u0644. \u0645\u062A\u0627\u0628\u0639\u0629\u061F',gsMembers:'\u0627\u0644\u0623\u0639\u0636\u0627\u0621',kick:'\u0637\u0631\u062F',kickConfirm:'\u0637\u0631\u062F \u0647\u0630\u0627 \u0627\u0644\u0639\u0636\u0648 \u0645\u0646 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629\u061F',gsDeleteGroup:'\u062D\u0630\u0641 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gsDeleteConfirm:'\u0627\u0643\u062A\u0628 \u0627\u0633\u0645 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629 \u0644\u062A\u0623\u0643\u064A\u062F \u0627\u0644\u062D\u0630\u0641',gsDeleteLabel:'\u0627\u0633\u0645 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629:',gsDelete:'\u062D\u0630\u0641 \u0646\u0647\u0627\u0626\u064A',gsSave:'\u062D\u0641\u0638',nameSaved:'\u062A\u0645 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0627\u0633\u0645',descSaved:'\u062A\u0645 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0648\u0635\u0641',modeSaved:'\u062A\u0645 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0648\u0636\u0639',codeRotated:'\u062A\u0645 \u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0631\u0645\u0632',memberKicked:'\u062A\u0645 \u0637\u0631\u062F \u0627\u0644\u0639\u0636\u0648',groupDeleted:'\u062A\u0645 \u062D\u0630\u0641 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gsSaveName:'\u062D\u0641\u0638 \u0627\u0644\u0627\u0633\u0645',gsSaveDesc:'\u062D\u0641\u0638 \u0627\u0644\u0648\u0635\u0641',gsDangerZone:'\u0645\u0646\u0637\u0642\u0629 \u0627\u0644\u062E\u0637\u0631',gsPermissions:'\u0627\u0644\u0623\u0630\u0648\u0646\u0627\u062A',gsPermSend:'\u0645\u0646 \u064A\u0645\u0643\u0646\u0647 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0631\u0633\u0627\u0626\u0644\u061F',gsPermSendDesc:'\u064A\u062A\u062D\u0643\u0645 \u0641\u064A \u0645\u0631\u0628\u0639 \u0625\u062F\u062E\u0627\u0644 \u0627\u0644\u0631\u0633\u0627\u0626\u0644 \u0644\u0644\u0623\u0639\u0636\u0627\u0621',gsPermInfo:'\u0645\u0646 \u064A\u0645\u0643\u0646\u0647 \u062A\u0639\u062F\u064A\u0644 \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629\u061F',gsPermInfoDesc:'\u0627\u0644\u0627\u0633\u0645 \u0648\u0627\u0644\u0648\u0635\u0641',gsPermPic:'\u0645\u0646 \u064A\u0645\u0643\u0646\u0647 \u062A\u063A\u064A\u064A\u0631 \u0635\u0648\u0631\u0629 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629\u061F',gsPermPicDesc:'\u0635\u0648\u0631\u0629 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',permEveryone:'\u0627\u0644\u062C\u0645\u064A\u0639',permAdmins:'\u0627\u0644\u0645\u0634\u0631\u0641\u0648\u0646',gsmPicHint:'\u0627\u0636\u063A\u0637 \u0639\u0644\u0649 \u0627\u0644\u0635\u0648\u0631\u0629 \u0644\u0644\u062A\u063A\u064A\u064A\u0631',
 gimTitleLbl:'\u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gimMember:'\u0639\u0636\u0648',gimMembers:'\u0623\u0639\u0636\u0627\u0621',gimCreated:'\u062A\u0645 \u0627\u0644\u0625\u0646\u0634\u0627\u0621',gimYou:'(\u0623\u0646\u062A)',gimAdminChip:'\u0645\u0634\u0631\u0641',gimPermSend:'\u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0631\u0633\u0627\u0626\u0644',gimPermInfo:'\u062A\u0639\u062F\u064A\u0644 \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gimPermPic:'\u062A\u063A\u064A\u064A\u0631 \u0635\u0648\u0631\u0629 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',gimAdminsOnly:'\u0627\u0644\u0645\u0634\u0631\u0641\u0648\u0646 \u0641\u0642\u0637',
 changePhoto:'\u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0635\u0648\u0631\u0629',takePhoto:'\uD83D\uDCF7 \u0627\u0644\u062A\u0642\u0627\u0637 \u0635\u0648\u0631\u0629',chooseGallery:'\uD83D\uDDBC \u0627\u062E\u062A\u064A\u0627\u0631 \u0645\u0646 \u0627\u0644\u0645\u0639\u0631\u0636',removePhoto:'\uD83D\uDDD1 \u0625\u0632\u0627\u0644\u0629 \u0627\u0644\u0635\u0648\u0631\u0629',cancel:'\u0625\u0644\u063A\u0627\u0621',photoUpdated:'\u2713 \u062A\u0645 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0635\u0648\u0631\u0629',photoUpdateFailed:'\u2717 \u0641\u0634\u0644 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0635\u0648\u0631\u0629',photoRemoved:'\u062A\u0645\u062A \u0625\u0632\u0627\u0644\u0629 \u0627\u0644\u0635\u0648\u0631\u0629',photoOfflineError:'\uD83D\uDD34 \u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0635\u0648\u0631\u0629 \u064A\u062A\u0637\u0644\u0628 \u0627\u0644\u0625\u0646\u062A\u0631\u0646\u062A',
@@ -2794,7 +2897,7 @@ sLang.addEventListener('change',()=>{state.lang=sLang.value;applyLang();applyTex
 /* Welcome-screen Google sign-in button */
 const welcomeGoogleBtn=document.getElementById('welcomeGoogleBtn');
 if(welcomeGoogleBtn)welcomeGoogleBtn.onclick=()=>SupaDB.signInWithGoogle();
-sBtn.addEventListener('click',async()=>{state.name=sName.value.trim();state.university=sUni.value;state.lang=sLang.value;state.slots=JSON.parse(JSON.stringify(UNI_SLOTS[state.university]||[]));state.setupDone=true;saveState();let _cloudErr=null;if(SupaDB.getUser()){try{await SupaDB.upsertSettings();}catch(e){console.warn('[setup] upsertSettings failed',e);_cloudErr=e;}}document.getElementById('welcomeScreen').classList.add('hidden');document.getElementById('mainApp').style.display='flex';applyTheme();applyLang();applyText();renderNav();renderAll();startClock();startCountdowns();setupSubTabs();renderPomoModes();updatePomoSubjects();initNotifications();startSleepReminderCheck();history.pushState({nav:'app'}, '');if(_cloudErr){toast('⚠ Profile saved locally but cloud sync failed — will retry automatically','warning');}else{toast(t('welcome')+state.name+'!');}});
+sBtn.addEventListener('click',async()=>{state.name=sName.value.trim();state.university=sUni.value;state.lang=sLang.value;state.slots=JSON.parse(JSON.stringify(UNI_SLOTS[state.university]||[]));state.setupDone=true;saveState();let _cloudErr=null;if(SupaDB.getUser()){try{await SupaDB.upsertSettings();}catch(e){console.warn('[setup] upsertSettings failed',e);_cloudErr=e;}}document.getElementById('welcomeScreen').classList.add('hidden');document.getElementById('mainApp').style.display='flex';applyTheme();applyLang();applyText();renderNav();renderAll();startClock();startCountdowns();setupSubTabs();renderPomoModes();updatePomoSubjects();initNotifications();startSleepReminderCheck();history.pushState({nav:'app'}, '');if(_cloudErr){toast('Profile saved locally but cloud sync failed — will retry automatically','warning');}else{toast(t('welcome')+state.name+'!');}});
 function startClock(){const el=document.getElementById('headerClock');const tick=()=>{el.textContent=new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:false});};tick();setInterval(tick,30000);}
 
 /* ===== SUB TABS ===== */
@@ -2896,13 +2999,13 @@ function getSmartSummary(){
 const diffMs = dt - now;
 if (diffMs <= 0) continue;         // ✅ لا نعرض امتحانات انتهت فعلاً
 if (Math.ceil(diffMs / 864e5) === 0) continue;   // ✅ لا تظهر امتحاناً بقي أقل من 24 ساعة
-const d = Math.ceil(diffMs / 864e5);if(d>=0&&d<=3){let examText;if(state.lang==='ar'){const s=escapeHTML(ex.subject);examText=d===1?'امتحان '+s+' غداً':d===2?'امتحان '+s+' بعد يومين':'امتحان '+s+' بعد '+d+' أيام';}else{examText=escapeHTML(ex.subject)+' '+t('examIn')+' '+d+' '+t('days');}return{text:'⚠️ '+examText,cls:'danger'};}}
+const d = Math.ceil(diffMs / 864e5);if(d>=0&&d<=3){let examText;if(state.lang==='ar'){const s=escapeHTML(ex.subject);examText=d===1?'امتحان '+s+' غداً':d===2?'امتحان '+s+' بعد يومين':'امتحان '+s+' بعد '+d+' أيام';}else{examText=escapeHTML(ex.subject)+' '+t('examIn')+' '+d+' '+t('days');}return{text:'<svg aria-hidden="true" class="icon" width="14" height="14" style="margin-inline-end:4px;color:var(--red)"><use href="#ic-warning"><\/use><\/svg>'+examText,cls:'danger'};}}
   // 2. Task due within 24h
-  for(const tk of state.tasks){if(!tk.completed&&tk.deadline){const d=new Date(tk.deadline)-now;if(d>0&&d<864e5)return{text:'🔴 '+escapeHTML(tk.name)+' — due tomorrow',cls:'warn'};}}
+  for(const tk of state.tasks){if(!tk.completed&&tk.deadline){const d=new Date(tk.deadline)-now;if(d>0&&d<864e5)return{text:'<svg aria-hidden="true" class="icon" width="14" height="14" style="margin-inline-end:4px;color:var(--red)"><use href="#ic-warning"><\/use><\/svg>'+escapeHTML(tk.name)+' — due tomorrow',cls:'warn'};}}
   // 3. Absence limit — only for subjects still in schedule
   for(const [key,cnt] of Object.entries(state.absences||{})){const subj=key.lastIndexOf('-')>-1?key.substring(0,key.lastIndexOf('-')):key;if(cnt>=state.absenceLimit&&activeSubs.has(subj))return{text:t('maxReached')+escapeHTML(subj),cls:'danger'};}
   // 4. Default motivational
-  const mv=t('motiv');return{text:'💡 '+mv[new Date().getDate()%mv.length],cls:'info'};
+  const mv=t('motiv');return{text:'<svg aria-hidden="true" class="icon" width="14" height="14" style="margin-inline-end:4px;color:var(--accent)"><use href="#ic-bulb"><\/use><\/svg>'+mv[new Date().getDate()%mv.length],cls:'info'};
 }
 
 /* ===== DASHBOARD ===== */
@@ -2965,8 +3068,8 @@ function renderDash(){
   const highTask=state.tasks.filter(x=>!x.completed).sort((a,b)=>{const p={high:0,medium:1,low:2};return(p[a.priority]||1)-(p[b.priority]||1);})[0];
   if(highTask){
     const cd=highTask.deadline?getCD(highTask.deadline):'';
-    pinnedDiv.innerHTML='<div class="pinned-task"><div class="pt-label">\uD83D\uDCCC Pinned Task</div><div class="pt-name">'+escapeHTML(highTask.name)+'</div><div class="pt-meta">'+escapeHTML(highTask.subject||'')+' '+(cd?'\xB7 '+cd:'')+'</div></div>';
-  } else pinnedDiv.innerHTML='<div class="pinned-task"><div class="pt-label">\uD83C\uDFAF</div><div class="pt-name">'+t('noPinnedTask')+'</div></div>';
+    pinnedDiv.innerHTML='<div class="pinned-task"><div class="pt-label"><svg aria-hidden=\"true\" class=\"icon\" width=\"12\" height=\"12\" style=\"margin-inline-end:4px\"><use href=\"#ic-pin\"><\/use><\/svg> Pinned Task</div><div class="pt-name">'+escapeHTML(highTask.name)+'</div><div class="pt-meta">'+escapeHTML(highTask.subject||'')+' '+(cd?'\xB7 '+cd:'')+'</div></div>';
+  } else pinnedDiv.innerHTML='<div class="pinned-task"><div class="pt-label"><svg aria-hidden=\"true\" class=\"icon\" width=\"22\" height=\"22\"><use href=\"#ic-target\"><\/use><\/svg></div><div class="pt-name">'+t('noPinnedTask')+'</div></div>';
 
   // Absence summary — only subjects still in schedule
   const absDiv=document.getElementById('absenceSummary');
@@ -3008,8 +3111,8 @@ document.getElementById('deleteLecBtn').addEventListener('click',()=>{if(state.s
 function setA(d,k,v,subj,type){if(state.schedule[d]&&state.schedule[d][k]){state.schedule[d][k].attendance=v;
   if(v==='no'&&subj){if(!state.absences)state.absences={};const absKey=subj+'-'+(type||'');state.absences[absKey]=(state.absences[absKey]||0)+1;
     const cnt=state.absences[absKey],lim=state.absenceLimit;
-    if(cnt>=lim)toast('⚠️ '+t('maxReached')+subj,'error');
-    else if(cnt>=lim*0.75)toast('⚠️ '+subj+': '+cnt+'/'+lim+' '+t('absences'),'warning');
+    if(cnt>=lim)toast(''+t('maxReached')+subj,'error');
+    else if(cnt>=lim*0.75)toast(''+subj+': '+cnt+'/'+lim+' '+t('absences'),'warning');
   }
   saveState();}}
 
@@ -3027,7 +3130,7 @@ function renderAttendanceWidget(){
   let html='<div class="att-widget"><div class="aw-title">'+t('whatAttend')+'</div>';
   lecs.forEach((item,i)=>{
     const checked=item.lec.attendance==='yes';
-    html+='<div class="aw-item"><div class="aw-check'+(checked?' checked':'')+'" data-awi="'+i+'">'+(checked?'\u2713':'')+'</div><div class="aw-label">'+escapeHTML(item.lec.subject)+'</div>'+(item.lec.type?'<div class="aw-type">'+t(item.lec.type)+'</div>':'')+'<div class="aw-time">'+item.slot.start+'</div></div>';
+    html+='<div class="aw-item"><div class="aw-check'+(checked?' checked':'')+'" data-awi="'+i+'">'+(checked?'<svg aria-hidden=\"true\" class=\"icon\" width=\"12\" height=\"12\"><use href=\"#ic-check\"><\/use><\/svg>':'')+'</div><div class="aw-label">'+escapeHTML(item.lec.subject)+'</div>'+(item.lec.type?'<div class="aw-type">'+t(item.lec.type)+'</div>':'')+'<div class="aw-time">'+item.slot.start+'</div></div>';
   });
   html+='<button class="aw-done" id="attDoneBtn">'+t('attDone')+'</button></div>';
   w.innerHTML=html;
@@ -3069,7 +3172,7 @@ function renderExams(){const c=document.getElementById('examList');const exams=[
     else cdText = totalMins + 'm';
     const metaTime = (e.time ? ' · ' + e.time : '');
     return'<div class="exam-card"><div class="ec-info"><div class="ec-subject">'+escapeHTML(e.subject)+'</div><div class="ec-meta">'+escapeHTML(e.type)+' \xB7 '+e.date+metaTime+'</div></div><div class="ec-countdown '+cls+'">'+cdText+'</div><div class="ec-del" data-id="'+e.id+'">\uD83D\uDDD1</div></div>';}).join('');
-  c.querySelectorAll('.ec-del').forEach(el=>{el.addEventListener('click',()=>{const _delEid=parseInt(el.dataset.id);state.exams=state.exams.filter(e=>e.id!==_delEid);saveState();SupaDB.deleteExam(_delEid).catch(()=>toast('⚠ Delete may not have synced','warning'));renderExams();renderDash();});});
+  c.querySelectorAll('.ec-del').forEach(el=>{el.addEventListener('click',()=>{const _delEid=parseInt(el.dataset.id);state.exams=state.exams.filter(e=>e.id!==_delEid);saveState();SupaDB.deleteExam(_delEid).catch(()=>toast('Delete may not have synced','warning'));renderExams();renderDash();});});
   }
   /* Archive section: past exams collapsed at the bottom for historical reference */
   const past = exams.filter(e => _examDT(e).getTime() <= now);
@@ -3079,7 +3182,7 @@ function renderExams(){const c=document.getElementById('examList');const exams=[
     arch.innerHTML = '<div style="font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Past exams (' + past.length + ')</div>' +
       past.slice().reverse().map(e=>'<div class="exam-card" style="opacity:.55"><div class="ec-info"><div class="ec-subject">'+escapeHTML(e.subject)+'</div><div class="ec-meta">'+escapeHTML(e.type)+' \xB7 '+e.date+(e.time?' · '+e.time:'')+'</div></div><div class="ec-countdown" style="color:var(--text-muted)">—</div><div class="ec-del" data-id="'+e.id+'">\uD83D\uDDD1</div></div>').join('');
     c.appendChild(arch);
-    arch.querySelectorAll('.ec-del').forEach(el=>{el.addEventListener('click',()=>{const _delEid=parseInt(el.dataset.id);state.exams=state.exams.filter(e=>e.id!==_delEid);saveState();SupaDB.deleteExam(_delEid).catch(()=>toast('⚠ Delete may not have synced','warning'));renderExams();renderDash();});});
+    arch.querySelectorAll('.ec-del').forEach(el=>{el.addEventListener('click',()=>{const _delEid=parseInt(el.dataset.id);state.exams=state.exams.filter(e=>e.id!==_delEid);saveState();SupaDB.deleteExam(_delEid).catch(()=>toast('Delete may not have synced','warning'));renderExams();renderDash();});});
   }
 }
 
@@ -3087,7 +3190,7 @@ function renderExams(){const c=document.getElementById('examList');const exams=[
 document.getElementById('fabAddTask').addEventListener('click',()=>openModal('taskModal'));
 document.getElementById('saveTaskBtn').addEventListener('click',()=>{const n=document.getElementById('taskName').value.trim();if(!n){toast(t('taskReq'),'error');return;}const _newTask={id:Date.now(),name:n,subject:document.getElementById('taskSubject').value.trim(),deadline:document.getElementById('taskDeadline').value||null,priority:document.getElementById('taskPriority').value,completed:false,completedAt:null};state.tasks.push(_newTask);saveState();SupaDB.upsertTask(_newTask).catch(()=>{});closeModal('taskModal');renderTasks();renderDash();document.getElementById('taskName').value='';document.getElementById('taskSubject').value='';document.getElementById('taskDeadline').value='';const tp=document.getElementById('taskPriority');tp.value='medium';if(tp._cselSync)tp._cselSync();toast(t('taskAdded'));});
 function renderFilters(){const c=document.getElementById('taskFilters');c.innerHTML=[{k:'all',l:t('fAll')},{k:'pending',l:t('fPend')},{k:'completed',l:t('fComp')},{k:'high',l:t('fHigh')}].map(f=>'<button class="filter-chip'+(f.k===currentFilter?' active':'')+'" data-filter="'+f.k+'">'+f.l+'</button>').join('');c.querySelectorAll('.filter-chip').forEach(ch=>{ch.addEventListener('click',()=>{currentFilter=ch.dataset.filter;renderFilters();renderTasks();});});}
-function renderTasks(){let tasks=[...state.tasks];tasks.sort((a,b)=>{if(a.completed!==b.completed)return a.completed?1:-1;if(!a.deadline&&!b.deadline)return 0;if(!a.deadline)return 1;if(!b.deadline)return-1;return new Date(a.deadline)-new Date(b.deadline);});if(currentFilter==='pending')tasks=tasks.filter(x=>!x.completed);else if(currentFilter==='completed')tasks=tasks.filter(x=>x.completed);else if(currentFilter==='high')tasks=tasks.filter(x=>x.priority==='high'&&!x.completed);const pl={low:t('low'),medium:t('medium'),high:t('high')};const c=document.getElementById('taskList');if(!tasks.length){c.innerHTML='<div class="empty-state"><div class="empty-state-icon">\u2705</div><div class="empty-state-text">'+t('noTasks')+'</div></div>';}else{c.innerHTML=tasks.map(x=>{const cd=x.deadline?getCD(x.deadline):'';const urg=x.deadline&&!x.completed&&new Date(x.deadline)-new Date()<864e5;return'<div class="task-card'+(x.completed?' completed':'')+'"><div class="task-check'+(x.completed?' done':'')+'" data-id="'+x.id+'">'+(x.completed?'\u2713':'')+'</div><div class="task-body"><div class="task-name">'+x.name+'</div><div class="task-tags">'+(x.subject?'<span class="task-tag subject">'+x.subject+'</span>':'')+'<span class="task-tag '+x.priority+'">'+(pl[x.priority]||x.priority)+'</span></div>'+(cd?'<div class="task-countdown'+(urg?' urgent':'')+'">'+cd+'</div>':'')+'</div><div class="task-delete" data-id="'+x.id+'">\uD83D\uDDD1</div></div>';}).join('');c.querySelectorAll('.task-check').forEach(el=>{el.addEventListener('click',()=>{const id=parseInt(el.dataset.id);const tk=state.tasks.find(x=>x.id===id);if(tk){tk.completed=!tk.completed;tk.completedAt=tk.completed?new Date().toISOString():null;if(tk.completed)state.achievements.push({text:tk.name,date:new Date().toISOString()});saveState();SupaDB.upsertTask(tk).catch(()=>{});renderTasks();renderDash();if(tk.completed)toast(t('taskDone'));}});});c.querySelectorAll('.task-delete').forEach(el=>{el.addEventListener('click',()=>{const _delTid=parseInt(el.dataset.id);state.tasks=state.tasks.filter(x=>x.id!==_delTid);saveState();SupaDB.deleteTask(_delTid).catch(()=>toast('⚠ Delete may not have synced','warning'));renderTasks();renderDash();toast(t('taskRem'));});});}const wa=new Date(Date.now()-7*864e5).toISOString();const wk=state.achievements.filter(a=>a.date>=wa);const sec=document.getElementById('achievementsSection');if(wk.length){sec.style.display='block';document.getElementById('achievementsList').innerHTML=wk.slice(-10).reverse().map(a=>'<div class="achievement-item">\u2728 '+escapeHTML(a.text)+'</div>').join('');}else sec.style.display='none';}
+function renderTasks(){let tasks=[...state.tasks];tasks.sort((a,b)=>{if(a.completed!==b.completed)return a.completed?1:-1;if(!a.deadline&&!b.deadline)return 0;if(!a.deadline)return 1;if(!b.deadline)return-1;return new Date(a.deadline)-new Date(b.deadline);});if(currentFilter==='pending')tasks=tasks.filter(x=>!x.completed);else if(currentFilter==='completed')tasks=tasks.filter(x=>x.completed);else if(currentFilter==='high')tasks=tasks.filter(x=>x.priority==='high'&&!x.completed);const pl={low:t('low'),medium:t('medium'),high:t('high')};const c=document.getElementById('taskList');if(!tasks.length){c.innerHTML='<div class="empty-state"><div class="empty-state-icon"><svg aria-hidden="true" class="icon" width="40" height="40" style="color:var(--green)"><use href="#ic-check-circle"><\/use><\/svg></div><div class="empty-state-text">'+t(\'noTasks\')+\'</div></div>\';nerHTML=tasks.map(x=>{const cd=x.deadline?getCD(x.deadline):'';const urg=x.deadline&&!x.completed&&new Date(x.deadline)-new Date()<864e5;return'<div class="task-card'+(x.completed?' completed':'')+'"><div class="task-check'+(x.completed?' done':'')+'" data-id="'+x.id+'">'+(x.completed?'<svg aria-hidden=\"true\" class=\"icon\" width=\"12\" height=\"12\"><use href=\"#ic-check\"><\/use><\/svg>':'')+'</div><div class="task-body"><div class="task-name">'+x.name+'</div><div class="task-tags">'+(x.subject?'<span class="task-tag subject">'+x.subject+'</span>':'')+'<span class="task-tag '+x.priority+'">'+(pl[x.priority]||x.priority)+'</span></div>'+(cd?'<div class="task-countdown'+(urg?' urgent':'')+'">'+cd+'</div>':'')+'</div><div class="task-delete" data-id="'+x.id+'"><svg aria-hidden=\"true\" class=\"icon\" width=\"16\" height=\"16\"><use href=\"#ic-trash\"><\/use><\/svg></div></div>';}).join('');c.querySelectorAll('.task-check').forEach(el=>{el.addEventListener('click',()=>{const id=parseInt(el.dataset.id);const tk=state.tasks.find(x=>x.id===id);if(tk){tk.completed=!tk.completed;tk.completedAt=tk.completed?new Date().toISOString():null;if(tk.completed)state.achievements.push({text:tk.name,date:new Date().toISOString()});saveState();SupaDB.upsertTask(tk).catch(()=>{});renderTasks();renderDash();if(tk.completed)toast(t('taskDone'));}});});c.querySelectorAll('.task-delete').forEach(el=>{el.addEventListener('click',()=>{const _delTid=parseInt(el.dataset.id);state.tasks=state.tasks.filter(x=>x.id!==_delTid);saveState();SupaDB.deleteTask(_delTid).catch(()=>toast('Delete may not have synced','warning'));renderTasks();renderDash();toast(t('taskRem'));});});}const wa=new Date(Date.now()-7*864e5).toISOString();const wk=state.achievements.filter(a=>a.date>=wa);const sec=document.getElementById('achievementsSection');if(wk.length){sec.style.display='block';document.getElementById('achievementsList').innerHTML=wk.slice(-10).reverse().map(a=>'<div class="achievement-item">\u2728 '+escapeHTML(a.text)+'</div>').join('');}else sec.style.display='none';}
 function getCD(dl){const d=new Date(dl)-new Date();if(d<=0)return t('overdue');const dy=Math.floor(d/864e5),h=Math.floor(d%864e5/36e5),m=Math.floor(d%36e5/6e4);if(dy>0)return dy+t('dR')+' '+h+t('hR')+' '+t('rem');if(h>0)return h+t('hR')+' '+m+t('mR')+' '+t('rem');return m+t('mR')+' '+t('rem');}
 function startCountdowns(){if(cdInt)clearInterval(cdInt);cdInt=setInterval(()=>{renderTasks();renderExams();renderDash();},30000);}
 /* When tab regains focus after being hidden, immediately reconcile countdowns
@@ -3099,7 +3202,7 @@ document.addEventListener('visibilitychange', () => {
 /* ===== GPA ===== */
 function renderGPAToggle(){const c=document.getElementById('gpaModeToggle');c.innerHTML='<button class="gpa-mode-btn'+(gpaMode==='percentage'?' active':'')+'" data-mode="percentage">'+t('pctMode')+'</button><button class="gpa-mode-btn'+(gpaMode==='gpa'?' active':'')+'" data-mode="gpa">'+t('ltMode')+'</button>';c.querySelectorAll('.gpa-mode-btn').forEach(b=>{b.addEventListener('click',()=>{gpaMode=b.dataset.mode;renderGPAToggle();renderGPA();});});}
 document.getElementById('addSubjectBtn').addEventListener('click',()=>{const _ns={id:Date.now(),name:'',credits:'',score:'',letterGrade:''};state.subjects.push(_ns);saveState();SupaDB.upsertSubject(_ns).catch(()=>{});renderGPA();});
-function renderGPA(){const c=document.getElementById('subjectList');if(!state.subjects.length){c.innerHTML='<div class="empty-state"><div class="empty-state-icon">\uD83D\uDCCA</div><div class="empty-state-text">'+t('addSub')+'</div></div>';document.getElementById('gpaResult').style.display='none';document.getElementById('saveSemBtn').style.display='none';return;}c.innerHTML=state.subjects.map((s,i)=>{let gd='',pass=true;if(gpaMode==='percentage'&&s.score){const sc=parseFloat(s.score)||0;gd=isolateGrade(getLG(sc));pass=sc>=60;}else if(gpaMode==='gpa'&&s.letterGrade){gd=isolateGrade(s.letterGrade)+' ('+l2g(s.letterGrade).toFixed(1)+')';pass=isPassing(s.letterGrade);}let tf;if(gpaMode==='percentage'){tf='<input type="number" placeholder="'+t('scorePH')+'" value="'+(s.score||'')+'" data-idx="'+i+'" data-field="score" min="0" max="100">';}else{const opts=LG.map(g=>'<option value="'+g.l+'"'+(s.letterGrade===g.l?' selected':'')+'>'+isolateGrade(g.l)+'</option>').join('');tf='<select data-idx="'+i+'" data-field="letterGrade"><option value="">'+t('gradePH')+'</option>'+opts+'</select>';}return'<div class="subject-row"><div class="subject-row-header"><div class="subject-row-name">'+(s.name||t('subject')+' '+(i+1))+'</div>'+(gd?'<div class="subject-row-grade '+(pass?'pass':'fail')+'">'+gd+'</div>':'')+'</div><div class="subject-inputs"><input type="text" placeholder="'+t('subject')+'" value="'+(s.name||'')+'" data-idx="'+i+'" data-field="name"><input type="number" placeholder="'+t('credits')+'" value="'+(s.credits||'')+'" data-idx="'+i+'" data-field="credits" min="0" max="10">'+tf+'</div><button class="btn-danger" data-rmidx="'+i+'" style="margin-top:6px;padding:7px;font-size:.72rem">'+t('remove')+'</button></div>';}).join('');c.querySelectorAll('input').forEach(inp=>{inp.addEventListener('input',()=>{const _si=parseInt(inp.dataset.idx);state.subjects[_si][inp.dataset.field]=inp.value;saveState();if(state.subjects[_si])SupaDB.upsertSubject(state.subjects[_si]).catch(()=>{});calcGPA();});});c.querySelectorAll('select').forEach(sel=>{sel.addEventListener('change',()=>{const _sIdx=parseInt(sel.dataset.idx);state.subjects[_sIdx][sel.dataset.field]=sel.value;saveState();if(state.subjects[_sIdx])SupaDB.upsertSubject(state.subjects[_sIdx]).catch(()=>{});calcGPA();renderGPA();});});c.querySelectorAll('[data-rmidx]').forEach(b=>{b.addEventListener('click',()=>{const _rmIdx=parseInt(b.dataset.rmidx);const _rmSubj=state.subjects[_rmIdx];if(_rmSubj)SupaDB.deleteSubject(_rmSubj.id).catch(()=>toast('⚠ Delete may not have synced','warning'));state.subjects.splice(_rmIdx,1);saveState();renderGPA();});});calcGPA();upgradeAllSelects(c);}
+function renderGPA(){const c=document.getElementById('subjectList');if(!state.subjects.length){c.innerHTML='<div class="empty-state"><div class="empty-state-icon">\uD83D\uDCCA</div><div class="empty-state-text">'+t('addSub')+'</div></div>';document.getElementById('gpaResult').style.display='none';document.getElementById('saveSemBtn').style.display='none';return;}c.innerHTML=state.subjects.map((s,i)=>{let gd='',pass=true;if(gpaMode==='percentage'&&s.score){const sc=parseFloat(s.score)||0;gd=isolateGrade(getLG(sc));pass=sc>=60;}else if(gpaMode==='gpa'&&s.letterGrade){gd=isolateGrade(s.letterGrade)+' ('+l2g(s.letterGrade).toFixed(1)+')';pass=isPassing(s.letterGrade);}let tf;if(gpaMode==='percentage'){tf='<input type="number" placeholder="'+t('scorePH')+'" value="'+(s.score||'')+'" data-idx="'+i+'" data-field="score" min="0" max="100">';}else{const opts=LG.map(g=>'<option value="'+g.l+'"'+(s.letterGrade===g.l?' selected':'')+'>'+isolateGrade(g.l)+'</option>').join('');tf='<select data-idx="'+i+'" data-field="letterGrade"><option value="">'+t('gradePH')+'</option>'+opts+'</select>';}return'<div class="subject-row"><div class="subject-row-header"><div class="subject-row-name">'+(s.name||t('subject')+' '+(i+1))+'</div>'+(gd?'<div class="subject-row-grade '+(pass?'pass':'fail')+'">'+gd+'</div>':'')+'</div><div class="subject-inputs"><input type="text" placeholder="'+t('subject')+'" value="'+(s.name||'')+'" data-idx="'+i+'" data-field="name"><input type="number" placeholder="'+t('credits')+'" value="'+(s.credits||'')+'" data-idx="'+i+'" data-field="credits" min="0" max="10">'+tf+'</div><button class="btn-danger" data-rmidx="'+i+'" style="margin-top:6px;padding:7px;font-size:.72rem">'+t('remove')+'</button></div>';}).join('');c.querySelectorAll('input').forEach(inp=>{inp.addEventListener('input',()=>{const _si=parseInt(inp.dataset.idx);state.subjects[_si][inp.dataset.field]=inp.value;saveState();if(state.subjects[_si])SupaDB.upsertSubject(state.subjects[_si]).catch(()=>{});calcGPA();});});c.querySelectorAll('select').forEach(sel=>{sel.addEventListener('change',()=>{const _sIdx=parseInt(sel.dataset.idx);state.subjects[_sIdx][sel.dataset.field]=sel.value;saveState();if(state.subjects[_sIdx])SupaDB.upsertSubject(state.subjects[_sIdx]).catch(()=>{});calcGPA();renderGPA();});});c.querySelectorAll('[data-rmidx]').forEach(b=>{b.addEventListener('click',()=>{const _rmIdx=parseInt(b.dataset.rmidx);const _rmSubj=state.subjects[_rmIdx];if(_rmSubj)SupaDB.deleteSubject(_rmSubj.id).catch(()=>toast('Delete may not have synced','warning'));state.subjects.splice(_rmIdx,1);saveState();renderGPA();});});calcGPA();upgradeAllSelects(c);}
 function isolateGrade(g){return'\u2068'+g+'\u2069';}function calcGPA(){let tc=0,ws=0,v=false;const bd=[];state.subjects.forEach(s=>{const cr=parseFloat(s.credits);if(isNaN(cr)||cr<=0)return;if(gpaMode==='percentage'){const sc=parseFloat(s.score);if(isNaN(sc))return;const lb=getLG(sc);v=true;ws+=sc*cr;tc+=cr;bd.push(escapeHTML(s.name||t('subject'))+': '+isolateGrade(lb)+' ('+sc.toFixed(1)+'%)');}else{if(!s.letterGrade)return;const gv=l2g(s.letterGrade);const lb=s.letterGrade;v=true;ws+=gv*cr;tc+=cr;bd.push(escapeHTML(s.name||t('subject'))+': '+isolateGrade(lb)+' ('+gv.toFixed(2)+')');}});const rd=document.getElementById('gpaResult');const sb=document.getElementById('saveSemBtn');if(v&&tc>0){if(gpaMode==='percentage'){const avg=(ws/tc).toFixed(2);document.getElementById('gpaValue').textContent=avg+'%';document.getElementById('gpaScale').textContent=t('semAverage')+' ('+tc+' '+t('credHrs')+')';}else{const gpa=(ws/tc).toFixed(2);document.getElementById('gpaValue').textContent=gpa;document.getElementById('gpaScale').textContent=t('semGPA')+' ('+tc+' '+t('credHrs')+')'}document.getElementById('gpaBD').innerHTML=bd.join('<br>');rd.style.display='block';sb.style.display='block';}else{rd.style.display='none';sb.style.display='none';}}
 
 /* ===== GPA HISTORY ===== */
@@ -3218,8 +3321,8 @@ function renderStudyChart(){
     const sum=getWeightSum();
     const el=document.getElementById('fcWeightCheck');
     if(!el)return;
-    if(sum===100){el.textContent=t('fcWeightOk');el.className='fc-weight-check ok';}
-    else if(sum>0){el.textContent=t('fcWeightErr')+sum+t('fcWeightErrEnd');el.className='fc-weight-check err';}
+    if(sum===100){el.innerHTML='<svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px;color:var(--green)"><use href="#ic-check"><\/use><\/svg>'+t('fcWeightOk');el.className='fc-weight-check ok';}
+    else if(sum>0){el.innerHTML='<svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px;color:var(--orange)"><use href="#ic-warning"><\/use><\/svg>'+t('fcWeightErr')+sum+t('fcWeightErrEnd');el.className='fc-weight-check err';}
     else{el.className='fc-weight-check';}
   }
 
@@ -3291,7 +3394,7 @@ function renderStudyChart(){
     const nl=document.getElementById('fcNeededLabel');
 
     if(needed<=0){
-      r.className='fc-result pass';nv.textContent='✅';nl.textContent=t('fcAlready');
+      r.className='fc-result pass';nv.innerHTML='<svg aria-hidden="true" class="icon" width="36" height="36" style="color:var(--green)"><use href="#ic-check-circle"><\/use><\/svg>';nl.textContent=t('fcAlready');
     } else if(needed>100){
       r.className='fc-result fail';nv.textContent=needed.toFixed(1)+'%';nl.textContent=t('fcImpossible');
     } else if(needed>80){
@@ -3489,7 +3592,7 @@ function renderSettings(){
   upgradeAllSelects(document.getElementById('setGeneral'));
   renderSleepSettings();
 }
-function renderSlotEditor(){const c=document.getElementById('slotEditor');c.innerHTML=state.slots.map((s,i)=>'<div class="slot-edit-row"><input type="time" value="'+s.start+'" data-idx="'+i+'" data-field="start"><span style="color:var(--text-muted)">\u2192</span><input type="time" value="'+s.end+'" data-idx="'+i+'" data-field="end"><button class="slot-edit-rm" data-idx="'+i+'">\u00D7</button></div>').join('');c.querySelectorAll('input').forEach(inp=>{inp.addEventListener('change',()=>{state.slots[parseInt(inp.dataset.idx)][inp.dataset.field]=inp.value;saveState();renderSchedule();});});c.querySelectorAll('.slot-edit-rm').forEach(b=>{b.addEventListener('click',()=>{state.slots.splice(parseInt(b.dataset.idx),1);saveState();renderSlotEditor();renderSchedule();});});}
+function renderSlotEditor(){const c=document.getElementById('slotEditor');c.innerHTML=state.slots.map((s,i)=>'<div class="slot-edit-row"><input type="time" value="'+s.start+'" data-idx="'+i+'" data-field="start"><span style="color:var(--text-muted)">\u2192</span><input type="time" value="'+s.end+'" data-idx="'+i+'" data-field="end"><button class="slot-edit-rm" data-idx="'+i+'"><svg aria-hidden=\"true\" class=\"icon\" width=\"14\" height=\"14\"><use href=\"#ic-x\"><\/use><\/svg></button></div>').join('');c.querySelectorAll('input').forEach(inp=>{inp.addEventListener('change',()=>{state.slots[parseInt(inp.dataset.idx)][inp.dataset.field]=inp.value;saveState();renderSchedule();});});c.querySelectorAll('.slot-edit-rm').forEach(b=>{b.addEventListener('click',()=>{state.slots.splice(parseInt(b.dataset.idx),1);saveState();renderSlotEditor();renderSchedule();});});}
 document.getElementById('addSlotBtn').addEventListener('click',()=>{state.slots.push({start:'08:00',end:'10:00'});saveState();renderSlotEditor();renderSchedule();});
 document.getElementById('saveNameBtn').addEventListener('click',()=>{const n=document.getElementById('editNameInput').value.trim();if(n){state.name=n;saveState();renderHeader();renderSettings();closeModal('nameModal');toast(t('nameUpd'));}});
 document.getElementById('saveUniBtn').addEventListener('click',()=>{state.university=document.getElementById('editUniSelect').value;state.slots=JSON.parse(JSON.stringify(UNI_SLOTS[state.university]||[]));saveState();renderAll();closeModal('uniModal');toast(t('uniChg'));});
@@ -3572,14 +3675,14 @@ function renderChallenge(){
   const stored=JSON.parse(localStorage.getItem('unimanager_focus_challenge')||'{}');
   const points=JSON.parse(localStorage.getItem('unimanager_focus_points')||'0');
   const done=stored.date===todayStr;
-  c.innerHTML='<div class="challenge-card"><div class="challenge-header"><span class="challenge-title">'+t('challengeTitle')+'</span><span class="challenge-points">⚡ '+points+' '+t('challengePoints')+'</span></div><div class="challenge-text">'+escapeHTML(challenge)+'</div><button class="challenge-btn '+(done?'done':'pending')+'" id="challengeCompleteBtn">'+(done?t('challengeDone'):t('challengeComplete'))+'</button></div>';
+  c.innerHTML='<div class="challenge-card"><div class="challenge-header"><span class="challenge-title">'+t('challengeTitle')+'</span><span class="challenge-points"><svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:3px;color:var(--accent)"><use href="#ic-lightning"><\/use><\/svg>'+points+' '+t('challengePoints')+'</span></div><div class="challenge-text">'+escapeHTML(challenge)+'</div><button class="challenge-btn '+(done?'done':'pending')+'" id="challengeCompleteBtn">'+(done?'<svg aria-hidden="true" class="icon" width="14" height="14" style="margin-inline-end:4px"><use href="#ic-check"><\/use><\/svg>'+t('challengeDone'):t('challengeComplete'))+'</button></div>';
   if(!done){
     document.getElementById('challengeCompleteBtn').addEventListener('click',()=>{
       const newPts=points+10;
       localStorage.setItem('unimanager_focus_challenge',JSON.stringify({date:todayStr,idx}));
       localStorage.setItem('unimanager_focus_points',JSON.stringify(newPts));
       renderChallenge();
-      toast('⚡ +10 '+t('challengePoints'));
+      toast('+10 '+t('challengePoints'));
     });
   }
 }
@@ -3621,11 +3724,11 @@ function renderSleepCard(){
   const schedLine=t('sleepScheduleLine').replace('{bed}',ss.bedtime||'--:--').replace('{wake}',ss.wakeup||'--:--');
   c.innerHTML='<div class="sleep-card">'+
     '<div class="sleep-card-title">'+t('sleepQualityTitle')+'</div>'+
-    '<div class="sleep-schedule-line">'+schedLine+'</div>'+
+    '<div class="sleep-schedule-line"><svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px"><use href="#ic-moon"><\/use><\/svg>'+schedLine+'</div>'+
     '<div class="sleep-quality-btns">'+
-      '<button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepExcellent')?' active':'')+'" data-q="'+t('sleepExcellent')+'">'+t('sleepExcellent')+'</button>'+
-      '<button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepGood')?' active':'')+'" data-q="'+t('sleepGood')+'">'+t('sleepGood')+'</button>'+
-      '<button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepBad')?' active':'')+'" data-q="'+t('sleepBad')+'">'+t('sleepBad')+'</button>'+
+      '<button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepExcellent')?' active':'')+'" data-q="'+t('sleepExcellent')+'"><svg aria-hidden="true" class="icon" width="26" height="26"><use href="#ic-face-good"><\/use><\/svg></button>'+
+      '<button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepGood')?' active':'')+'" data-q="'+t('sleepGood')+'"><svg aria-hidden="true" class="icon" width="26" height="26"><use href="#ic-face-neutral"><\/use><\/svg></button>'+
+      '<button class="sq-btn'+(todayQ&&todayQ.quality===t('sleepBad')?' active':'')+'" data-q="'+t('sleepBad')+'"><svg aria-hidden="true" class="icon" width="26" height="26"><use href="#ic-face-bad"><\/use><\/svg></button>'+
     '</div>'+
     sparkline+
     (insightText?'<div style="font-size:.78rem;color:var(--text-muted);text-align:center;margin-top:8px;line-height:1.4">'+insightText+'</div>':'')+
@@ -3672,7 +3775,7 @@ function startSleepReminderCheck(){
 
 /* ===== STUDY TECHNIQUES ===== */
 const TECHNIQUES=[
-  {id:0,icon:'🧠'},{id:1,icon:'🔁'},{id:2,icon:'📅'},{id:3,icon:'📝'},{id:4,icon:'⏱'}
+  {id:0,icon:'<svg aria-hidden="true" class="icon" width="20" height="20"><use href="#ic-brain"><\/use><\/svg>'},{id:1,icon:'<svg aria-hidden="true" class="icon" width="20" height="20"><use href="#ic-repeat"><\/use><\/svg>'},{id:2,icon:'<svg aria-hidden="true" class="icon" width="20" height="20"><use href="#ic-calendar"><\/use><\/svg>'},{id:3,icon:'<svg aria-hidden="true" class="icon" width="20" height="20"><use href="#ic-file-text"><\/use><\/svg>'},{id:4,icon:'<svg aria-hidden="true" class="icon" width="20" height="20"><use href="#ic-timer"><\/use><\/svg>'}
 ];
 function getFavTech(){return localStorage.getItem('unimanager_fav_tech');}
 function setFavTech(id){localStorage.setItem('unimanager_fav_tech',String(id));}
@@ -3681,7 +3784,7 @@ function renderTechLib(){
   const fav=getFavTech();
   c.innerHTML=TECHNIQUES.map(tc=>{
     const isFav=fav===String(tc.id);
-    return'<div class="tech-card" id="techCard'+tc.id+'"><div class="tech-header" data-tid="'+tc.id+'"><span class="tech-icon">'+tc.icon+'</span><span class="tech-name">'+t('tech'+tc.id+'Name')+'</span><span class="tech-fav" data-fid="'+tc.id+'" title="Favorite">'+(isFav?'⭐':'☆')+'</span><span class="tech-arrow">▼</span></div><div class="tech-body"><div class="tech-desc">'+t('tech'+tc.id+'Desc')+'</div><ul class="tech-steps">'+t('tech'+tc.id+'Steps').map(s=>'<li>'+escapeHTML(s)+'</li>').join('')+'</ul></div></div>';
+    return'<div class="tech-card" id="techCard'+tc.id+'"><div class="tech-header" data-tid="'+tc.id+'"><span class="tech-icon">'+tc.icon+'</span><span class="tech-name">'+t('tech'+tc.id+'Name')+'</span><span class="tech-fav" data-fid="'+tc.id+'" title="Favorite">'+(isFav?'<svg aria-hidden="true" class="icon" width="16" height="16" style="color:var(--accent)"><use href="#ic-star"><\/use><\/svg>':'<svg aria-hidden="true" class="icon" width="16" height="16" style="color:var(--text-muted)"><use href="#ic-star-empty"><\/use><\/svg>')+'</span><span class="tech-arrow"><svg aria-hidden="true" class="icon" width="14" height="14"><use href="#ic-chevron-down"><\/use><\/svg></span></div><div class="tech-body"><div class="tech-desc">'+t('tech'+tc.id+'Desc')+'</div><ul class="tech-steps">'+t('tech'+tc.id+'Steps').map(s=>'<li>'+escapeHTML(s)+'</li>').join('')+'</ul></div></div>';
   }).join('');
   c.querySelectorAll('.tech-header').forEach(h=>{h.addEventListener('click',e=>{if(e.target.classList.contains('tech-fav'))return;const card=document.getElementById('techCard'+h.dataset.tid);card.classList.toggle('open');});});
   c.querySelectorAll('.tech-fav').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const id=btn.dataset.fid;setFavTech(id);renderTechLib();renderFavTechHome();toast('⭐ '+t('tech'+id+'Name'));});});
@@ -4060,7 +4163,7 @@ function renderGroupExams(){
         const lid=el.dataset.eid;
         state.groups.sharedExams=(state.groups.sharedExams||[]).filter(x=>String(x.local_id)!==String(lid));
         saveState();
-        SupaDB.deleteGroupExam(lid).catch(()=>toast('\u26A0 Delete may not have synced','warning'));
+        SupaDB.deleteGroupExam(lid).catch(()=>toast('Delete may not have synced','warning'));
         renderGroupExams();
         toast(t('examRemovedShared'));
       });
@@ -4140,7 +4243,7 @@ function renderGroupNotes(){
       saveState();
       clearTimeout(_tmr);
       _tmr=setTimeout(()=>{
-        SupaDB.upsertGroupNote(subj,val).catch(()=>toast('\u26A0 Note sync failed','warning'));
+        SupaDB.upsertGroupNote(subj,val).catch(()=>toast('Note sync failed','warning'));
       },800);
     });
   });
@@ -4168,7 +4271,7 @@ function renderGroupNotes(){
       console.warn('[groups] create failed',e);
       const msg=(e&&e.message)||'';
       if(/already a member/i.test(msg))toast(t('alreadyInGroup'),'error');
-      else toast('\u2717 '+(msg||'Create failed'),'error');
+      else toast(''+(msg||'Create failed'),'error');
     }finally{cgBtn.disabled=false;cgBtn.textContent=_orig;}
   });}
   /* Join by code */
@@ -4189,7 +4292,7 @@ function renderGroupNotes(){
       toast(t('groupJoined'));
     }catch(e){
       console.warn('[groups] join failed',e);
-      toast('\u2717 '+((e&&e.message)||'Join failed'),'error');
+      toast(''+((e&&e.message)||'Join failed'),'error');
     }finally{jgBtn.disabled=false;jgBtn.textContent=_orig;}
   });}
   /* Copy invite code */
@@ -4220,7 +4323,7 @@ function renderGroupNotes(){
         tabHistory = [];
         renderGroups();renderNav();renderSideNav();
         toast(t('leaveDone'));
-      }catch(e){console.warn('[groups] leave failed',e);toast('\u2717 '+((e&&e.message)||'Leave failed'),'error');}
+      }catch(e){console.warn('[groups] leave failed',e);toast(''+((e&&e.message)||'Leave failed'),'error');}
     });
   });}
   /* Add shared exam (admin only) — opens groupExamModal */
@@ -4241,7 +4344,7 @@ function renderGroupNotes(){
     /* optimistic local add */
     if(!state.groups.sharedExams)state.groups.sharedExams=[];
     state.groups.sharedExams.push(exam);saveState();
-    try{await SupaDB.upsertGroupExam(exam);}catch(e){toast('\u26A0 Sync failed, will retry','warning');}
+    try{await SupaDB.upsertGroupExam(exam);}catch(e){toast('Sync failed, will retry','warning');}
     closeModal('groupExamModal');renderGroupExams();toast(t('examAddedShared'));
   });}
 })();
@@ -4357,7 +4460,7 @@ function _syncGlmTypeBtns(type){
         await SupaDB.deleteGroupSlot(day,oldSlotKey);
       }
       await SupaDB.upsertGroupSlot(day,newSlotKey,data);
-    }catch(e){toast('\u26A0 Sync failed','warning');}
+    }catch(e){toast('Sync failed','warning');}
 
     closeModal('groupLectureModal');renderGroupSchedule();toast(t('slotSavedShared'));
   });}
@@ -4365,7 +4468,7 @@ function _syncGlmTypeBtns(type){
   if(del){del.addEventListener('click',async function(){
     if(state.groups.sharedSchedule[_gEditingDay])delete state.groups.sharedSchedule[_gEditingDay][_gEditingSlot];
     saveState();
-    try{await SupaDB.deleteGroupSlot(_gEditingDay,_gEditingSlot);}catch(e){toast('\u26A0 Sync failed','warning');}
+    try{await SupaDB.deleteGroupSlot(_gEditingDay,_gEditingSlot);}catch(e){toast('Sync failed','warning');}
     closeModal('groupLectureModal');renderGroupSchedule();toast(t('slotRemovedShared'));
   });}
   window._initGlmModal=_initGlmModal;
@@ -4474,7 +4577,7 @@ const SupaDB = (() => {
     const el  = document.getElementById('syncStatusText');
     const row = document.getElementById('syncStatusRow');
     const dot = document.getElementById('syncDot');
-    if (el)  el.textContent  = msg;
+    if (el)  el.innerHTML  = msg;
     if (row) row.className   = 'sync-status-row ' + cls;
     if (dot) dot.className   = 'online-dot ' + (cls === 'synced' ? 'online' : cls === 'error' ? 'offline' : 'checking');
   }
@@ -4530,7 +4633,7 @@ const SupaDB = (() => {
       options:  { redirectTo: window.location.href }
     });
     if (error) {
-      toast('✗ ' + error.message, 'error');
+      toast('' + error.message, 'error');
       if (acctBtn) { acctBtn.disabled = false; acctBtn.innerHTML = origAcct != null ? origAcct : ('Continue with Google ' + _GOOGLE_BTN_HTML); }
       if (welBtn)  { welBtn.disabled  = false; welBtn.innerHTML  = origWel  != null ? origWel  : ('<span id="welGoogleTxt">' + t('welGoogleCta') + '</span> ' + _GOOGLE_BTN_HTML); }
     }
@@ -4652,7 +4755,7 @@ const SupaDB = (() => {
       IDB.set('state', state).catch(() => {});
 
       _lastSyncAt = new Date();
-      _setSyncStatus(t('syncStatusSynced') + ' ' + _formatSyncTime(_lastSyncAt) + ' ✓', 'synced');
+      _setSyncStatus(t('syncStatusSynced') + ' ' + _formatSyncTime(_lastSyncAt) + ' <svg aria-hidden="true" class="icon" width="12" height="12" style="color:var(--green)"><use href="#ic-check"><\/use><\/svg>', 'synced');
 
       // ── Render with fresh data ──
       applyLang(); applyTheme();
@@ -4673,7 +4776,7 @@ const SupaDB = (() => {
         renderNav(); renderAll();
         history.pushState({nav:'app'}, '');
         hideInitLoader();
-        toast('✓ Local data synced to cloud', 'success');
+        toast('Local data synced to cloud', 'success');
       } else if (isNewUser) {
         /* Case B: truly new user (no local setup, no cloud row).
            Show unified welcome screen to collect profile. */
@@ -4690,7 +4793,7 @@ const SupaDB = (() => {
         applyText();
         upgradeAllSelects(document.getElementById('welcomeScreen'));
         hideInitLoader();
-        toast('👋 Welcome! Please complete your profile.', 'success');
+        toast('Welcome! Please complete your profile.', 'success');
       } else {
         /* Case C: returning cloud user — settings row merged, setupDone is true. */
         document.getElementById('welcomeScreen').classList.add('hidden');
@@ -4702,7 +4805,7 @@ const SupaDB = (() => {
 
     } catch (err) {
       console.warn('[SupaDB] _loadAndMerge failed:', err);
-      _setSyncStatus('⚠ Sync failed — using local data', 'error');
+      _setSyncStatus('<svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px;color:var(--orange)"><use href="#ic-warning"><\/use><\/svg>Sync failed — using local data', 'error');
       // Fall back to whatever is in state (loaded from localStorage at startup)
       if (state.setupDone) {
         document.getElementById('welcomeScreen').classList.add('hidden');
@@ -5056,7 +5159,7 @@ try {
     _settingsDebounce = setTimeout(() => {
       upsertSettings().catch(e => {
         console.warn('[SupaDB] settings sync failed:', e);
-        _setSyncStatus('⚠ Sync failed', 'error');
+        _setSyncStatus('<svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px;color:var(--orange)"><use href="#ic-warning"><\/use><\/svg>Sync failed', 'error');
       });
     }, 600);
   }
@@ -5121,10 +5224,10 @@ try {
         }
       }
       if (done) {
-        toast(`☁ ${done} offline change${done > 1 ? 's' : ''} synced`, 'success');
-        _setSyncStatus('✓ All offline changes synced ' + _formatSyncTime(new Date()), 'synced');
+        toast(`${done} offline change${done > 1 ? 's' : ''} synced`, 'success');
+        _setSyncStatus('<svg aria-hidden="true" class="icon" width="12" height="12" style="color:var(--green)"><use href="#ic-check"><\/use><\/svg> All offline changes synced ' + _formatSyncTime(new Date()), 'synced');
       }
-      if (failed) _setSyncStatus(`⚠ ${failed} item(s) failed to sync`, 'error');
+      if (failed) _setSyncStatus('<svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px;color:var(--orange)"><use href="#ic-warning"><\/use><\/svg>' + failed + ' item(s) failed to sync', 'error');
     } finally {
       _syncing = false;
     }
@@ -5188,24 +5291,24 @@ try {
 
       const manualBtn = document.getElementById('manualSyncBtn');
       if (manualBtn) {
-        if (!manualBtn.disabled) manualBtn.textContent = t('syncNow') + ' 🔄';
+        if (!manualBtn.disabled) manualBtn.textContent = t('syncNow');
         manualBtn.onclick = async () => {
           if (manualBtn.disabled) return;
           manualBtn.disabled    = true;
-          manualBtn.textContent = t('syncing') + ' ⏳';
+          manualBtn.textContent = t('syncing');
           try {
             await _loadAndMerge();
             await _processSyncQueue();
             renderAll();
-            toast('✓ Synced', 'success');
+            toast('Synced', 'success');
             // _loadAndMerge / _processSyncQueue set their own _setSyncStatus; don't override
           } catch (e) {
             console.warn('[SupaDB] manual sync failed:', e);
-            _setSyncStatus('⚠ Sync failed', 'error');
-            toast('✗ Sync failed: ' + (e?.message || 'unknown error'), 'error');
+            _setSyncStatus('<svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px;color:var(--orange)"><use href="#ic-warning"><\/use><\/svg>Sync failed', 'error');
+            toast('Sync failed: ' + (e?.message || 'unknown error'), 'error');
           } finally {
             manualBtn.disabled    = false;
-            manualBtn.textContent = t('syncNow') + ' 🔄';
+            manualBtn.textContent = t('syncNow');
           }
         };
       }
@@ -5229,7 +5332,7 @@ try {
             await signOut();
           } catch (e) {
             console.warn('[SupaDB] signOut failed:', e);
-            toast('✗ Sign out failed: ' + (e?.message || 'unknown error'), 'error');
+            toast('Sign out failed: ' + (e?.message || 'unknown error'), 'error');
             logoutBtn.disabled    = false;
             logoutBtn.innerHTML = _origHTML;
           }
@@ -5237,7 +5340,7 @@ try {
         };
       }
 
-      if (!_online) _setSyncStatus('🔴 Offline — changes will sync when reconnected', 'offline');
+      if (!_online) _setSyncStatus('<svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px;color:var(--red)"><use href="#ic-warning"><\/use><\/svg> Offline — changes will sync when reconnected', 'offline');
       else          _setSyncStatus(_lastSyncAt ? t('syncStatusLastSynced') + ' ' + _formatSyncTime(_lastSyncAt) + ' ✓' : t('connected'), 'synced');
 
     } else {
@@ -5676,7 +5779,7 @@ function saveState() {
       if(gAdmin && m.sender_id === gAdmin){
         const chip = document.createElement('span');
         chip.className = 'cms-admin-chip';
-        chip.textContent = t('adminChip');
+        chip.innerHTML = '<svg aria-hidden="true" class="icon" width="12" height="12" style="margin-inline-end:3px"><use href="#ic-crown"><\/use><\/svg>' + (state.lang==='ar'?'مشرف':'Admin');
         hdr.appendChild(chip);
       }
       col.appendChild(hdr);
@@ -5693,7 +5796,7 @@ function saveState() {
         rp.dataset.mid = m.reply_to;
         const rpS = document.createElement('div'); rpS.className='crp-sender'; rpS.textContent=orig.sender_name||'—';
         const rpT = document.createElement('div'); rpT.className='crp-text';
-        rpT.textContent = orig.file_type==='image'?'📷 '+t('chatFileImg'):orig.file_type?'📎 '+orig.file_name:(orig.content||'').slice(0,60);
+        rpT.innerHTML = orig.file_type==='image'?'<svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:3px"><use href="#ic-image"><\/use><\/svg>'+t('chatFileImg'):orig.file_type?'<svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:3px"><use href="#ic-paperclip"><\/use><\/svg>'+escapeHTML(orig.file_name||'File'):escapeHTML((orig.content||'').slice(0,60));
         rp.appendChild(rpS); rp.appendChild(rpT);
         rp.addEventListener('click',()=>{
           const target=document.querySelector('[data-mid="'+m.reply_to+'"]');
@@ -5710,7 +5813,7 @@ function saveState() {
         const vid=document.createElement('video'); vid.className='chat-attach-video'; vid.src=m.file_url; vid.controls=true; vid.preload='metadata';
         bub.appendChild(vid);
       } else if(m.file_url){
-        const icon = m.file_type==='pdf'?'📄':m.file_type==='document'?'📝':'📎';
+        const icon = m.file_type==='pdf'?'<svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-file"><\/use><\/svg>':m.file_type==='document'?'<svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-file-text"><\/use><\/svg>':'<svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-paperclip"><\/use><\/svg>';
         const sz = m.file_size?(' — '+(m.file_size>1048576?(m.file_size/1048576).toFixed(1)+'MB':(m.file_size/1024).toFixed(0)+'KB')):'';
         const a=document.createElement('a'); a.className='chat-attach-doc'; a.href=m.file_url; a.target='_blank'; a.rel='noopener';
         a.innerHTML='<span class="cad-icon">'+icon+'</span><div class="cad-info"><div class="cad-name">'+escapeHTML(m.file_name||'File')+'</div><div class="cad-size">'+escapeHTML(sz)+'</div></div>';
@@ -5755,9 +5858,9 @@ function _setReply(m){
   if(!m) { _replyTo=null; const rb=$('chatReplyBar'); if(rb) rb.classList.remove('visible'); return; }
   _replyTo = m;
   const rb=$('chatReplyBar'); if(!rb) return;
-  const preview = m.file_type==='image'?('📷 '+t('chatFileImg')):m.file_type?('📎 '+(m.file_name||'File')):(m.content||'').slice(0,60);
+  const preview = m.file_type==='image'?'<svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:3px"><use href="#ic-image"><\/use><\/svg>'+t('chatFileImg'):m.file_type?'<svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:3px"><use href="#ic-paperclip"><\/use><\/svg>'+escapeHTML(m.file_name||'File'):escapeHTML((m.content||'').slice(0,60));
   $('crbSender').textContent = m.sender_name||'—';
-  $('crbPreview').textContent = preview;
+  $('crbPreview').innerHTML = preview;
   rb.classList.add('visible');
   setTimeout(()=>{ const inp=$('chatInput'); if(inp) inp.focus(); },50);
 }
@@ -5813,7 +5916,7 @@ function _detectFileType(file){
   async function handleFile(file){
     if(!file) return;
     if(file.size>10*1024*1024){ toast(t('chatFileTooLarge'),'error'); return; }
-    if(!SupaDB.isOnline()){ toast('🔴 Offline','error'); return; }
+    if(!SupaDB.isOnline()){ toast('Offline','error'); return; }
     const gid = (state.groups&&state.groups.current&&state.groups.current.id);
     if(!gid) return;
     const ftype = _detectFileType(file);
@@ -5832,7 +5935,7 @@ function _detectFileType(file){
     } catch(e){
       console.warn('[chat] upload failed',e);
       const raw = (e&&(e.message||e.error_description||e.statusText)) || 'Upload failed';
-      toast('✗ '+raw,'error');
+      toast(''+raw,'error');
     } finally {
       setTimeout(()=>{ if(prog) prog.classList.remove('visible'); if(fill) fill.style.width='0%'; },500);
     }
@@ -5892,7 +5995,7 @@ async function _doSend() {
   const content = (inp.value || '').trim();
   if (!content) return;
   if (content.length > 2000) { toast(t('chatMsgTooLong'), 'error'); return; }
-  if (!SupaDB.isOnline()) { toast('🔴 Offline', 'error'); return; }
+  if (!SupaDB.isOnline()) { toast('Offline', 'error'); return; }
   _chatSending = true;
   btn.style.opacity = '.5';
   const _orig = inp.value;
@@ -5983,7 +6086,7 @@ if (_chatInput) {
   $('cmsDelete')?.addEventListener('click', async () => {
     const id = _chatMsgForAction; _closeSheet('chatMsg'); if(!id) return;
     try { await SupaDB.softDeleteGroupMessage(id); }
-    catch(e){ console.warn('[chat] delete failed', e); toast('✗ '+((e&&e.message)||'Delete failed'), 'error'); }
+    catch(e){ console.warn('[chat] delete failed', e); toast(''+((e&&e.message)||'Delete failed'), 'error'); }
   });
 
   /* ═══════════════════════════════════════════════════════════════════
@@ -6096,7 +6199,7 @@ if (_chatInput) {
         '<input type="time" value="'+escapeHTML(s.start||'')+'" data-idx="'+i+'" data-f="start">'+
         '<span style="color:var(--text-muted)">→</span>'+
         '<input type="time" value="'+escapeHTML(s.end||'')+'" data-idx="'+i+'" data-f="end">'+
-        '<button class="slot-edit-rm" data-rm="'+i+'">×</button>'+
+        '<button class="slot-edit-rm" data-rm="'+i+'"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button>'+
       '</div>').join('');
     c.querySelectorAll('input').forEach(inp => {
       inp.addEventListener('change', () => {
@@ -6126,7 +6229,7 @@ if (_chatInput) {
       closeModal('timeSlotsModal');
       renderGroups();
       toast(t('timeSlotsSaved'));
-    } catch(e){ console.warn('[timeSlots] save failed', e); toast('✗ '+((e&&e.message)||'Save failed'), 'error'); }
+    } catch(e){ console.warn('[timeSlots] save failed', e); toast(''+((e&&e.message)||'Save failed'), 'error'); }
     finally { btn.disabled = false; }
   });
   $('openTimeSlotsBtn')  ?.addEventListener('click', openTimeSlotsEditor);
@@ -6185,7 +6288,7 @@ if (_chatInput) {
             _renderGsmMembers();
             renderGroups();
             toast(t('memberKicked'));
-          } catch(e){ toast('✗ '+((e&&e.message)||'Kick failed'), 'error'); }
+          } catch(e){ toast(''+((e&&e.message)||'Kick failed'), 'error'); }
         });
       });
     });
@@ -6197,12 +6300,12 @@ if (_chatInput) {
     const n = ($('gsmName').value || '').trim();
     if(!n) return;
     try { await SupaDB.updateGroupName(n); state.groups.current.name = n; renderGroups(); toast(t('nameSaved')); }
-    catch(e){ toast('✗ '+((e&&e.message)||'Save failed'), 'error'); }
+    catch(e){ toast(''+((e&&e.message)||'Save failed'), 'error'); }
   });
   $('gsmSaveDesc')?.addEventListener('click', async () => {
     const d = ($('gsmDesc').value || '').trim();
     try { await SupaDB.updateGroupDescription(d); state.groups.current.description = d; renderGroups(); toast(t('descSaved')); }
-    catch(e){ toast('✗ '+((e&&e.message)||'Save failed'), 'error'); }
+    catch(e){ toast(''+((e&&e.message)||'Save failed'), 'error'); }
   });
   /* Chat-mode segmented control — optimistic UI with revert-on-failure */
   $('gsmChatMode')?.querySelectorAll('button').forEach(b => {
@@ -6217,7 +6320,7 @@ if (_chatInput) {
         _updateChatModeUI();
         toast(t('modeSaved'));
       } catch(e){
-        toast('✗ '+((e&&e.message)||'Save failed'), 'error');
+        toast(''+((e&&e.message)||'Save failed'), 'error');
         $('gsmChatMode').querySelectorAll('button').forEach(x => x.classList.toggle('active', x.dataset.mode === prev));
       }
     });
@@ -6229,7 +6332,7 @@ if (_chatInput) {
         state.groups.current.invite_code = code;
         renderGroups();
         toast(t('codeRotated'));
-      } catch(e){ toast('✗ '+((e&&e.message)||'Rotate failed'), 'error'); }
+      } catch(e){ toast(''+((e&&e.message)||'Rotate failed'), 'error'); }
     });
   });
   $('gsmDeleteGroup')?.addEventListener('click', () => {
@@ -6254,7 +6357,7 @@ if (_chatInput) {
       closeModal('deleteGroupModal');
       renderGroups(); renderNav();
       toast(t('groupDeleted'));
-    } catch(e){ btn.disabled = false; toast('✗ '+((e&&e.message)||'Delete failed'), 'error'); }
+    } catch(e){ btn.disabled = false; toast(''+((e&&e.message)||'Delete failed'), 'error'); }
   });
 
 })();
@@ -6532,9 +6635,9 @@ if (_chatInput) {
       cur.group_picture = dataUrl;
       const me = (state.name || 'You');
       pushSysEvent('<b>'+escapeHTML(me)+'</b> changed the group picture');
-      if(typeof toast === 'function') toast('✓ Group picture updated');
+      if(typeof toast === 'function') toast('Group picture updated');
     } catch(err){
-      if(typeof toast === 'function') toast('✗ Upload failed', 'error');
+      if(typeof toast === 'function') toast('Upload failed', 'error');
     } finally {
       document.querySelectorAll('.group-pic').forEach(el => el.classList.remove('uploading'));
       refreshGroupPics();
@@ -6632,7 +6735,7 @@ function _compressImage(file, maxDim) {
         }
         paintPermToggles();
         refreshGroupPics();
-        if(typeof toast === 'function') toast('✓ Permission updated');
+        if(typeof toast === 'function') toast('Permission updated');
       }
     });
   });
