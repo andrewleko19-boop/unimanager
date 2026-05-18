@@ -2148,7 +2148,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.17.0';
+const APP_VERSION = 'v1.18.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2410,7 +2410,7 @@ gimTitleLbl:'Group info',gimMember:'member',gimMembers:'members',gimCreated:'Cre
 changePhoto:'Change Photo',takePhoto:'Take Photo',chooseGallery:'Choose from Gallery',removePhoto:'Remove Photo',cancel:'Cancel',photoUpdated:'\u2713 Profile photo updated',photoUpdateFailed:'\u2717 Photo update failed',photoRemoved:'Profile photo removed',photoOfflineError:'\uD83D\uDD34 Change photo requires internet',
 gTabOverview:'Overview',gTabSchedule:'Schedule',gTabExams:'Exams',gTabNotes:'Notes',
 inviteCode:'Invite Code',copy:'Copy',
-groupsAdminRoleLabel:'\uD83D\uDC51 Group admin',
+groupsAdminRoleLabel:'Group admin',
 grp2Soon:'Soon !',grp2Pinned:'Pinned',
 grp2StatTasks:'Tasks done',grp2StatHours:'Study hours',
 timeRangeReq:'Please select start and end time',
@@ -2500,7 +2500,7 @@ gimTitleLbl:'\u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0645\u062C
 changePhoto:'\u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0635\u0648\u0631\u0629',takePhoto:'\u0627\u0644\u062A\u0642\u0627\u0637 \u0635\u0648\u0631\u0629',chooseGallery:'\u0627\u062E\u062A\u064A\u0627\u0631 \u0645\u0646 \u0627\u0644\u0645\u0639\u0631\u0636',removePhoto:'\u0625\u0632\u0627\u0644\u0629 \u0627\u0644\u0635\u0648\u0631\u0629',cancel:'\u0625\u0644\u063A\u0627\u0621',photoUpdated:'\u2713 \u062A\u0645 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0635\u0648\u0631\u0629',photoUpdateFailed:'\u2717 \u0641\u0634\u0644 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0635\u0648\u0631\u0629',photoRemoved:'\u062A\u0645\u062A \u0625\u0632\u0627\u0644\u0629 \u0627\u0644\u0635\u0648\u0631\u0629',photoOfflineError:'\uD83D\uDD34 \u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0635\u0648\u0631\u0629 \u064A\u062A\u0637\u0644\u0628 \u0627\u0644\u0625\u0646\u062A\u0631\u0646\u062A',
 gTabOverview:'\u0646\u0638\u0631\u0629 \u0639\u0627\u0645\u0629',gTabSchedule:'\u0627\u0644\u062C\u062F\u0648\u0644',gTabExams:'\u0627\u0644\u0627\u0645\u062A\u062D\u0627\u0646\u0627\u062A',gTabNotes:'\u0627\u0644\u0645\u0644\u0627\u062D\u0638\u0627\u062A',
 inviteCode:'\u0631\u0645\u0632 \u0627\u0644\u062F\u0639\u0648\u0629',copy:'\u0646\u0633\u062E',
-groupsAdminRoleLabel:'\uD83D\uDC51 \u0645\u0634\u0631\u0641 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',
+groupsAdminRoleLabel:'\u0645\u0634\u0631\u0641 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',
 grp2Soon:'\u0642\u0631\u064A\u0628 !',grp2Pinned:'\u0645\u062B\u0628\u062A',
 grp2StatTasks:'\u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u0645\u0643\u062A\u0645\u0644\u0629',grp2StatHours:'\u0633\u0627\u0639\u0627\u062A \u0627\u0644\u062F\u0631\u0627\u0633\u0629',
 timeRangeReq:'\u0627\u0644\u0631\u062C\u0627\u0621 \u062A\u062D\u062F\u064A\u062F \u0648\u0642\u062A \u0627\u0644\u0628\u062F\u0627\u064A\u0629 \u0648\u0627\u0644\u0646\u0647\u0627\u064A\u0629',
@@ -2615,7 +2615,7 @@ function applyText(){
   if($('gstExams')) $('gstExams').textContent=t('gTabExams');
   if($('gstNotes')) $('gstNotes').textContent=t('gTabNotes');
   if($('gMembersTitle')) $('gMembersTitle').textContent=t('groupsMembers');
-  if($('leaveGroupBtn')) $('leaveGroupBtn').textContent=t('leaveGroup');
+  if($('leaveGroupBtn')) $('leaveGroupBtn').innerHTML='<svg aria-hidden="true" class="icon" width="16" height="16" style="margin-inline-end:8px"><use href="#ic-x"><\/use><\/svg>'+t('leaveGroup');
   if($('addGroupExamBtn')) $('addGroupExamBtn').textContent=t('addSharedExam');
   /* Group modals */
   if($('glmTitle')) $('glmTitle').textContent=t('addLec');
@@ -2665,8 +2665,8 @@ function applyText(){
   if(window._initGlmModal)window._initGlmModal();
   if($('gsmMembersL')) $('gsmMembersL').textContent=t('gsMembers');
   if($('gsmDangerL')) $('gsmDangerL').textContent=t('gsDangerZone');
-  if($('gsmRotateCode')) $('gsmRotateCode').textContent='\uD83D\uDD04 '+t('gsRotateCode');
-  if($('gsmDeleteGroup')) $('gsmDeleteGroup').textContent='\uD83D\uDDD1 '+t('gsDeleteGroup');
+  if($('gsmRotateCode')) $('gsmRotateCode').innerHTML='<svg aria-hidden="true" class="icon" width="16" height="16" style="margin-inline-end:8px"><use href="#ic-repeat"><\/use><\/svg>'+t('gsRotateCode');
+  if($('gsmDeleteGroup')) $('gsmDeleteGroup').innerHTML='<svg aria-hidden="true" class="icon" width="16" height="16" style="margin-inline-end:8px"><use href="#ic-trash"><\/use><\/svg>'+t('gsDeleteGroup');
   if($('dgmTitle')) $('dgmTitle').textContent=t('gsDeleteGroup');
   if($('dgmMsg'))   $('dgmMsg').textContent=t('gsDeleteConfirm');
   if($('dgmLabel')) $('dgmLabel').textContent=t('gsDeleteLabel');
@@ -4007,10 +4007,11 @@ function renderGroupOverview(){
 
     const tile=(icon,value,label)=>'<div class="grp2-stat"><div class="grp2-stat-icon">'+icon+'</div><div class="grp2-stat-value">'+escapeHTML(value)+'</div><div class="grp2-stat-label">'+escapeHTML(label)+'</div></div>';
     statsEl.innerHTML=
-      tile('\uD83D\uDCC5',String(examCount),t('gTabExams')||'\u0627\u0644\u0627\u062E\u062A\u0628\u0627\u0631\u0627\u062A')+
-      tile('\uD83D\uDCDD',String(notesCount),t('gTabNotes')||'\u0627\u0644\u0645\u0644\u0627\u062D\u0638\u0627\u062A')+
-      tile('\u2705',completionPct,t('grp2StatTasks')||'\u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u0645\u0643\u062A\u0645\u0644\u0629')+
-      tile('\u23F1',hoursTxt,t('grp2StatHours')||'\u0633\u0627\u0639\u0627\u062A \u0627\u0644\u062F\u0631\u0627\u0633\u0629');
+      statsEl.innerHTML =
+      tile('<svg aria-hidden="true" class="icon" width="20" height="20"><use href="#ic-calendar"><\/use><\/svg>',String(examCount),t('gTabExams')||'\u0627\u0644\u0627\u062E\u062A\u0628\u0627\u0631\u0627\u062A')+
+      tile('<svg aria-hidden="true" class="icon" width="20" height="20"><use href="#ic-file-text"><\/use><\/svg>',String(notesCount),t('gTabNotes')||'\u0627\u0644\u0645\u0644\u0627\u062D\u0638\u0627\u062A')+
+      tile('<svg aria-hidden="true" class="icon" width="20" height="20"><use href="#ic-check-circle"><\/use><\/svg>',completionPct,t('grp2StatTasks')||'\u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u0645\u0643\u062A\u0645\u0644\u0629')+
+      tile('<svg aria-hidden="true" class="icon" width="20" height="20"><use href="#ic-timer"><\/use><\/svg>',hoursTxt,t('grp2StatHours')||'\u0633\u0627\u0639\u0627\u062A \u0627\u0644\u062F\u0631\u0627\u0633\u0629');
   }
 }
 
@@ -4154,7 +4155,7 @@ function renderGroupExams(){
   const exams=[...(state.groups.sharedExams||[])].sort((a,b)=>new Date(a.date)-new Date(b.date));
   if(!exams.length){
     /* Empty state — admin sees the add button above; everyone sees this hint. */
-    c.innerHTML='<div class="empty-state" style="padding:48px 12px"><div class="empty-state-icon">\uD83D\uDCDD</div><div class="empty-state-text">'+t('noSharedExams')+'</div></div>';
+    c.innerHTML='<div class="empty-state" style="padding:48px 12px"><div class="empty-state-icon"><svg aria-hidden="true" class="icon" width="40" height="40" style="color:var(--accent)"><use href="#ic-file-text"><\/use><\/svg></div><div class="empty-state-text">'+t('noSharedExams')+'</div></div>';
     return;
   }
   const now=Date.now();
@@ -4222,7 +4223,7 @@ function renderGroupNotes(){
      but are now practical/removed remain in state.groups.sharedNotes
      (preserved on the backend) but don't surface here. */
   if(!subs.size){
-    c.innerHTML='<div class="empty-state" style="padding:48px 12px"><div class="empty-state-icon">\uD83D\uDCDD</div><div class="empty-state-text">'+(t('noSharedNotes')||'')+'</div></div>';
+    c.innerHTML='<div class="empty-state" style="padding:48px 12px"><div class="empty-state-icon"><svg aria-hidden="true" class="icon" width="40" height="40" style="color:var(--accent)"><use href="#ic-file-text"><\/use><\/svg></div><div class="empty-state-text">'+(t('noSharedNotes')||'')+'</div></div>';
     return;
   }
 
