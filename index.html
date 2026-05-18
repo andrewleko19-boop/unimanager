@@ -2061,10 +2061,35 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 <div class="action-sheet" id="avatarSheet">
   <div class="as-handle"></div>
   <div class="as-title" id="avsTitle"></div>
-  <div class="as-row" id="avsCamera"><span id="avsCameraLabel"></span></div>
-  <div class="as-row" id="avsGallery"><span id="avsGalleryLabel"></span></div>
-  <div class="as-row danger" id="avsRemove" style="display:none"><span id="avsRemoveLabel"></span></div>
-  <div class="as-row cancel" id="avsCancel"></div>
+  <div class="as-row" id="avsCamera">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+      <circle cx="12" cy="13" r="4"/>
+    </svg>
+    <span id="avsCameraLabel"></span>
+  </div>
+  <div class="as-row" id="avsGallery">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="2" ry="2"/>
+      <circle cx="8.5" cy="8.5" r="2.5"/>
+      <path d="M21 15l-5-5L6 21"/>
+    </svg>
+    <span id="avsGalleryLabel"></span>
+  </div>
+  <div class="as-row danger" id="avsRemove" style="display:none">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-13"/>
+      <path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
+    </svg>
+    <span id="avsRemoveLabel"></span>
+  </div>
+  <div class="as-row cancel" id="avsCancel">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="18" y1="6" x2="6" y2="18"/>
+      <line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+    <span id="avsCancelLabel"></span>
+  </div>
 </div>
 
 <!-- Hidden file inputs for F3 avatar capture / gallery -->
