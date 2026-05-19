@@ -2148,7 +2148,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.18.0';
+const APP_VERSION = 'v1.19.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -3188,7 +3188,7 @@ function _examDT(e){
 function renderExams(){const c=document.getElementById('examList');const exams=[...state.exams].sort((a,b)=>_examDT(a)-_examDT(b));const now=Date.now();
   /* Hide expired exams from the active list (they stay in state.exams as archive) */
   const active = exams.filter(e => _examDT(e).getTime() > now);
-  if(!active.length){c.innerHTML='<div class="empty-state"><div class="empty-state-icon">\uD83D\uDCDD</div><div class="empty-state-text">No exams added yet.</div></div>';}
+  if(!active.length){c.innerHTML='<div class="empty-state"><div class="empty-state-icon"><svg aria-hidden="true" class="icon" width="40" height="40" style="color:var(--accent)"><use href="#ic-calendar"><\/use><\/svg></div><div class="empty-state-text">No exams added yet.</div></div>';}
   else {
   c.innerHTML=active.map(e=>{const dt=_examDT(e);const diffMs=dt-now;const totalMins=Math.floor(diffMs/6e4);const days=Math.floor(diffMs/864e5);const hrs=Math.floor(diffMs/36e5);const mins=totalMins%60;const cls=days<=0?'soon':days<=3?'soon':days<=7?'near':'ok';
     let cdText;
@@ -3196,7 +3196,7 @@ function renderExams(){const c=document.getElementById('examList');const exams=[
     else if(hrs>=1) cdText = hrs + 'h ' + mins + 'm';
     else cdText = totalMins + 'm';
     const metaTime = (e.time ? ' · ' + e.time : '');
-    return'<div class="exam-card"><div class="ec-info"><div class="ec-subject">'+escapeHTML(e.subject)+'</div><div class="ec-meta">'+escapeHTML(e.type)+' \xB7 '+e.date+metaTime+'</div></div><div class="ec-countdown '+cls+'">'+cdText+'</div><div class="ec-del" data-id="'+e.id+'">\uD83D\uDDD1</div></div>';}).join('');
+    return'<div class="exam-card"><div class="ec-info"><div class="ec-subject">'+escapeHTML(e.subject)+'</div><div class="ec-meta">'+escapeHTML(e.type)+' \xB7 '+e.date+metaTime+'</div></div><div class="ec-countdown '+cls+'">'+cdText+'</div><div class="ec-del" data-id="'+e.id+'"><svg aria-hidden="true" class="icon" width="16" height="16"><use href="#ic-trash"><\/use><\/svg></div></div>';}).join('');
   c.querySelectorAll('.ec-del').forEach(el=>{el.addEventListener('click',()=>{const _delEid=parseInt(el.dataset.id);state.exams=state.exams.filter(e=>e.id!==_delEid);saveState();SupaDB.deleteExam(_delEid).catch(()=>toast('Delete may not have synced','warning'));renderExams();renderDash();});});
   }
   /* Archive section: past exams collapsed at the bottom for historical reference */
@@ -3205,7 +3205,7 @@ function renderExams(){const c=document.getElementById('examList');const exams=[
     const arch = document.createElement('div');
     arch.style.cssText = 'margin-top:16px;padding-top:12px;border-top:1px dashed var(--border)';
     arch.innerHTML = '<div style="font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Past exams (' + past.length + ')</div>' +
-      past.slice().reverse().map(e=>'<div class="exam-card" style="opacity:.55"><div class="ec-info"><div class="ec-subject">'+escapeHTML(e.subject)+'</div><div class="ec-meta">'+escapeHTML(e.type)+' \xB7 '+e.date+(e.time?' · '+e.time:'')+'</div></div><div class="ec-countdown" style="color:var(--text-muted)">—</div><div class="ec-del" data-id="'+e.id+'">\uD83D\uDDD1</div></div>').join('');
+      past.slice().reverse().map(e=>'<div class="exam-card" style="opacity:.55"><div class="ec-info"><div class="ec-subject">'+escapeHTML(e.subject)+'</div><div class="ec-meta">'+escapeHTML(e.type)+' \xB7 '+e.date+(e.time?' · '+e.time:'')+'</div></div><div class="ec-countdown" style="color:var(--text-muted)">—</div><div class="ec-del" data-id="'+e.id+'"><svg aria-hidden="true" class="icon" width="16" height="16"><use href="#ic-trash"><\/use><\/svg></div></div>').join('');
     c.appendChild(arch);
     arch.querySelectorAll('.ec-del').forEach(el=>{el.addEventListener('click',()=>{const _delEid=parseInt(el.dataset.id);state.exams=state.exams.filter(e=>e.id!==_delEid);saveState();SupaDB.deleteExam(_delEid).catch(()=>toast('Delete may not have synced','warning'));renderExams();renderDash();});});
   }
@@ -4170,14 +4170,14 @@ function renderGroupExams(){
     const examTypeLabel=e.type||'';
     const localId=e.local_id||e.id||'';
     return '<div class="grp2-exam-card'+(isUrgent?' urgent':'')+'">'+
-      ((_isGroupAdmin()&&localId)?'<button class="grp2-exam-del" data-eid="'+escapeHTML(localId)+'" type="button" aria-label="Delete">\uD83D\uDDD1</button>':'')+
+      ((_isGroupAdmin()&&localId)?'<button class="grp2-exam-del" data-eid="'+escapeHTML(localId)+'" type="button" aria-label="Delete"><svg aria-hidden="true" class="icon" width="16" height="16"><use href="#ic-trash"><\/use><\/svg></button>':'')+
       '<div class="grp2-exam-content">'+
       (isUrgent?'<div class="grp2-exam-urgent">'+(t('grp2Soon')||'\u0642\u0631\u064A\u0628 !')+'</div>':'')+
       '<div class="grp2-exam-subject">'+escapeHTML(e.subject||'')+'</div>'+
       '<div class="grp2-exam-info">'+
-        (dateLabel?'<span class="grp2-exam-chip">\uD83D\uDCC5 '+escapeHTML(dateLabel)+'</span>':'')+
-        (timeLabel?'<span class="grp2-exam-chip">\uD83D\uDD50 '+escapeHTML(timeLabel)+'</span>':'')+
-        (roomLabel?'<span class="grp2-exam-chip">\uD83D\uDCCD '+escapeHTML(roomLabel)+'</span>':'')+
+        (dateLabel?'<span class="grp2-exam-chip"><svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px"><use href="#ic-calendar"><\/use><\/svg>'+escapeHTML(dateLabel)+'</span>':'')+
+        (timeLabel?'<span class="grp2-exam-chip"><svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px"><use href="#ic-timer"><\/use><\/svg>'+escapeHTML(timeLabel)+'</span>':'')+
+        (roomLabel?'<span class="grp2-exam-chip"><svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:4px"><use href="#ic-pin"><\/use><\/svg>'+escapeHTML(roomLabel)+'</span>':'')+
       '</div>'+
       (examTypeLabel?'<div class="grp2-exam-type">'+escapeHTML(examTypeLabel)+'</div>':'')+
       '</div>'+
@@ -4247,15 +4247,10 @@ function renderGroupNotes(){
     const content=noteRow.content||'';
     const updated=fmtTime(noteRow.last_updated_at);
     const color=_grp2ColorFor(s);
-    return '<div class="grp2-note-card">'+
-      '<div class="grp2-note-title">'+escapeHTML(s)+'</div>'+
-      '<textarea class="grp2-note-textarea sn-textarea" data-subj="'+escapeHTML(s)+'" placeholder="'+escapeHTML(t('notesSharedPlaceholder')||'')+'">'+escapeHTML(content)+'</textarea>'+
-      (updated?'<div class="grp2-note-footer">'+
-        '<div class="grp2-note-avatar" style="background:'+color+'">'+escapeHTML(_grp2Initials(s))+'</div>'+
-        '<span class="grp2-note-author">'+escapeHTML(s)+'</span>'+
-        '<span class="grp2-note-time">'+escapeHTML(updated)+'</span>'+
-      '</div>':'')+
-    '</div>';
+    return '<div class="grp2-note-card" style="margin-bottom:12px">'+
+   '<div class="grp2-note-title">'+escapeHTML(s)+'</div>'+
+   '<textarea class="grp2-note-textarea sn-textarea" data-subj="'+escapeHTML(s)+'" placeholder="'+escapeHTML(t('notesSharedPlaceholder')||'')+'">'+escapeHTML(content)+'</textarea>'+
+   '</div>';
   }).join('');
 
   /* Debounced per-subject save to avoid hammering the network on every keystroke */
