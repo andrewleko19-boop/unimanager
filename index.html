@@ -1535,6 +1535,19 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   <div class="wsi-text"><span id="welSignedInLabel">Signed in as</span> <span class="wsi-email" id="welSignedInEmail"></span></div>
 </div>
 <div class="welcome-divider" id="welcomeDivider"><span id="welOrTxt">or</span></div>
+<div id="localWarningBanner" style="
+  background: rgba(251,191,36,0.12);
+  border: 1px solid rgba(251,191,36,0.35);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-size: 0.78rem;
+  color: #fbbf24;
+  line-height: 1.5;
+  display: none;
+">
+  <svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:6px;color:#fbbf24;vertical-align:middle"><use href="#ic-warning"></use></svg><strong>Local mode:</strong> Your data is saved on this device only. Switching devices or clearing the browser will erase everything.
+</div>
 <div class="form-group"><label id="welNameL"></label><input type="text" class="form-input" id="setupName"></div>
 <div class="form-group"><label id="welUniL"></label><select class="form-input" id="setupUni"><option value="" id="wUD"></option><option value="latakia" id="wU1"></option><option value="sham" id="wU2"></option><option value="aast" id="wU3"></option><option value="manara" id="wU4"></option><option value="gemtq" id="wU5"></option></select></div>
 <div class="form-group"><label id="welLangL"></label><select class="form-input" id="setupLang"><option value="en">English</option><option value="ar">العربية</option></select></div>
@@ -2932,7 +2945,11 @@ async function init(){
   }
 }
 const sName=document.getElementById('setupName'),sUni=document.getElementById('setupUni'),sBtn=document.getElementById('setupBtn'),sLang=document.getElementById('setupLang');
-function chkSetup(){sBtn.disabled=!(sName.value.trim()&&sUni.value);}
+function chkSetup(){
+  sBtn.disabled=!(sName.value.trim()&&sUni.value);
+  const banner=document.getElementById('localWarningBanner');
+  if(banner) banner.style.display = (!SupaDB.getUser() && sName.value.trim()) ? 'block' : 'none';
+}
 sName.addEventListener('input',chkSetup);sUni.addEventListener('change',chkSetup);
 sLang.addEventListener('change',()=>{state.lang=sLang.value;applyLang();applyText();upgradeAllSelects(document.getElementById('welcomeScreen'));});
 /* Welcome-screen Google sign-in button */
