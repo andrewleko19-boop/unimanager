@@ -2956,7 +2956,7 @@ function chkSetup(){
   }
 }
 sName.addEventListener('input',chkSetup);sUni.addEventListener('change',chkSetup);
-sLang.addEventListener('change',()=>{state.lang=sLang.value;applyLang();applyText();upgradeAllSelects(document.getElementById('welcomeScreen'));});
+sLang.addEventListener('change',()=>{state.lang=sLang.value;applyLang();applyText();upgradeAllSelects(document.getElementById('welcomeScreen'));const warningText=document.getElementById('localModeWarningText');if(warningText)warningText.innerHTML=t('localModeWarning');});
 /* Welcome-screen Google sign-in button */
 const welcomeGoogleBtn=document.getElementById('welcomeGoogleBtn');
 if(welcomeGoogleBtn)welcomeGoogleBtn.onclick=()=>SupaDB.signInWithGoogle();
