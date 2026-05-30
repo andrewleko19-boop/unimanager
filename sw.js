@@ -1,22 +1,24 @@
 // sw.js — UniManager Service Worker
 //
-// ⚠️ Bup CACHE_VERSION in lockstep with APP_VERSION in index.html when deploying.
+// ⚠️ Bump CACHE_VERSION in lockstep with APP_VERSION in index.html when deploying.
 // CI's check-versions.mjs enforces this — but if you're editing this file by
 // hand, remember: forgetting to bump here means returning users see stale code
 // indefinitely (the SW keeps serving old index.html from cache).
 
-const CACHE_VERSION = 'v1.23.0';
+const CACHE_VERSION = 'v1.24.0';
 const CACHE_NAME = `unimanager-${CACHE_VERSION}`;
 
-// Files to pre-cache on install. Anything not listed here is fetched on demand
-// and only cached after first successful fetch.
+// Files to pre-cache on install. Paths are RELATIVE to the SW location, so the
+// app works whether it's served from the domain root (Netlify) or a subpath
+// (e.g. GitHub Pages /unimanager/) without any hard-coded base path.
+// Anything not listed here is fetched on demand and cached after first fetch.
 const PRECACHE_URLS = [
-  '/unimanager/',
-  '/unimanager/index.html',
-  '/unimanager/manifest.json',
-  '/unimanager/icons/icon-192.png',
-  '/unimanager/icons/icon-512.png',
-  '/unimanager/icons/apple-touch-icon-180.png',
+  './',
+  'index.html',
+  'manifest.json',
+  'icons/icon-192.png',
+  'icons/icon-512.png',
+  'icons/apple-touch-icon-180.png',
 ];
 
 // Supabase/realtime requests should NEVER be served from cache — they're
@@ -97,18 +99,18 @@ self.addEventListener('message', (event) => {
 // Handle push notifications
 self.addEventListener('push', (event) => {
   if (!event.data) return;
-  
+
   try {
     const payload = event.data.json();
     const options = {
       body: payload.body || 'UniManager notification',
-      icon: '/unimanager/icons/icon-192.png',
-      badge: '/unimanager/icons/icon-192.png',
+      icon: 'icons/icon-192.png',
+      badge: 'icons/icon-192.png',
       tag: payload.tag || 'unimanager-notification',
       requireInteraction: payload.requireInteraction || false,
       data: payload.data || {}
     };
-    
+
     event.waitUntil(
       self.registration.showNotification(payload.title || 'UniManager', options)
     );
@@ -120,16 +122,18 @@ self.addEventListener('push', (event) => {
 // Handle notification clicks
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  
-  // Open/focus the app window
+
+  // Focus an already-open app window if one exists, else open a new one.
+  // scopeUrl is the absolute URL of this SW's scope — host-agnostic, so this
+  // works on the domain root or any subpath without hard-coded paths.
+  const scopeUrl = self.registration.scope;
+
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-      for (let client of clientList) {
-        if (client.url === '/' || client.url.includes('/unimanager/')) {
-          return client.focus();
-        }
+      for (const client of clientList) {
+        if (client.url.startsWith(scopeUrl)) return client.focus();
       }
-      return clients.openWindow('/unimanager/');
+      return clients.openWindow(scopeUrl);
     })
   );
 });

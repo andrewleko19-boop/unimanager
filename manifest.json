@@ -1,9 +1,10 @@
 {
   "name": "UniManager",
   "short_name": "UniManager",
-  "description": "Single-file offline-first PWA for university students — schedule, GPA, exams, notes, and group collaboration.",
-  "start_url": "/unimanager/",
-  "scope": "/unimanager/",
+  "description": "Offline-first PWA for university students — schedule, GPA, exams, notes, and group collaboration.",
+  "id": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0a0e17",
@@ -11,30 +12,18 @@
   "lang": "en",
   "dir": "auto",
   "icons": [
-    {
-      "src": "/unimanager/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/unimanager/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/unimanager/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/unimanager/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    { "src": "screenshots/home-stats.png",     "sizes": "1082x2402", "type": "image/png", "form_factor": "narrow", "label": "Home dashboard with study stats" },
+    { "src": "screenshots/schedule.png",        "sizes": "1082x2402", "type": "image/png", "form_factor": "narrow", "label": "Weekly class schedule" },
+    { "src": "screenshots/gpa.png",             "sizes": "1082x2402", "type": "image/png", "form_factor": "narrow", "label": "GPA calculator" },
+    { "src": "screenshots/schedule-exams.png",  "sizes": "1082x2402", "type": "image/png", "form_factor": "narrow", "label": "Exam tracker" },
+    { "src": "screenshots/group-chat.png",      "sizes": "1082x2402", "type": "image/png", "form_factor": "narrow", "label": "Real-time study group chat" },
+    { "src": "screenshots/home-pomodoro.png",   "sizes": "1082x2402", "type": "image/png", "form_factor": "narrow", "label": "Pomodoro study timer" }
   ],
   "categories": ["education", "productivity"]
 }

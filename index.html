@@ -1352,20 +1352,20 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 </style>
 
 <!-- PWA core -->
-<link rel="manifest" href="/unimanager/manifest.json">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#4f46e5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 
 <!-- Favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="/unimanager/icons/favicon-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/unimanager/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 
 <!-- iOS / Safari -->
-<link rel="apple-touch-icon" href="/unimanager/icons/apple-touch-icon-180.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/unimanager/icons/apple-touch-icon-180.png">
-<link rel="apple-touch-icon" sizes="192x192" href="/unimanager/icons/icon-192.png">
-<link rel="apple-touch-icon" sizes="512x512" href="/unimanager/icons/icon-512.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon-180.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="UniManager">
@@ -1376,7 +1376,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 <!-- Windows tiles (optional but harmless) -->
 <meta name="msapplication-TileColor" content="#4f46e5">
-<meta name="msapplication-TileImage" content="/unimanager/icons/icon-192.png">
+<meta name="msapplication-TileImage" content="icons/icon-192.png">
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
@@ -2177,7 +2177,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.23.0';
+const APP_VERSION = 'v1.24.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -3618,7 +3618,7 @@ function checkDeadlines(){
   if(toNotify.length>0&&'serviceWorker' in navigator){
     navigator.serviceWorker.ready.then(reg=>{
       toNotify.forEach(n=>{
-        reg.showNotification(n.title,{body:n.body,badge:'/unimanager/icons/icon-192.png',icon:'/unimanager/icons/icon-192.png',tag:n.id,requireInteraction:n.requireInteraction||false});
+        reg.showNotification(n.title,{body:n.body,badge:'icons/icon-192.png',icon:'icons/icon-192.png',tag:n.id,requireInteraction:n.requireInteraction||false});
       });
     }).catch(e=>console.log('[Notif] SW error:',e));
   }
@@ -3828,7 +3828,7 @@ function startSleepReminderCheck(){
       toast(t('sleepReminderMsg'),'info');
       if('Notification' in window&&Notification.permission==='granted'&&'serviceWorker' in navigator){
         navigator.serviceWorker.ready.then(reg=>{
-          reg.showNotification('UniManager',{body:t('sleepReminderMsg'),icon:'/unimanager/icons/icon-192.png',badge:'/unimanager/icons/icon-192.png',tag:'sleep-reminder'});
+          reg.showNotification('UniManager',{body:t('sleepReminderMsg'),icon:'icons/icon-192.png',badge:'icons/icon-192.png',tag:'sleep-reminder'});
         }).catch(e=>console.log('[Sleep] SW error:',e));
       }
     }
@@ -6888,7 +6888,7 @@ init();
     if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
-        .register('/unimanager/sw.js', { scope: '/unimanager/' })
+        .register('sw.js')
         .then((reg) => {
           console.log('[PWA] SW registered, scope:', reg.scope);
 
