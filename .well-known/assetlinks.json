@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.unimanager.twa",
+      "sha256_cert_fingerprints": ["4F:C5:12:17:B5:BC:DD:16:1F:A8:06:BD:D6:AF:B7:E7:EA:67:74:B9:AF:82:9D:B7:71:A2:ED:28:F2:9E:DC:C0"]
+    }
+  }
+]
