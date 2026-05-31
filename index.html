@@ -2177,7 +2177,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.26.0';
+const APP_VERSION = 'v1.27.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2534,9 +2534,26 @@ grp2Soon:'\u0642\u0631\u064A\u0628 !',grp2Pinned:'\u0645\u062B\u0628\u062A',
 grp2StatTasks:'\u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u0645\u0643\u062A\u0645\u0644\u0629',grp2StatHours:'\u0633\u0627\u0639\u0627\u062A \u0627\u0644\u062F\u0631\u0627\u0633\u0629',
 timeRangeReq:'\u0627\u0644\u0631\u062C\u0627\u0621 \u062A\u062D\u062F\u064A\u062F \u0648\u0642\u062A \u0627\u0644\u0628\u062F\u0627\u064A\u0629 \u0648\u0627\u0644\u0646\u0647\u0627\u064A\u0629',
 timeRangeInvalid:'\u0648\u0642\u062A \u0627\u0644\u0646\u0647\u0627\u064A\u0629 \u064A\u062C\u0628 \u0623\u0646 \u064A\u0643\u0648\u0646 \u0628\u0639\u062F \u0648\u0642\u062A \u0627\u0644\u0628\u062F\u0627\u064A\u0629',
-updateAvailable:'\u064A\u062A\u0648\u0641\u0631 \u062A\u062D\u062F\u064A\u062B \u062C\u062F\u064A\u062F',updateNow:'\u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0622\u0646'
+updateAvailable:'\u064A\u062A\u0648\u0641\u0631 \u062A\u062D\u062F\u064A\u062B \u062C\u062F\u064A\u062F',updateNow:'\u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0622\u0646',
+delete:'\u062D\u0630\u0641',connected:'\u0645\u062A\u0635\u0644',syncStatusSynced:'\u062A\u0645\u062A \u0627\u0644\u0645\u0632\u0627\u0645\u0646\u0629',syncStatusLastSynced:'\u0622\u062E\u0631 \u0645\u0632\u0627\u0645\u0646\u0629'
 }};
-function t(k){return(LL[state.lang||'en']||LL.en)[k]||LL.en[k]||k;}
+/* i18n lookup. Resolution order: active language → English fallback → key itself.
+   Dev safety net: if a key is missing from the ACTIVE language dictionary, warn
+   once (deduped) so untranslated strings surface immediately instead of silently
+   showing English. This is how we caught delete/connected/syncStatus* being
+   missing from Arabic. Warnings are throttled to one per key. */
+const _t_warned = (typeof window!=='undefined') ? (window.__t_warned || (window.__t_warned=new Set())) : new Set();
+function t(k){
+  const lang = state.lang || 'en';
+  const dict = LL[lang] || LL.en;
+  if (dict[k] != null) return dict[k];
+  // Missing in active language → fall back to English, but flag it (once).
+  if (lang !== 'en' && !_t_warned.has(k)) {
+    _t_warned.add(k);
+    console.warn('[i18n] missing "'+k+'" in "'+lang+'" — falling back to English. Add it to the '+lang+' dictionary.');
+  }
+  return (LL.en[k] != null) ? LL.en[k] : k;
+}
 
 /* ===== DATA ===== */
 const UNI_SLOTS={latakia:[{start:'08:00',end:'10:00'},{start:'10:00',end:'12:00'},{start:'12:00',end:'14:00'},{start:'14:00',end:'16:00'},{start:'16:00',end:'18:00'}],aast:[{start:'08:30',end:'10:10'},{start:'10:30',end:'12:10'},{start:'12:30',end:'14:10'},{start:'14:10',end:'15:50'},{start:'16:00',end:'17:40'}],gemtq:[{start:'08:00',end:'10:00'},{start:'10:00',end:'12:00'},{start:'12:30',end:'14:30'}],sham:[{start:'09:00',end:'11:00'},{start:'11:00',end:'13:00'},{start:'13:00',end:'15:00'},{start:'15:00',end:'17:00'}],manara:[{start:'09:00',end:'10:30'},{start:'10:30',end:'12:00'},{start:'12:00',end:'13:30'},{start:'13:30',end:'15:00'}]};
@@ -2619,11 +2636,10 @@ function renderUniversityOptions(){
 function applyText(){
   const $=id=>document.getElementById(id);
   $('welSub').textContent=t('welSub');$('welNameL').textContent=t('yourName');$('setupName').placeholder=t('namePH');
-  $('welUniL').textContent=t('university');$('wUD').textContent=t('selectUni');$('welLangL').textContent=t('language');
+  $('welUniL').textContent=t('university');$('welLangL').textContent=t('language');
   if($('welGoogleTxt'))$('welGoogleTxt').textContent=t('welGoogleCta');
   if($('welOrTxt'))$('welOrTxt').textContent=t('welOr');
   if($('welSignedInLabel'))$('welSignedInLabel').textContent=t('welSignedInAs');
-  $('wU1').textContent=t('uni_latakia');$('wU2').textContent=t('uni_sham');$('wU3').textContent=t('uni_aast');$('wU4').textContent=t('uni_manara');$('wU5').textContent=t('uni_gemtq');
   $('setupBtn').textContent=t('getStarted');
   $('lmSubL').textContent=t('subject');$('lecSubject').placeholder=t('subPH');$('lmTypeL').textContent=t('lecType');$('oTheo').textContent=t('theoretical');$('oPrac').textContent=t('practical');$('lmProfL').textContent=t('professor');$('lecProf').placeholder=t('profPH');$('lmRoomL').textContent=t('room');$('lecRoom').placeholder=t('roomPH');
   $('saveLecBtn').textContent=t('saveLec');$('deleteLecBtn').textContent=t('delLec');
