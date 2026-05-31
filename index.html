@@ -2177,7 +2177,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.25.0';
+const APP_VERSION = 'v1.26.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2573,7 +2573,47 @@ function closeModal(id){document.getElementById(id).classList.remove('open');if(
 function applyLang(){const a=state.lang==='ar';document.documentElement.lang=a?'ar':'en';document.documentElement.dir=a?'rtl':'ltr';}
 function applyTheme(){document.documentElement.setAttribute('data-theme',state.theme==='light'?'light':'');}
 function dayShort(){return[t('sat'),t('sun'),t('mon'),t('tue'),t('wed'),t('thu'),t('fri')];}
-function uniName(k){return t('uni_'+k)||k;}
+function uniName(k){
+  // Phase 2: prefer the data-driven catalog (DB/cache); fall back to the
+  // legacy translation keys for any id not present in the catalog.
+  if(typeof SupaDB!=='undefined'&&SupaDB.getUniversityById){
+    const u=SupaDB.getUniversityById(k);
+    if(u){
+      if(state.lang==='ar'&&u.name_ar)return u.name_ar;
+      return u.name||k;
+    }
+  }
+  return t('uni_'+k)||k;
+}
+
+/* Phase 2: (re)build the university <select> dropdowns from the catalog.
+   Replaces the previously hard-coded <option> lists in setupUni / editUniSelect.
+   Preserves the current selection if still present. Safe to call repeatedly. */
+function renderUniversityOptions(){
+  const list=(typeof SupaDB!=='undefined'&&SupaDB.getUniversities)?SupaDB.getUniversities():[];
+  if(!list.length)return;
+  // Build <option> HTML once; the placeholder is only for the setup dropdown.
+  const optsHTML=list.map(u=>{
+    const label=(state.lang==='ar'&&u.name_ar)?u.name_ar:(u.name||u.id);
+    return '<option value="'+u.id+'">'+escapeHTML(label)+'</option>';
+  }).join('');
+  // Setup (welcome) dropdown — keep the leading empty placeholder.
+  const su=document.getElementById('setupUni');
+  if(su){
+    const cur=su.value;
+    su.innerHTML='<option value="" id="wUD">'+escapeHTML(t('selectUni'))+'</option>'+optsHTML;
+    if(cur&&list.some(u=>u.id===cur))su.value=cur;
+    if(su._cselSync)su._cselSync();
+  }
+  // Settings "change university" modal dropdown — no placeholder.
+  const eu=document.getElementById('editUniSelect');
+  if(eu){
+    const cur=eu.value||state.university;
+    eu.innerHTML=optsHTML;
+    if(cur&&list.some(u=>u.id===cur))eu.value=cur;
+    if(eu._cselSync)eu._cselSync();
+  }
+}
 
 /* ===== APPLY STATIC TEXT ===== */
 function applyText(){
@@ -2591,7 +2631,7 @@ function applyText(){
   $('tmDlL').textContent=t('deadline');$('tmPrL').textContent=t('priority');$('oLow').textContent=t('low');$('oMed').textContent=t('medium');$('oHigh').textContent=t('high');$('saveTaskBtn').textContent=t('addTask');
   $('nmTitle').textContent=t('editName');$('nmL').textContent=t('name');$('saveNameBtn').textContent=t('save');
   $('umTitle').textContent=t('changeUni');$('umL').textContent=t('university');$('saveUniBtn').textContent=t('saveApply');
-  const uo=$('editUniSelect').options;['latakia','sham','aast','manara','gemtq'].forEach((k,i)=>{uo[i].textContent=uniName(k);});
+  renderUniversityOptions();
   $('heroLabel').textContent=t('nextLec');
   $('slTasks').textContent=t('pendTasks');$('slStudy').textContent=t('studyToday');$('slExams').textContent=t('upcoming');
   $('wpTitle').textContent=t('weekProg');$('tskTitle').textContent=t('taskTitle');$('achTitle').textContent=t('weekAch');
@@ -2913,6 +2953,18 @@ async function init(){
   let hasSession=false;
   try{hasSession=await SupaDB.peekSession();}catch(e){hasSession=false;}
   SupaDB.initAuth();
+  // Phase 2: refresh the universities catalog in the background (mode A — silent).
+  // Does NOT block boot. When fresh data lands and differs from what's on screen,
+  // re-render the university dropdowns so new/updated entries appear.
+  SupaDB.fetchUniversities().then(list=>{
+    try{
+      const before=document.getElementById('setupUni')?document.getElementById('setupUni').options.length:0;
+      if(typeof renderUniversityOptions==='function'){renderUniversityOptions();}
+      // If the count changed, also refresh the settings page (it shows uni name).
+      const after=document.getElementById('setupUni')?document.getElementById('setupUni').options.length:0;
+      if(before!==after && typeof renderSettings==='function'){renderSettings();}
+    }catch(e){console.warn('[init] university refresh render failed',e);}
+  }).catch(()=>{});
   if(state.setupDone){
     // Local or cloud user — go straight into the app. _loadAndMerge will refresh data.
     document.getElementById('welcomeScreen').classList.add('hidden');
@@ -5489,8 +5541,84 @@ try {
     _updateDot();
   }
 
+  /* ═══════════════════════════════════════════════════════════════════
+     UNIVERSITIES — data-driven catalog (Phase 2)
+     ───────────────────────────────────────────────────────────────────
+     Reads the shared `universities` table (official rows + the user's own
+     submissions, enforced by RLS). Result is cached in localStorage so the
+     offline-first guarantee holds: first launch needs network, every launch
+     after that works offline from cache. If both the network AND the cache
+     are unavailable (very first run, offline), we fall back to the built-in
+     UNI_SLOTS so the app never breaks.
+  ═══════════════════════════════════════════════════════════════════ */
+  const UNI_CACHE_KEY = 'unimanager_universities';
+
+  function _readUniCache() {
+    try {
+      const raw = localStorage.getItem(UNI_CACHE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (parsed && Array.isArray(parsed.list)) return parsed.list;
+    } catch (e) { /* corrupt cache → ignore */ }
+    return null;
+  }
+
+  function _writeUniCache(list) {
+    try {
+      localStorage.setItem(UNI_CACHE_KEY, JSON.stringify({ ts: Date.now(), list }));
+    } catch (e) { /* quota/serialization → non-fatal */ }
+  }
+
+  /* Built-in fallback derived from the legacy UNI_SLOTS map, used only when
+     there is no network and no cache yet. Mirrors the official Syrian rows. */
+  function _builtinUniFallback() {
+    const names = {
+      latakia:'University of Lattakia', sham:'Al-Sham Private University',
+      aast:'Arab Academy for Science, Technology and Maritime Transport',
+      manara:'Al-Manara University', gemtq:'GEMTQ — Syrian Academy for Maritime Training'
+    };
+    return Object.keys(UNI_SLOTS).map(id => ({
+      id, name: names[id] || id, name_ar: null, country: 'SY',
+      grade_system: 'sy_percent',
+      schedule_template: UNI_SLOTS[id], is_official: true, created_by: null
+    }));
+  }
+
+  /* Public: returns the best-available list immediately is NOT the contract —
+     this is async. Callers use the cached list synchronously via getUniversities();
+     this function refreshes that cache from the network in the background. */
+  async function fetchUniversities() {
+    try {
+      const { data, error } = await _supa
+        .from('universities')
+        .select('id,name,name_ar,country,grade_system,schedule_template,is_official,created_by')
+        .order('is_official', { ascending: false })
+        .order('name', { ascending: true });
+      if (error) throw error;
+      if (Array.isArray(data) && data.length) {
+        _writeUniCache(data);
+        return data;
+      }
+      return _readUniCache() || _builtinUniFallback();
+    } catch (e) {
+      console.warn('[SupaDB] fetchUniversities (offline or error), using cache/fallback:', e);
+      return _readUniCache() || _builtinUniFallback();
+    }
+  }
+
+  /* Synchronous accessor for render code: cache → builtin fallback. */
+  function getUniversities() {
+    return _readUniCache() || _builtinUniFallback();
+  }
+
+  /* Look up a single university by id from the synchronous list. */
+  function getUniversityById(id) {
+    return getUniversities().find(u => u.id === id) || null;
+  }
+
   return {
     initAuth,
+    fetchUniversities, getUniversities, getUniversityById,
     peekSession,
     signInWithGoogle,
     // Granular write ops — called by app event handlers
