@@ -2179,7 +2179,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.30.0';
+const APP_VERSION = 'v1.31.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -4188,7 +4188,12 @@ function renderFavTechHome(){
 const SUPA_URL = 'https://gcjlvfggsupndpnjoake.supabase.co';
 const SUPA_KEY = 'sb_publishable_674v2wysBhbTaOth0QB7EA_ITXh1_D1';
 const _supa = supabase.createClient(SUPA_URL, SUPA_KEY, {
-  auth: { persistSession: true, autoRefreshToken: true }
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,   // capture #access_token from the OAuth redirect
+    flowType: 'implicit'        // Google redirect returns the token in the URL hash
+  }
 });
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -5000,7 +5005,7 @@ const SupaDB = (() => {
 
     const { error } = await _supa.auth.signInWithOAuth({
       provider: 'google',
-      options:  { redirectTo: window.location.href }
+      options:  { redirectTo: window.location.origin + window.location.pathname }
     });
     if (error) {
       toast('' + error.message, 'error');
@@ -5753,6 +5758,13 @@ try {
         _authReady = false;
         _renderAccountPage();
         return;
+      }
+
+      // After OAuth redirect, Supabase has now consumed the #access_token from
+      // the URL. Strip it from the address bar so it isn't shared, bookmarked,
+      // or re-parsed on refresh (also clears the stray "##access_token" form).
+      if (event === 'SIGNED_IN' && /access_token=/.test(window.location.hash)) {
+        try { history.replaceState(null, '', window.location.origin + window.location.pathname); } catch(e){}
       }
 
       // Avoid double-load: getSession + INITIAL_SESSION both fire on page load.
