@@ -2179,7 +2179,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.31.0';
+const APP_VERSION = 'v1.32.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2722,7 +2722,7 @@ if(typeof s.gradeSystem!=='string'||(s.gradeSystem&&!GRADE_SYSTEMS[s.gradeSystem
 /* GROUPS: ensure shape for users upgrading from pre-groups versions */
 if(typeof s.groups!=='object'||Array.isArray(s.groups)||s.groups===null){s.groups={current:null,members:[],sharedSchedule:{},sharedExams:[],sharedNotes:{}};}else{if(!('current' in s.groups))s.groups.current=null;if(!Array.isArray(s.groups.members))s.groups.members=[];if(typeof s.groups.sharedSchedule!=='object'||Array.isArray(s.groups.sharedSchedule))s.groups.sharedSchedule={};if(!Array.isArray(s.groups.sharedExams))s.groups.sharedExams=[];if(typeof s.groups.sharedNotes!=='object'||Array.isArray(s.groups.sharedNotes))s.groups.sharedNotes={};}
 return s;}catch(e){return defaultState();}}
-let state=loadState(),activeDay=getTodayIndex(),editingSlot=null,editingDay=null,currentFilter='all',cdInt=null;
+let state=loadState(),activeDay=getTodayIndex(),editingSlot=null,editingDay=null,currentFilter='all',cdInt=null,_lastGpaCalc=null;
 let pomoInterval=null,pomoRunning=false,pomoSeconds=25*60,pomoMode={work:25,brk:5},pomoOnBreak=false,pomoSessionCount=0,pomoStartTime=null,pomoTotalSeconds=25*60;
 // Tab history for back button navigation
 let tabHistory = [];
@@ -3561,33 +3561,78 @@ function calcGPA(){
   if(v&&tc>0){
     const avg=ws/tc;
     const gv=document.getElementById('gpaValue');const gs=document.getElementById('gpaScale');
+    let displayVal;
     if(ty==='percent'){
-      gv.textContent=avg.toFixed(2)+'%'; gs.textContent=t('semAverage')+' ('+tc+' '+t('credHrs')+')';
+      displayVal=avg.toFixed(2)+'%';
+      gv.textContent=displayVal; gs.textContent=t('semAverage')+' ('+tc+' '+t('credHrs')+')';
     } else if(ty==='percent_banded'){
       // UK: show classification as the headline, numeric average beneath.
-      gv.textContent=bandLabel(classify(avg,sys));
+      displayVal=bandLabel(classify(avg,sys));
+      gv.textContent=displayVal;
       gs.textContent=avg.toFixed(1)+'% · '+sysName+' ('+tc+' '+t('credHrs')+')';
     } else if(ty==='numeric_inverted'){
       // German: lower is better — annotate so the number isn't misread.
-      gv.textContent=avg.toFixed(2);
+      displayVal=avg.toFixed(2);
+      gv.textContent=displayVal;
       gs.textContent=t('semGradeAvg')+' · '+t('lowerBetter')+' ('+tc+' '+t('credHrs')+')';
     } else { // letter
-      gv.textContent=avg.toFixed(2);
+      displayVal=avg.toFixed(2);
+      gv.textContent=displayVal;
       gs.textContent=t('semGPA')+' ('+tc+' '+t('credHrs')+') · '+sysName;
     }
+    // Structured result for Save Semester — never parsed back from the DOM.
+    _lastGpaCalc={ numeric:avg, display:displayVal, systemId:sys.id, type:ty, scale:sys.scale||null, credits:tc };
     document.getElementById('gpaBD').innerHTML=bd.join('<br>');rd.style.display='block';sb.style.display='block';
-  }else{rd.style.display='none';sb.style.display='none';}
+  }else{ _lastGpaCalc=null; rd.style.display='none';sb.style.display='none';}
 }
 
 /* ===== GPA HISTORY ===== */
-document.getElementById('saveSemBtn').addEventListener('click',()=>{const gpa=document.getElementById('gpaValue').textContent;const credits=state.subjects.reduce((s,x)=>{const c=parseFloat(x.credits);return isNaN(c)?s:s+c;},0);state.gpaHistory.push({id:Date.now(),gpa:parseFloat(gpa),credits,label:'Semester '+(state.gpaHistory.length+1)});saveState();renderGPAHistory();toast('Semester saved');});
-function renderGPAHistory(){const sec=document.getElementById('gpaHistorySection');if(!state.gpaHistory.length){sec.innerHTML='';return;}
-  let totalW=0,totalC=0;state.gpaHistory.forEach(h=>{totalW+=h.gpa*h.credits;totalC+=h.credits;});
-  const cumGPA=totalC?(totalW/totalC).toFixed(2):'0.00';
-  let html='<div class="cumulative-gpa"><div class="cg-value">'+cumGPA+'</div><div class="cg-label">Cumulative GPA ('+totalC+' '+t('credHrs')+')</div></div>';
-  html+=state.gpaHistory.map(h=>'<div class="gpa-history-item"><div class="gh-label">'+escapeHTML(h.label)+'</div><div style="display:flex;align-items:center"><div class="gh-value">'+h.gpa.toFixed(2)+'</div><div class="gh-del" data-id="'+h.id+'">\u2715</div></div></div>').join('');
+document.getElementById('saveSemBtn').addEventListener('click',()=>{
+  if(!_lastGpaCalc){return;}
+  const credits=state.subjects.reduce((s,x)=>{const c=parseFloat(x.credits);return isNaN(c)?s:s+c;},0);
+  state.gpaHistory.push({
+    id:Date.now(),
+    gpa:_lastGpaCalc.numeric,        // raw numeric (always a number)
+    display:_lastGpaCalc.display,    // e.g. "First Class (1st)" or "3.75" or "86.00%"
+    systemId:_lastGpaCalc.systemId,  // which grading system produced it
+    type:_lastGpaCalc.type,          // percent | percent_banded | numeric_inverted | letter
+    scale:_lastGpaCalc.scale,
+    credits,
+    label:'Semester '+(state.gpaHistory.length+1)
+  });
+  saveState();SupaDB.upsertSettings(state).catch(()=>{});renderGPAHistory();toast('Semester saved');
+});
+function renderGPAHistory(){
+  const sec=document.getElementById('gpaHistorySection');
+  if(!state.gpaHistory.length){sec.innerHTML='';return;}
+  const fmt=(h)=>{
+    if(h.display) return escapeHTML(h.display);
+    if(typeof h.gpa==='number' && isFinite(h.gpa)){ return h.gpa.toFixed(2); }
+    return '\u2014';
+  };
+  const families={};
+  state.gpaHistory.forEach(h=>{
+    if(typeof h.gpa!=='number'||!isFinite(h.gpa))return;
+    const ty=h.type||'letter';
+    if(ty==='percent_banded')return;
+    const key = ty==='percent' ? 'percent' : (ty==='numeric_inverted' ? 'inverted' : 'gpa');
+    if(!families[key])families[key]={w:0,c:0,type:ty};
+    families[key].w+=h.gpa*h.credits; families[key].c+=h.credits;
+  });
+  let head=null;
+  Object.keys(families).forEach(k=>{ const f=families[k]; if(f.c>0 && (!head||f.c>head.c)) head={key:k,w:f.w,c:f.c,type:f.type}; });
+  let html='';
+  if(head){
+    const avg=head.w/head.c;
+    let label, val;
+    if(head.key==='percent'){ val=avg.toFixed(2)+'%'; label=t('semAverage'); }
+    else if(head.key==='inverted'){ val=avg.toFixed(2); label=t('semGradeAvg')+' \u00B7 '+t('lowerBetter'); }
+    else { val=avg.toFixed(2); label='Cumulative GPA'; }
+    html+='<div class="cumulative-gpa"><div class="cg-value">'+val+'</div><div class="cg-label">'+label+' ('+head.c+' '+t('credHrs')+')</div></div>';
+  }
+  html+=state.gpaHistory.map(h=>'<div class="gpa-history-item"><div class="gh-label">'+escapeHTML(h.label)+'</div><div style="display:flex;align-items:center"><div class="gh-value">'+fmt(h)+'</div><div class="gh-del" data-id="'+h.id+'">\u2715</div></div></div>').join('');
   sec.innerHTML=html;
-  sec.querySelectorAll('.gh-del').forEach(el=>{el.addEventListener('click',()=>{state.gpaHistory=state.gpaHistory.filter(h=>h.id!==parseInt(el.dataset.id));saveState();renderGPAHistory();});});
+  sec.querySelectorAll('.gh-del').forEach(el=>{el.addEventListener('click',()=>{state.gpaHistory=state.gpaHistory.filter(h=>h.id!==parseInt(el.dataset.id));saveState();SupaDB.upsertSettings(state).catch(()=>{});renderGPAHistory();});});
 }
 
 /* ===== POMODORO ===== */
