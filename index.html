@@ -374,7 +374,9 @@ select.form-input option{background-color:var(--bg-secondary)!important;color:va
 .filter-bar{display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}.filter-bar::-webkit-scrollbar{display:none}
 .filter-chip{padding:6px 12px;border-radius:20px;font-size:.72rem;font-weight:600;background:var(--bg-card);border:1px solid var(--border);color:var(--text-muted);white-space:nowrap;transition:all .2s}
 .filter-chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.gpa-mode-toggle{display:flex;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xs);overflow:hidden;margin-bottom:14px}
+.gpa-mode-toggle{display:block;margin-bottom:14px}
+.gpa-mode-toggle .gs-label{display:block;font-size:.72rem;font-weight:600;color:var(--text-dim);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.gpa-mode-toggle .gs-select{width:100%}
 .gpa-mode-btn{flex:1;padding:9px;font-size:.78rem;font-weight:600;text-align:center;transition:all .2s}.gpa-mode-btn.active{background:var(--accent);color:#fff}
 .subject-row{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;margin-bottom:6px}
 .subject-row-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.subject-row-name{font-weight:600;font-size:.82rem}
@@ -2177,7 +2179,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.28.0';
+const APP_VERSION = 'v1.29.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2445,7 +2447,7 @@ grp2StatTasks:'Tasks done',grp2StatHours:'Study hours',
 timeRangeReq:'Please select start and end time',
 timeRangeInvalid:'End time must be after start time',
 updateAvailable:'A new update is available',updateNow:'Update Now'
-,sub:'Subject',type:'Type',delete:'Delete',challengeTitle:'Daily Focus Challenge',pomoAnalyticsTitle:'Study Analytics',skillsNav:'Skills',sleepTitle:'Sleep & Rest'},ar:{
+,sub:'Subject',type:'Type',delete:'Delete',challengeTitle:'Daily Focus Challenge',pomoAnalyticsTitle:'Study Analytics',skillsNav:'Skills',sleepTitle:'Sleep & Rest',gradeSystem:'Grading System'},ar:{
 welSub:'\u0631\u0641\u064A\u0642\u0643 \u0627\u0644\u062C\u0627\u0645\u0639\u064A',yourName:'\u0627\u0633\u0645\u0643',namePH:'\u0623\u062F\u062E\u0644 \u0627\u0633\u0645\u0643',university:'\u0627\u0644\u062C\u0627\u0645\u0639\u0629',selectUni:'\u0627\u062E\u062A\u0631 \u062C\u0627\u0645\u0639\u062A\u0643',language:'\u0627\u0644\u0644\u063A\u0629',getStarted:'\u0627\u0628\u062F\u0623 \u0627\u0644\u0622\u0646',
 welGoogleCta:'\u0627\u0644\u0645\u062a\u0627\u0628\u0639\u0629 \u0628\u0627\u0633\u062a\u062e\u062f\u0627\u0645 Google',welOr:'\u0623\u0648',welSignedInAs:'\u0645\u0633\u062c\u0651\u0644 \u0627\u0644\u062f\u062e\u0648\u0644 \u0628\u0627\u0633\u0645',localModeWarning:'<strong>\u0648\u0636\u0639 \u0645\u062d\u0644\u064a:</strong> \u0628\u064a\u0627\u0646\u0627\u062a\u0643 \u0645\u062d\u0641\u0648\u0638\u0629 \u0639\u0644\u0649 \u0647\u0630\u0627 \u0627\u0644\u062c\u0647\u0627\u0632 \u0641\u0642\u0637. \u062a\u063a\u064a\u064a\u0631 \u0627\u0644\u062c\u0647\u0627\u0632 \u0623\u0648 \u0645\u0633\u062d \u0627\u0644\u0645\u062a\u0635\u0641\u062d \u0633\u064a\u062d\u0630\u0641 \u0643\u0644 \u0634\u064a\u0621.',
 uni_latakia:'\u062C\u0627\u0645\u0639\u0629 \u0627\u0644\u0644\u0627\u0630\u0642\u064A\u0629',uni_sham:'\u062C\u0627\u0645\u0639\u0629 \u0627\u0644\u0634\u0627\u0645 \u0627\u0644\u062E\u0627\u0635\u0629',uni_aast:'\u0627\u0644\u0623\u0643\u0627\u062F\u064A\u0645\u064A\u0629 \u0627\u0644\u0639\u0631\u0628\u064A\u0629 \u0644\u0644\u0639\u0644\u0648\u0645 \u0648\u0627\u0644\u062A\u0643\u0646\u0648\u0644\u0648\u062C\u064A\u0627',uni_manara:'\u062C\u0627\u0645\u0639\u0629 \u0627\u0644\u0645\u0646\u0627\u0631\u0629',uni_gemtq:'\u0627\u0644\u0623\u0643\u0627\u062F\u064A\u0645\u064A\u0629 \u0627\u0644\u0633\u0648\u0631\u064A\u0629 \u0644\u0644\u062A\u062F\u0631\u064A\u0628 \u0627\u0644\u0628\u062D\u0631\u064A \u2014 GEMTQ',
@@ -2535,7 +2537,7 @@ grp2StatTasks:'\u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u0645\u0643\u06
 timeRangeReq:'\u0627\u0644\u0631\u062C\u0627\u0621 \u062A\u062D\u062F\u064A\u062F \u0648\u0642\u062A \u0627\u0644\u0628\u062F\u0627\u064A\u0629 \u0648\u0627\u0644\u0646\u0647\u0627\u064A\u0629',
 timeRangeInvalid:'\u0648\u0642\u062A \u0627\u0644\u0646\u0647\u0627\u064A\u0629 \u064A\u062C\u0628 \u0623\u0646 \u064A\u0643\u0648\u0646 \u0628\u0639\u062F \u0648\u0642\u062A \u0627\u0644\u0628\u062F\u0627\u064A\u0629',
 updateAvailable:'\u064A\u062A\u0648\u0641\u0631 \u062A\u062D\u062F\u064A\u062B \u062C\u062F\u064A\u062F',updateNow:'\u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0622\u0646',
-delete:'\u062D\u0630\u0641',connected:'\u0645\u062A\u0635\u0644',syncStatusSynced:'\u062A\u0645\u062A \u0627\u0644\u0645\u0632\u0627\u0645\u0646\u0629',syncStatusLastSynced:'\u0622\u062E\u0631 \u0645\u0632\u0627\u0645\u0646\u0629',sub:'\u0627\u0644\u0645\u0627\u062F\u0629',type:'\u0646\u0648\u0639 \u0627\u0644\u0645\u062D\u0627\u0636\u0631\u0629'
+delete:'\u062D\u0630\u0641',connected:'\u0645\u062A\u0635\u0644',syncStatusSynced:'\u062A\u0645\u062A \u0627\u0644\u0645\u0632\u0627\u0645\u0646\u0629',syncStatusLastSynced:'\u0622\u062E\u0631 \u0645\u0632\u0627\u0645\u0646\u0629',sub:'\u0627\u0644\u0645\u0627\u062F\u0629',type:'\u0646\u0648\u0639 \u0627\u0644\u0645\u062D\u0627\u0636\u0631\u0629',gradeSystem:'\u0646\u0638\u0627\u0645 \u0627\u0644\u062A\u0642\u064A\u064A\u0645'
 }};
 /* i18n lookup. Resolution order: active language → English fallback → key itself.
    Dev safety net: if a key is missing from the ACTIVE language dictionary, warn
@@ -2558,11 +2560,111 @@ function t(k){
 /* ===== DATA ===== */
 const UNI_SLOTS={latakia:[{start:'08:00',end:'10:00'},{start:'10:00',end:'12:00'},{start:'12:00',end:'14:00'},{start:'14:00',end:'16:00'},{start:'16:00',end:'18:00'}],aast:[{start:'08:30',end:'10:10'},{start:'10:30',end:'12:10'},{start:'12:30',end:'14:10'},{start:'14:10',end:'15:50'},{start:'16:00',end:'17:40'}],gemtq:[{start:'08:00',end:'10:00'},{start:'10:00',end:'12:00'},{start:'12:30',end:'14:30'}],sham:[{start:'09:00',end:'11:00'},{start:'11:00',end:'13:00'},{start:'13:00',end:'15:00'},{start:'15:00',end:'17:00'}],manara:[{start:'09:00',end:'10:30'},{start:'10:30',end:'12:00'},{start:'12:00',end:'13:30'},{start:'13:30',end:'15:00'}]};
 const DAYS=['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'];
-const LG=[{l:'A+',g:4.0},{l:'A',g:4.0},{l:'A-',g:3.7},{l:'B+',g:3.3},{l:'B',g:3.0},{l:'B-',g:2.7},{l:'C+',g:2.3},{l:'C',g:2.0},{l:'C-',g:1.7},{l:'D',g:1.0},{l:'F',g:0.0}];
-function l2g(l){const f=LG.find(x=>x.l===l);return f?f.g:0;}
-function isPassing(l){return l!=='F';}
-function getLG(s){if(s>=97)return'A+';if(s>=93)return'A';if(s>=90)return'A-';if(s>=87)return'B+';if(s>=83)return'B';if(s>=80)return'B-';if(s>=77)return'C+';if(s>=73)return'C';if(s>=70)return'C-';if(s>=60)return'D';return'F';}
-function s2g(s){if(s>=97)return 4.0;if(s>=93)return 4.0;if(s>=90)return 3.7;if(s>=87)return 3.3;if(s>=83)return 3.0;if(s>=80)return 2.7;if(s>=77)return 2.3;if(s>=73)return 2.0;if(s>=70)return 1.7;if(s>=60)return 1.0;return 0.0;}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   GRADE SYSTEMS — multi-region GPA engine (Phase 3, Layer 1)
+   ───────────────────────────────────────────────────────────────────────
+   Each system is a self-describing config object. Calculation logic reads
+   the system's `type` and behaves accordingly, instead of hard-coding one
+   scale. Layer 1 covers 4.0-scale systems + percentage. Layer 2 (later)
+   extends `type` with 'classification' (UK) / 'inverted' (DE) without
+   touching the engine below — that's the point of this design.
+
+   type:
+     'percent'  → entry is a 0–100 number; semester result = credit-weighted
+                  average of the percentages (NOT converted to points).
+     'letter'   → entry is a letter chosen from `letters`; result = credit-
+                  weighted average of the mapped grade points.
+   Fields:
+     letters     [{l,g}]   letter→point table (for type:'letter')
+     fromPercent [{min,l}] optional percent→letter mapping (descending min)
+     scale       number    nominal max (for display/labels)
+     pass        number    pass threshold (percent for 'percent'; point for 'letter')
+   ═══════════════════════════════════════════════════════════════════════ */
+const GRADE_SYSTEMS = {
+  sy_percent: {
+    id:'sy_percent', name_en:'Percentage', name_ar:'النسبة المئوية',
+    type:'percent', scale:100, pass:60,
+    // Used only to show a letter hint next to a percentage entry.
+    fromPercent:[{min:97,l:'A+'},{min:93,l:'A'},{min:90,l:'A-'},{min:87,l:'B+'},{min:83,l:'B'},{min:80,l:'B-'},{min:77,l:'C+'},{min:73,l:'C'},{min:70,l:'C-'},{min:60,l:'D'},{min:0,l:'F'}]
+  },
+  us_4: {
+    id:'us_4', name_en:'US 4.0 (+/-)', name_ar:'أمريكي 4.0 (‎+/-‎)',
+    type:'letter', scale:4.0, pass:1.0,
+    letters:[{l:'A+',g:4.0},{l:'A',g:4.0},{l:'A-',g:3.7},{l:'B+',g:3.3},{l:'B',g:3.0},{l:'B-',g:2.7},{l:'C+',g:2.3},{l:'C',g:2.0},{l:'C-',g:1.7},{l:'D+',g:1.3},{l:'D',g:1.0},{l:'F',g:0.0}],
+    fromPercent:[{min:97,l:'A+'},{min:93,l:'A'},{min:90,l:'A-'},{min:87,l:'B+'},{min:83,l:'B'},{min:80,l:'B-'},{min:77,l:'C+'},{min:73,l:'C'},{min:70,l:'C-'},{min:67,l:'D+'},{min:60,l:'D'},{min:0,l:'F'}]
+  },
+  us_4_3: {
+    id:'us_4_3', name_en:'US 4.3', name_ar:'أمريكي 4.3',
+    type:'letter', scale:4.3, pass:1.0,
+    letters:[{l:'A+',g:4.3},{l:'A',g:4.0},{l:'A-',g:3.7},{l:'B+',g:3.3},{l:'B',g:3.0},{l:'B-',g:2.7},{l:'C+',g:2.3},{l:'C',g:2.0},{l:'C-',g:1.7},{l:'D+',g:1.3},{l:'D',g:1.0},{l:'F',g:0.0}],
+    fromPercent:[{min:97,l:'A+'},{min:93,l:'A'},{min:90,l:'A-'},{min:87,l:'B+'},{min:83,l:'B'},{min:80,l:'B-'},{min:77,l:'C+'},{min:73,l:'C'},{min:70,l:'C-'},{min:67,l:'D+'},{min:60,l:'D'},{min:0,l:'F'}]
+  },
+  us_4_unweighted: {
+    id:'us_4_unweighted', name_en:'US 4.0 (no +/-)', name_ar:'أمريكي 4.0 (بدون ‎+/-‎)',
+    type:'letter', scale:4.0, pass:1.0,
+    letters:[{l:'A',g:4.0},{l:'B',g:3.0},{l:'C',g:2.0},{l:'D',g:1.0},{l:'F',g:0.0}],
+    fromPercent:[{min:90,l:'A'},{min:80,l:'B'},{min:70,l:'C'},{min:60,l:'D'},{min:0,l:'F'}]
+  },
+  tr_4: {
+    id:'tr_4', name_en:'Turkey 4.0', name_ar:'تركي 4.0',
+    type:'letter', scale:4.0, pass:1.0,
+    letters:[{l:'AA',g:4.0},{l:'BA',g:3.5},{l:'BB',g:3.0},{l:'CB',g:2.5},{l:'CC',g:2.0},{l:'DC',g:1.5},{l:'DD',g:1.0},{l:'FD',g:0.5},{l:'FF',g:0.0}],
+    fromPercent:[{min:90,l:'AA'},{min:85,l:'BA'},{min:80,l:'BB'},{min:75,l:'CB'},{min:65,l:'CC'},{min:58,l:'DC'},{min:50,l:'DD'},{min:40,l:'FD'},{min:0,l:'FF'}]
+  }
+};
+
+/* Default system order for any UI selector (Layer 1). */
+const GRADE_SYSTEM_ORDER = ['sy_percent','us_4','us_4_3','us_4_unweighted','tr_4'];
+
+/* Resolve the currently active grade system id.
+   Smart-mix: explicit user choice (state.gradeSystem) wins; otherwise derive
+   from the selected university's grade_system; otherwise fall back to the
+   legacy default (percentage). Always returns a valid, known id. */
+function activeGradeSystemId(){
+  // 1) explicit user override
+  if(typeof state!=='undefined' && state.gradeSystem && GRADE_SYSTEMS[state.gradeSystem]) return state.gradeSystem;
+  // 2) derive from selected university (data-driven catalog)
+  if(typeof state!=='undefined' && state.university && typeof SupaDB!=='undefined' && SupaDB.getUniversityById){
+    const u=SupaDB.getUniversityById(state.university);
+    if(u && u.grade_system && GRADE_SYSTEMS[u.grade_system]) return u.grade_system;
+  }
+  // 3) legacy default
+  return 'sy_percent';
+}
+function activeGradeSystem(){ return GRADE_SYSTEMS[activeGradeSystemId()] || GRADE_SYSTEMS.sy_percent; }
+
+/* letter → grade point, within a given system (defaults to active). */
+function gradeToPoint(letter, sys){
+  sys = sys || activeGradeSystem();
+  if(!sys.letters) return 0;
+  const f = sys.letters.find(x=>x.l===letter);
+  return f ? f.g : 0;
+}
+/* percentage → letter, within a given system (defaults to active). */
+function percentToLetter(score, sys){
+  sys = sys || activeGradeSystem();
+  const table = sys.fromPercent;
+  if(!table) return '';
+  for(const row of table){ if(score>=row.min) return row.l; }
+  return table.length ? table[table.length-1].l : '';
+}
+/* Is this letter a passing grade in the given system? (point > 0) */
+function isPassingIn(letter, sys){
+  sys = sys || activeGradeSystem();
+  return gradeToPoint(letter, sys) > 0;
+}
+
+/* ── Backward-compatible wrappers ────────────────────────────────────────
+   The original GPA code calls LG / l2g / getLG / s2g / isPassing directly,
+   all assuming the US 4.0 table. We keep them working by delegating to the
+   new engine with the US 4.0 system, so NOTHING in the current UI changes
+   in this step. The UI is migrated to the active system in the next step. */
+const LG = GRADE_SYSTEMS.us_4.letters;
+function l2g(l){ return gradeToPoint(l, GRADE_SYSTEMS.us_4); }
+function isPassing(l){ return l!=='F' && l!=='FF' && l!=='FD'; }
+function getLG(s){ return percentToLetter(s, GRADE_SYSTEMS.sy_percent); }
+function s2g(s){ return gradeToPoint(percentToLetter(s, GRADE_SYSTEMS.us_4), GRADE_SYSTEMS.us_4); }
 
 /* ===== STATE ===== */
 /* ─── GROUPS: default shape lives inside state.groups ─────────────────────
@@ -2572,12 +2674,13 @@ function s2g(s){if(s>=97)return 4.0;if(s>=93)return 4.0;if(s>=90)return 3.7;if(s
    sharedExams    : [{ id, local_id, subject, date, type, created_by }]
    sharedNotes    : { subject_name: { content, last_updated_by, last_updated_at } }
 ──────────────────────────────────────────────────────────────────────── */
-function defaultState(){return{name:'',university:'',slots:[],schedule:{},tasks:[],subjects:[],quickNote:'',theme:'dark',achievements:[],setupDone:false,lang:'en',exams:[],studyLog:[],gpaHistory:[],absenceLimit:5,absences:{},subjectNotes:{},groups:{current:null,members:[],sharedSchedule:{},sharedExams:[],sharedNotes:{}}};}
+function defaultState(){return{name:'',university:'',slots:[],schedule:{},tasks:[],subjects:[],quickNote:'',theme:'dark',achievements:[],setupDone:false,lang:'en',gradeSystem:'',exams:[],studyLog:[],gpaHistory:[],absenceLimit:5,absences:{},subjectNotes:{},groups:{current:null,members:[],sharedSchedule:{},sharedExams:[],sharedNotes:{}}};}
 function loadState(){try{const raw=localStorage.getItem('unimanager');if(!raw)return defaultState();const s=sanitizeImport(JSON.parse(raw));if(!s||typeof s!=='object'||Array.isArray(s))return defaultState();const d=defaultState();if(typeof s.name!=='string')s.name=d.name;if(typeof s.university!=='string')s.university=d.university;if(!Array.isArray(s.slots))s.slots=d.slots;if(typeof s.schedule!=='object'||Array.isArray(s.schedule))s.schedule=d.schedule;if(!Array.isArray(s.tasks))s.tasks=d.tasks;if(!Array.isArray(s.subjects))s.subjects=d.subjects;if(!Array.isArray(s.exams))s.exams=[];if(!Array.isArray(s.studyLog))s.studyLog=[];if(!Array.isArray(s.gpaHistory))s.gpaHistory=[];if(typeof s.absences!=='object'||Array.isArray(s.absences))s.absences={};if(typeof s.absenceLimit!=='number')s.absenceLimit=5;if(!s._attSubmitted)s._attSubmitted='';if(typeof s.subjectNotes!=='object'||Array.isArray(s.subjectNotes))s.subjectNotes={};
+if(typeof s.gradeSystem!=='string'||(s.gradeSystem&&!GRADE_SYSTEMS[s.gradeSystem]))s.gradeSystem='';
 /* GROUPS: ensure shape for users upgrading from pre-groups versions */
 if(typeof s.groups!=='object'||Array.isArray(s.groups)||s.groups===null){s.groups={current:null,members:[],sharedSchedule:{},sharedExams:[],sharedNotes:{}};}else{if(!('current' in s.groups))s.groups.current=null;if(!Array.isArray(s.groups.members))s.groups.members=[];if(typeof s.groups.sharedSchedule!=='object'||Array.isArray(s.groups.sharedSchedule))s.groups.sharedSchedule={};if(!Array.isArray(s.groups.sharedExams))s.groups.sharedExams=[];if(typeof s.groups.sharedNotes!=='object'||Array.isArray(s.groups.sharedNotes))s.groups.sharedNotes={};}
 return s;}catch(e){return defaultState();}}
-let state=loadState(),activeDay=getTodayIndex(),editingSlot=null,editingDay=null,currentFilter='all',gpaMode='percentage',cdInt=null;
+let state=loadState(),activeDay=getTodayIndex(),editingSlot=null,editingDay=null,currentFilter='all',cdInt=null;
 let pomoInterval=null,pomoRunning=false,pomoSeconds=25*60,pomoMode={work:25,brk:5},pomoOnBreak=false,pomoSessionCount=0,pomoStartTime=null,pomoTotalSeconds=25*60;
 // Tab history for back button navigation
 let tabHistory = [];
@@ -3028,7 +3131,7 @@ sLang.addEventListener('change',()=>{state.lang=sLang.value;applyLang();applyTex
 /* Welcome-screen Google sign-in button */
 const welcomeGoogleBtn=document.getElementById('welcomeGoogleBtn');
 if(welcomeGoogleBtn)welcomeGoogleBtn.onclick=()=>SupaDB.signInWithGoogle();
-sBtn.addEventListener('click',async()=>{state.name=sName.value.trim();state.university=sUni.value;state.lang=sLang.value;state.slots=JSON.parse(JSON.stringify(UNI_SLOTS[state.university]||[]));state.setupDone=true;saveState();let _cloudErr=null;if(SupaDB.getUser()){try{await SupaDB.upsertSettings();}catch(e){console.warn('[setup] upsertSettings failed',e);_cloudErr=e;}}document.getElementById('welcomeScreen').classList.add('hidden');document.getElementById('mainApp').style.display='flex';applyTheme();applyLang();applyText();renderNav();renderAll();startClock();startCountdowns();setupSubTabs();renderPomoModes();updatePomoSubjects();initNotifications();startSleepReminderCheck();history.pushState({nav:'app'}, '');if(_cloudErr){toast('Profile saved locally but cloud sync failed — will retry automatically','warning');}else{toast(t('welcome')+state.name+'!');}});
+sBtn.addEventListener('click',async()=>{state.name=sName.value.trim();state.university=sUni.value;state.lang=sLang.value;const _u=(typeof SupaDB!=='undefined'&&SupaDB.getUniversityById)?SupaDB.getUniversityById(state.university):null;const _tmpl=(_u&&Array.isArray(_u.schedule_template)&&_u.schedule_template.length)?_u.schedule_template:(UNI_SLOTS[state.university]||[]);state.slots=JSON.parse(JSON.stringify(_tmpl));state.setupDone=true;saveState();let _cloudErr=null;if(SupaDB.getUser()){try{await SupaDB.upsertSettings();}catch(e){console.warn('[setup] upsertSettings failed',e);_cloudErr=e;}}document.getElementById('welcomeScreen').classList.add('hidden');document.getElementById('mainApp').style.display='flex';applyTheme();applyLang();applyText();renderNav();renderAll();startClock();startCountdowns();setupSubTabs();renderPomoModes();updatePomoSubjects();initNotifications();startSleepReminderCheck();history.pushState({nav:'app'}, '');if(_cloudErr){toast('Profile saved locally but cloud sync failed — will retry automatically','warning');}else{toast(t('welcome')+state.name+'!');}});
 function startClock(){const el=document.getElementById('headerClock');const tick=()=>{el.textContent=new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:false});};tick();setInterval(tick,30000);}
 
 /* ===== SUB TABS ===== */
@@ -3331,10 +3434,70 @@ document.addEventListener('visibilitychange', () => {
 });
 
 /* ===== GPA ===== */
-function renderGPAToggle(){const c=document.getElementById('gpaModeToggle');c.innerHTML='<button class="gpa-mode-btn'+(gpaMode==='percentage'?' active':'')+'" data-mode="percentage">'+t('pctMode')+'</button><button class="gpa-mode-btn'+(gpaMode==='gpa'?' active':'')+'" data-mode="gpa">'+t('ltMode')+'</button>';c.querySelectorAll('.gpa-mode-btn').forEach(b=>{b.addEventListener('click',()=>{gpaMode=b.dataset.mode;renderGPAToggle();renderGPA();});});}
+function renderGPAToggle(){
+  const c=document.getElementById('gpaModeToggle');
+  if(!c)return;
+  const activeId=activeGradeSystemId();
+  const opts=GRADE_SYSTEM_ORDER.map(id=>{
+    const sys=GRADE_SYSTEMS[id];
+    const label=(state.lang==='ar')?sys.name_ar:sys.name_en;
+    return '<option value="'+id+'"'+(id===activeId?' selected':'')+'>'+escapeHTML(label)+'</option>';
+  }).join('');
+  c.innerHTML='<label class="gs-label" for="gradeSysSelect">'+escapeHTML(t('gradeSystem'))+'</label>'+
+    '<select id="gradeSysSelect" class="form-input gs-select">'+opts+'</select>';
+  const sel=c.querySelector('#gradeSysSelect');
+  sel.addEventListener('change',()=>{
+    state.gradeSystem=sel.value;
+    saveState();
+    SupaDB.upsertSettings(state).catch(()=>{});
+    renderGPAToggle();renderGPA();
+  });
+  if(typeof upgradeAllSelects==='function')upgradeAllSelects(c);
+}
 document.getElementById('addSubjectBtn').addEventListener('click',()=>{const _ns={id:Date.now(),name:'',credits:'',score:'',letterGrade:''};state.subjects.push(_ns);saveState();SupaDB.upsertSubject(_ns).catch(()=>{});renderGPA();});
-function renderGPA(){const c=document.getElementById('subjectList');if(!state.subjects.length){c.innerHTML='<div class="empty-state"><div class="empty-state-icon">\uD83D\uDCCA</div><div class="empty-state-text">'+t('addSub')+'</div></div>';document.getElementById('gpaResult').style.display='none';document.getElementById('saveSemBtn').style.display='none';return;}c.innerHTML=state.subjects.map((s,i)=>{let gd='',pass=true;if(gpaMode==='percentage'&&s.score){const sc=parseFloat(s.score)||0;gd=isolateGrade(getLG(sc));pass=sc>=60;}else if(gpaMode==='gpa'&&s.letterGrade){gd=isolateGrade(s.letterGrade)+' ('+l2g(s.letterGrade).toFixed(1)+')';pass=isPassing(s.letterGrade);}let tf;if(gpaMode==='percentage'){tf='<input type="number" placeholder="'+t('scorePH')+'" value="'+(s.score||'')+'" data-idx="'+i+'" data-field="score" min="0" max="100">';}else{const opts=LG.map(g=>'<option value="'+g.l+'"'+(s.letterGrade===g.l?' selected':'')+'>'+isolateGrade(g.l)+'</option>').join('');tf='<select data-idx="'+i+'" data-field="letterGrade"><option value="">'+t('gradePH')+'</option>'+opts+'</select>';}return'<div class="subject-row"><div class="subject-row-header"><div class="subject-row-name">'+(s.name||t('subject')+' '+(i+1))+'</div>'+(gd?'<div class="subject-row-grade '+(pass?'pass':'fail')+'">'+gd+'</div>':'')+'</div><div class="subject-inputs"><input type="text" placeholder="'+t('subject')+'" value="'+(s.name||'')+'" data-idx="'+i+'" data-field="name"><input type="number" placeholder="'+t('credits')+'" value="'+(s.credits||'')+'" data-idx="'+i+'" data-field="credits" min="0" max="10">'+tf+'</div><button class="btn-danger" data-rmidx="'+i+'" style="margin-top:6px;padding:7px;font-size:.72rem">'+t('remove')+'</button></div>';}).join('');c.querySelectorAll('input').forEach(inp=>{inp.addEventListener('input',()=>{const _si=parseInt(inp.dataset.idx);state.subjects[_si][inp.dataset.field]=inp.value;saveState();if(state.subjects[_si])SupaDB.upsertSubject(state.subjects[_si]).catch(()=>{});calcGPA();});});c.querySelectorAll('select').forEach(sel=>{sel.addEventListener('change',()=>{const _sIdx=parseInt(sel.dataset.idx);state.subjects[_sIdx][sel.dataset.field]=sel.value;saveState();if(state.subjects[_sIdx])SupaDB.upsertSubject(state.subjects[_sIdx]).catch(()=>{});calcGPA();renderGPA();});});c.querySelectorAll('[data-rmidx]').forEach(b=>{b.addEventListener('click',()=>{const _rmIdx=parseInt(b.dataset.rmidx);const _rmSubj=state.subjects[_rmIdx];if(_rmSubj)SupaDB.deleteSubject(_rmSubj.id).catch(()=>toast('Delete may not have synced','warning'));state.subjects.splice(_rmIdx,1);saveState();renderGPA();});});calcGPA();upgradeAllSelects(c);}
-function isolateGrade(g){return'\u2068'+g+'\u2069';}function calcGPA(){let tc=0,ws=0,v=false;const bd=[];state.subjects.forEach(s=>{const cr=parseFloat(s.credits);if(isNaN(cr)||cr<=0)return;if(gpaMode==='percentage'){const sc=parseFloat(s.score);if(isNaN(sc))return;const lb=getLG(sc);v=true;ws+=sc*cr;tc+=cr;bd.push(escapeHTML(s.name||t('subject'))+': '+isolateGrade(lb)+' ('+sc.toFixed(1)+'%)');}else{if(!s.letterGrade)return;const gv=l2g(s.letterGrade);const lb=s.letterGrade;v=true;ws+=gv*cr;tc+=cr;bd.push(escapeHTML(s.name||t('subject'))+': '+isolateGrade(lb)+' ('+gv.toFixed(2)+')');}});const rd=document.getElementById('gpaResult');const sb=document.getElementById('saveSemBtn');if(v&&tc>0){if(gpaMode==='percentage'){const avg=(ws/tc).toFixed(2);document.getElementById('gpaValue').textContent=avg+'%';document.getElementById('gpaScale').textContent=t('semAverage')+' ('+tc+' '+t('credHrs')+')';}else{const gpa=(ws/tc).toFixed(2);document.getElementById('gpaValue').textContent=gpa;document.getElementById('gpaScale').textContent=t('semGPA')+' ('+tc+' '+t('credHrs')+')'}document.getElementById('gpaBD').innerHTML=bd.join('<br>');rd.style.display='block';sb.style.display='block';}else{rd.style.display='none';sb.style.display='none';}}
+function renderGPA(){
+  const c=document.getElementById('subjectList');
+  if(!state.subjects.length){c.innerHTML='<div class="empty-state"><div class="empty-state-icon">\uD83D\uDCCA</div><div class="empty-state-text">'+t('addSub')+'</div></div>';document.getElementById('gpaResult').style.display='none';document.getElementById('saveSemBtn').style.display='none';return;}
+  const sys=activeGradeSystem();
+  const isPct=(sys.type==='percent');
+  c.innerHTML=state.subjects.map((s,i)=>{
+    let gd='',pass=true;
+    if(isPct&&s.score){const sc=parseFloat(s.score)||0;gd=isolateGrade(percentToLetter(sc,sys));pass=sc>=(sys.pass||60);}
+    else if(!isPct&&s.letterGrade){gd=isolateGrade(s.letterGrade)+' ('+gradeToPoint(s.letterGrade,sys).toFixed(1)+')';pass=isPassingIn(s.letterGrade,sys);}
+    let tf;
+    if(isPct){tf='<input type="number" placeholder="'+t('scorePH')+'" value="'+(s.score||'')+'" data-idx="'+i+'" data-field="score" min="0" max="100">';}
+    else{const opts=(sys.letters||[]).map(g=>'<option value="'+g.l+'"'+(s.letterGrade===g.l?' selected':'')+'>'+isolateGrade(g.l)+'</option>').join('');tf='<select data-idx="'+i+'" data-field="letterGrade"><option value="">'+t('gradePH')+'</option>'+opts+'</select>';}
+    return'<div class="subject-row"><div class="subject-row-header"><div class="subject-row-name">'+(s.name||t('subject')+' '+(i+1))+'</div>'+(gd?'<div class="subject-row-grade '+(pass?'pass':'fail')+'">'+gd+'</div>':'')+'</div><div class="subject-inputs"><input type="text" placeholder="'+t('subject')+'" value="'+(s.name||'')+'" data-idx="'+i+'" data-field="name"><input type="number" placeholder="'+t('credits')+'" value="'+(s.credits||'')+'" data-idx="'+i+'" data-field="credits" min="0" max="10">'+tf+'</div><button class="btn-danger" data-rmidx="'+i+'" style="margin-top:6px;padding:7px;font-size:.72rem">'+t('remove')+'</button></div>';
+  }).join('');
+  c.querySelectorAll('input').forEach(inp=>{inp.addEventListener('input',()=>{const _si=parseInt(inp.dataset.idx);state.subjects[_si][inp.dataset.field]=inp.value;saveState();if(state.subjects[_si])SupaDB.upsertSubject(state.subjects[_si]).catch(()=>{});calcGPA();});});
+  c.querySelectorAll('select').forEach(sel=>{sel.addEventListener('change',()=>{const _sIdx=parseInt(sel.dataset.idx);state.subjects[_sIdx][sel.dataset.field]=sel.value;saveState();if(state.subjects[_sIdx])SupaDB.upsertSubject(state.subjects[_sIdx]).catch(()=>{});calcGPA();renderGPA();});});
+  c.querySelectorAll('[data-rmidx]').forEach(b=>{b.addEventListener('click',()=>{const _rmIdx=parseInt(b.dataset.rmidx);const _rmSubj=state.subjects[_rmIdx];if(_rmSubj)SupaDB.deleteSubject(_rmSubj.id).catch(()=>toast('Delete may not have synced','warning'));state.subjects.splice(_rmIdx,1);saveState();renderGPA();});});
+  calcGPA();upgradeAllSelects(c);
+}
+function isolateGrade(g){return'\u2068'+g+'\u2069';}
+function calcGPA(){
+  const sys=activeGradeSystem();
+  const isPct=(sys.type==='percent');
+  let tc=0,ws=0,v=false;const bd=[];
+  state.subjects.forEach(s=>{
+    const cr=parseFloat(s.credits);if(isNaN(cr)||cr<=0)return;
+    if(isPct){
+      const sc=parseFloat(s.score);if(isNaN(sc))return;
+      const lb=percentToLetter(sc,sys);v=true;ws+=sc*cr;tc+=cr;
+      bd.push(escapeHTML(s.name||t('subject'))+': '+isolateGrade(lb)+' ('+sc.toFixed(1)+'%)');
+    }else{
+      if(!s.letterGrade)return;
+      const gv=gradeToPoint(s.letterGrade,sys);const lb=s.letterGrade;v=true;ws+=gv*cr;tc+=cr;
+      bd.push(escapeHTML(s.name||t('subject'))+': '+isolateGrade(lb)+' ('+gv.toFixed(2)+')');
+    }
+  });
+  const rd=document.getElementById('gpaResult');const sb=document.getElementById('saveSemBtn');
+  if(v&&tc>0){
+    if(isPct){const avg=(ws/tc).toFixed(2);document.getElementById('gpaValue').textContent=avg+'%';document.getElementById('gpaScale').textContent=t('semAverage')+' ('+tc+' '+t('credHrs')+')';}
+    else{const gpa=(ws/tc).toFixed(2);document.getElementById('gpaValue').textContent=gpa;document.getElementById('gpaScale').textContent=t('semGPA')+' ('+tc+' '+t('credHrs')+') · '+((state.lang==='ar')?sys.name_ar:sys.name_en);}
+    document.getElementById('gpaBD').innerHTML=bd.join('<br>');rd.style.display='block';sb.style.display='block';
+  }else{rd.style.display='none';sb.style.display='none';}
+}
 
 /* ===== GPA HISTORY ===== */
 document.getElementById('saveSemBtn').addEventListener('click',()=>{const gpa=document.getElementById('gpaValue').textContent;const credits=state.subjects.reduce((s,x)=>{const c=parseFloat(x.credits);return isNaN(c)?s:s+c;},0);state.gpaHistory.push({id:Date.now(),gpa:parseFloat(gpa),credits,label:'Semester '+(state.gpaHistory.length+1)});saveState();renderGPAHistory();toast('Semester saved');});
@@ -3726,7 +3889,7 @@ function renderSettings(){
 function renderSlotEditor(){const c=document.getElementById('slotEditor');c.innerHTML=state.slots.map((s,i)=>'<div class="slot-edit-row"><input type="time" value="'+s.start+'" data-idx="'+i+'" data-field="start"><span style="color:var(--text-muted)">\u2192</span><input type="time" value="'+s.end+'" data-idx="'+i+'" data-field="end"><button class="slot-edit-rm" data-idx="'+i+'"><svg aria-hidden=\"true\" class=\"icon\" width=\"14\" height=\"14\"><use href=\"#ic-x\"><\/use><\/svg></button></div>').join('');c.querySelectorAll('input').forEach(inp=>{inp.addEventListener('change',()=>{state.slots[parseInt(inp.dataset.idx)][inp.dataset.field]=inp.value;saveState();renderSchedule();});});c.querySelectorAll('.slot-edit-rm').forEach(b=>{b.addEventListener('click',()=>{state.slots.splice(parseInt(b.dataset.idx),1);saveState();renderSlotEditor();renderSchedule();});});}
 document.getElementById('addSlotBtn').addEventListener('click',()=>{state.slots.push({start:'08:00',end:'10:00'});saveState();renderSlotEditor();renderSchedule();});
 document.getElementById('saveNameBtn').addEventListener('click',()=>{const n=document.getElementById('editNameInput').value.trim();if(n){state.name=n;saveState();renderHeader();renderSettings();closeModal('nameModal');toast(t('nameUpd'));}});
-document.getElementById('saveUniBtn').addEventListener('click',()=>{state.university=document.getElementById('editUniSelect').value;state.slots=JSON.parse(JSON.stringify(UNI_SLOTS[state.university]||[]));saveState();renderAll();closeModal('uniModal');toast(t('uniChg'));});
+document.getElementById('saveUniBtn').addEventListener('click',()=>{state.university=document.getElementById('editUniSelect').value;const _u=(typeof SupaDB!=='undefined'&&SupaDB.getUniversityById)?SupaDB.getUniversityById(state.university):null;const _tmpl=(_u&&Array.isArray(_u.schedule_template)&&_u.schedule_template.length)?_u.schedule_template:(UNI_SLOTS[state.university]||[]);state.slots=JSON.parse(JSON.stringify(_tmpl));saveState();SupaDB.upsertSettings(state).catch(()=>{});renderAll();closeModal('uniModal');toast(t('uniChg'));});
 document.getElementById('importFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=sanitizeImport(JSON.parse(ev.target.result));if(!d||typeof d!=='object')throw new Error('bad');if(d.setupDone){state=d;saveState();applyLang();applyText();applyTheme();renderNav();renderAll();toast(t('dataImp'));}else toast(t('invBack'),'error');}catch(err){toast(t('parseFail'),'error');}};r.readAsText(f);e.target.value='';});
 document.querySelectorAll('.modal-overlay').forEach(ov=>{ov.addEventListener('click',e=>{if(e.target===ov)closeModal(ov.id);});});
 document.getElementById('sideDrawerToggle').addEventListener('click', openSideDrawer);
@@ -4812,6 +4975,7 @@ const SupaDB = (() => {
           if (b.gpaHistory && b.gpaHistory.length) state.gpaHistory = b.gpaHistory;
           if (b.achievements && b.achievements.length) state.achievements = b.achievements;
           if (b._attSubmitted) state._attSubmitted = b._attSubmitted;
+          if (typeof b.gradeSystem==='string' && (b.gradeSystem==='' || GRADE_SYSTEMS[b.gradeSystem])) state.gradeSystem = b.gradeSystem;
           /* Stash for the exams load step below — applied after state.exams is populated */
           if (b.examTimes) state._pendingExamTimes = b.examTimes;
         }
@@ -5023,7 +5187,7 @@ const SupaDB = (() => {
       absences:    state.absences,    subjectNotes: state.subjectNotes,
       gpaHistory:  state.gpaHistory,  achievements: state.achievements,
       setupDone:   state.setupDone,   _attSubmitted: state._attSubmitted,
-      examTimes:   examTimes
+      examTimes:   examTimes,         gradeSystem:  state.gradeSystem || ''
     };
     const row = {
       user_id:       _user.id,
