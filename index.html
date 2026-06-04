@@ -399,6 +399,9 @@ select.form-input option{background-color:var(--bg-secondary)!important;color:va
 .setting-btn{padding:8px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xs);font-size:.8rem;font-weight:600;color:var(--text-primary);transition:all .15s}
 .setting-btn:hover{border-color:var(--accent);color:var(--accent)}
 .slot-editor{margin-top:10px}
+.au-error{color:var(--danger,#e5484d);font-size:.8rem;margin:-4px 0 10px;padding:8px 10px;background:rgba(229,72,77,.08);border:1px solid rgba(229,72,77,.25);border-radius:var(--radius-xs,6px)}
+.slot-editor-flash{animation:slotFlash 1.6s ease}
+@keyframes slotFlash{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,0)}30%{box-shadow:0 0 0 3px rgba(99,102,241,.45)}}
 .slot-edit-row{display:flex;gap:6px;align-items:center;margin-bottom:6px}
 .slot-edit-row input{flex:1;padding:7px;background:var(--bg-input);border:1.5px solid var(--border);border-radius:var(--radius-xs);font-size:.78rem;font-family:var(--font-mono)}
 .slot-edit-row input:focus{border-color:var(--accent)}
@@ -1943,7 +1946,21 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 <div class="modal-overlay" id="lectureModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="lmTitle"></div><button class="modal-close" onclick="closeModal('lectureModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="lmSubL"></label><input type="text" class="form-input" id="lecSubject"></div><div class="form-group"><label id="lmTypeL">Lecture Type</label><select class="form-input" id="lecType"><option value="theoretical" id="oTheo">Theoretical</option><option value="practical" id="oPrac">Practical</option></select></div><div class="form-group"><label id="lmProfL"></label><input type="text" class="form-input" id="lecProf"></div><div class="form-group"><label id="lmRoomL"></label><input type="text" class="form-input" id="lecRoom"></div><button class="btn-primary" id="saveLecBtn"></button><button class="btn-danger" id="deleteLecBtn" style="display:none"></button></div></div>
 <div class="modal-overlay" id="taskModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="tmTitle"></div><button class="modal-close" onclick="closeModal('taskModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="tmNameL"></label><input type="text" class="form-input" id="taskName"></div><div class="form-group"><label id="tmSubL"></label><input type="text" class="form-input" id="taskSubject"></div><div class="form-group"><label id="tmDlL"></label><input type="datetime-local" class="form-input" id="taskDeadline"></div><div class="form-group"><label id="tmPrL"></label><select class="form-input" id="taskPriority"><option value="low" id="oLow"></option><option value="medium" selected id="oMed"></option><option value="high" id="oHigh"></option></select></div><button class="btn-primary" id="saveTaskBtn"></button></div></div>
 <div class="modal-overlay" id="nameModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="nmTitle"></div><button class="modal-close" onclick="closeModal('nameModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="nmL"></label><input type="text" class="form-input" id="editNameInput"></div><button class="btn-primary" id="saveNameBtn"></button></div></div>
-<div class="modal-overlay" id="uniModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="umTitle"></div><button class="modal-close" onclick="closeModal('uniModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="umL"></label><select class="form-input" id="editUniSelect"><option value="latakia"></option><option value="sham"></option><option value="aast"></option><option value="manara"></option><option value="gemtq"></option></select></div><button class="btn-primary" id="saveUniBtn"></button></div></div>
+<div class="modal-overlay" id="uniModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="umTitle"></div><button class="modal-close" onclick="closeModal('uniModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="umL"></label><select class="form-input" id="editUniSelect"><option value="latakia"></option><option value="sham"></option><option value="aast"></option><option value="manara"></option><option value="gemtq"></option></select></div><button class="btn-secondary" id="openAddUniBtn" style="margin-bottom:10px"></button><button class="btn-primary" id="saveUniBtn"></button></div></div>
+
+<!-- Add-your-university modal: lets a signed-in user create their own
+     (is_official=false) university when it's not in the catalog. After it's
+     created, the existing slot editor opens so they can set real times. -->
+<div class="modal-overlay" id="addUniModal"><div class="modal">
+  <div class="modal-header"><div class="modal-title" id="auTitle"></div><button class="modal-close" onclick="closeModal('addUniModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
+  <div class="form-group"><label id="auNameL"></label><input type="text" class="form-input" id="auName" maxlength="120"></div>
+  <div class="form-group"><label id="auNameArL"></label><input type="text" class="form-input" id="auNameAr" maxlength="120" dir="rtl"></div>
+  <div class="form-group"><label id="auCountryL"></label><select class="form-input" id="auCountry"></select></div>
+  <div class="form-group"><label id="auGradeL"></label><select class="form-input" id="auGradeSystem"></select></div>
+  <div class="form-group"><label id="auSlotsL"></label><input type="number" class="form-input" id="auSlotCount" min="1" max="12" value="5"></div>
+  <div id="auError" class="au-error" style="display:none"></div>
+  <button class="btn-primary" id="auSubmitBtn"></button>
+</div></div>
 <div class="modal-overlay" id="examModal"><div class="modal"><div class="modal-header"><div class="modal-title">Add Exam</div><button class="modal-close" onclick="closeModal('examModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label>Subject</label><input type="text" class="form-input" id="examSubject" placeholder="e.g. Data Structures"></div><div class="form-group"><label>Date</label><input type="date" class="form-input" id="examDate"></div><div class="form-group"><label>Time</label><input type="time" class="form-input" id="examTime" value="09:00"></div><div class="form-group"><label>Type</label><select class="form-input" id="examType"><option value="midterm">Midterm</option><option value="final">Final</option><option value="quiz">Quiz</option></select></div><button class="btn-primary" id="saveExamBtn">Add Exam</button></div></div>
 
 <!-- ═══════════════ GROUP MODALS ═══════════════ -->
@@ -2179,7 +2196,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.32.0';
+const APP_VERSION = 'v1.33.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -2447,7 +2464,7 @@ grp2StatTasks:'Tasks done',grp2StatHours:'Study hours',
 timeRangeReq:'Please select start and end time',
 timeRangeInvalid:'End time must be after start time',
 updateAvailable:'A new update is available',updateNow:'Update Now'
-,sub:'Subject',type:'Type',delete:'Delete',challengeTitle:'Daily Focus Challenge',pomoAnalyticsTitle:'Study Analytics',skillsNav:'Skills',sleepTitle:'Sleep & Rest',gradeSystem:'Grading System',gradePHNum:'Grade (1.0–5.0)',semGradeAvg:'Average grade',lowerBetter:'lower is better'},ar:{
+,sub:'Subject',type:'Type',delete:'Delete',challengeTitle:'Daily Focus Challenge',pomoAnalyticsTitle:'Study Analytics',skillsNav:'Skills',sleepTitle:'Sleep & Rest',gradeSystem:'Grading System',gradePHNum:'Grade (1.0–5.0)',semGradeAvg:'Average grade',lowerBetter:'lower is better',signInFirst:'Sign in first',addMyUni:'+ My university is not listed',auTitle:'Add your university',auNameL:'University name (English)',auNameArL:'Name in Arabic (optional)',auCountryL:'Country',auGradeL:'Grading system',auSlotsL:'Number of daily time slots',auSubmit:'Add university',auAdding:'Adding…',auAdded:'University added — set your class times below',auErrName:'Please enter the university name',auErrGeneric:'Could not add university. Please try again.',auErrDup:'This university already exists.',countrySY:'Syria',countryTR:'Turkey',countryGB:'United Kingdom',countryDE:'Germany',countryOther:'Other'},ar:{
 welSub:'\u0631\u0641\u064A\u0642\u0643 \u0627\u0644\u062C\u0627\u0645\u0639\u064A',yourName:'\u0627\u0633\u0645\u0643',namePH:'\u0623\u062F\u062E\u0644 \u0627\u0633\u0645\u0643',university:'\u0627\u0644\u062C\u0627\u0645\u0639\u0629',selectUni:'\u0627\u062E\u062A\u0631 \u062C\u0627\u0645\u0639\u062A\u0643',language:'\u0627\u0644\u0644\u063A\u0629',getStarted:'\u0627\u0628\u062F\u0623 \u0627\u0644\u0622\u0646',
 welGoogleCta:'\u0627\u0644\u0645\u062a\u0627\u0628\u0639\u0629 \u0628\u0627\u0633\u062a\u062e\u062f\u0627\u0645 Google',welOr:'\u0623\u0648',welSignedInAs:'\u0645\u0633\u062c\u0651\u0644 \u0627\u0644\u062f\u062e\u0648\u0644 \u0628\u0627\u0633\u0645',localModeWarning:'<strong>\u0648\u0636\u0639 \u0645\u062d\u0644\u064a:</strong> \u0628\u064a\u0627\u0646\u0627\u062a\u0643 \u0645\u062d\u0641\u0648\u0638\u0629 \u0639\u0644\u0649 \u0647\u0630\u0627 \u0627\u0644\u062c\u0647\u0627\u0632 \u0641\u0642\u0637. \u062a\u063a\u064a\u064a\u0631 \u0627\u0644\u062c\u0647\u0627\u0632 \u0623\u0648 \u0645\u0633\u062d \u0627\u0644\u0645\u062a\u0635\u0641\u062d \u0633\u064a\u062d\u0630\u0641 \u0643\u0644 \u0634\u064a\u0621.',
 uni_latakia:'\u062C\u0627\u0645\u0639\u0629 \u0627\u0644\u0644\u0627\u0630\u0642\u064A\u0629',uni_sham:'\u062C\u0627\u0645\u0639\u0629 \u0627\u0644\u0634\u0627\u0645 \u0627\u0644\u062E\u0627\u0635\u0629',uni_aast:'\u0627\u0644\u0623\u0643\u0627\u062F\u064A\u0645\u064A\u0629 \u0627\u0644\u0639\u0631\u0628\u064A\u0629 \u0644\u0644\u0639\u0644\u0648\u0645 \u0648\u0627\u0644\u062A\u0643\u0646\u0648\u0644\u0648\u062C\u064A\u0627',uni_manara:'\u062C\u0627\u0645\u0639\u0629 \u0627\u0644\u0645\u0646\u0627\u0631\u0629',uni_gemtq:'\u0627\u0644\u0623\u0643\u0627\u062F\u064A\u0645\u064A\u0629 \u0627\u0644\u0633\u0648\u0631\u064A\u0629 \u0644\u0644\u062A\u062F\u0631\u064A\u0628 \u0627\u0644\u0628\u062D\u0631\u064A \u2014 GEMTQ',
@@ -2537,7 +2554,7 @@ grp2StatTasks:'\u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u0645\u0643\u06
 timeRangeReq:'\u0627\u0644\u0631\u062C\u0627\u0621 \u062A\u062D\u062F\u064A\u062F \u0648\u0642\u062A \u0627\u0644\u0628\u062F\u0627\u064A\u0629 \u0648\u0627\u0644\u0646\u0647\u0627\u064A\u0629',
 timeRangeInvalid:'\u0648\u0642\u062A \u0627\u0644\u0646\u0647\u0627\u064A\u0629 \u064A\u062C\u0628 \u0623\u0646 \u064A\u0643\u0648\u0646 \u0628\u0639\u062F \u0648\u0642\u062A \u0627\u0644\u0628\u062F\u0627\u064A\u0629',
 updateAvailable:'\u064A\u062A\u0648\u0641\u0631 \u062A\u062D\u062F\u064A\u062B \u062C\u062F\u064A\u062F',updateNow:'\u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0622\u0646',
-delete:'\u062D\u0630\u0641',connected:'\u0645\u062A\u0635\u0644',syncStatusSynced:'\u062A\u0645\u062A \u0627\u0644\u0645\u0632\u0627\u0645\u0646\u0629',syncStatusLastSynced:'\u0622\u062E\u0631 \u0645\u0632\u0627\u0645\u0646\u0629',sub:'\u0627\u0644\u0645\u0627\u062F\u0629',type:'\u0646\u0648\u0639 \u0627\u0644\u0645\u062D\u0627\u0636\u0631\u0629',gradeSystem:'\u0646\u0638\u0627\u0645 \u0627\u0644\u062A\u0642\u064A\u064A\u0645',gradePHNum:'\u0627\u0644\u062F\u0631\u062C\u0629 (1.0\u20135.0)',semGradeAvg:'\u0645\u062A\u0648\u0633\u0637 \u0627\u0644\u062F\u0631\u062C\u0627\u062A',lowerBetter:'\u0627\u0644\u0623\u0642\u0644 \u0623\u0641\u0636\u0644'
+delete:'\u062D\u0630\u0641',connected:'\u0645\u062A\u0635\u0644',syncStatusSynced:'\u062A\u0645\u062A \u0627\u0644\u0645\u0632\u0627\u0645\u0646\u0629',syncStatusLastSynced:'\u0622\u062E\u0631 \u0645\u0632\u0627\u0645\u0646\u0629',sub:'\u0627\u0644\u0645\u0627\u062F\u0629',type:'\u0646\u0648\u0639 \u0627\u0644\u0645\u062D\u0627\u0636\u0631\u0629',gradeSystem:'\u0646\u0638\u0627\u0645 \u0627\u0644\u062A\u0642\u064A\u064A\u0645',gradePHNum:'\u0627\u0644\u062F\u0631\u062C\u0629 (1.0\u20135.0)',semGradeAvg:'\u0645\u062A\u0648\u0633\u0637 \u0627\u0644\u062F\u0631\u062C\u0627\u062A',lowerBetter:'\u0627\u0644\u0623\u0642\u0644 \u0623\u0641\u0636\u0644',signInFirst:'\u0633\u062C\u0651\u0644 \u0627\u0644\u062F\u062E\u0648\u0644 \u0623\u0648\u0644\u0627\u064B',addMyUni:'+ \u062C\u0627\u0645\u0639\u062A\u064A \u063A\u064A\u0631 \u0645\u0648\u062C\u0648\u062F\u0629',auTitle:'\u0623\u0636\u0641 \u062C\u0627\u0645\u0639\u062A\u0643',auNameL:'\u0627\u0633\u0645 \u0627\u0644\u062C\u0627\u0645\u0639\u0629 (\u0625\u0646\u062C\u0644\u064A\u0632\u064A)',auNameArL:'\u0627\u0644\u0627\u0633\u0645 \u0628\u0627\u0644\u0639\u0631\u0628\u064A\u0629 (\u0627\u062E\u062A\u064A\u0627\u0631\u064A)',auCountryL:'\u0627\u0644\u062F\u0648\u0644\u0629',auGradeL:'\u0646\u0638\u0627\u0645 \u0627\u0644\u062A\u0642\u064A\u064A\u0645',auSlotsL:'\u0639\u062F\u062F \u0627\u0644\u0641\u062A\u0631\u0627\u062A \u0627\u0644\u0632\u0645\u0646\u064A\u0629 \u0627\u0644\u064A\u0648\u0645\u064A\u0629',auSubmit:'\u0625\u0636\u0627\u0641\u0629 \u0627\u0644\u062C\u0627\u0645\u0639\u0629',auAdding:'\u062C\u0627\u0631\u064D \u0627\u0644\u0625\u0636\u0627\u0641\u0629\u2026',auAdded:'\u062A\u0645\u062A \u0625\u0636\u0627\u0641\u0629 \u0627\u0644\u062C\u0627\u0645\u0639\u0629 \u2014 \u0627\u0636\u0628\u0637 \u0623\u0648\u0642\u0627\u062A \u0645\u062D\u0627\u0636\u0631\u0627\u062A\u0643 \u0628\u0627\u0644\u0623\u0633\u0641\u0644',auErrName:'\u0627\u0644\u0631\u062C\u0627\u0621 \u0625\u062F\u062E\u0627\u0644 \u0627\u0633\u0645 \u0627\u0644\u062C\u0627\u0645\u0639\u0629',auErrGeneric:'\u062A\u0639\u0630\u0651\u0631\u062A \u0625\u0636\u0627\u0641\u0629 \u0627\u0644\u062C\u0627\u0645\u0639\u0629. \u062D\u0627\u0648\u0644 \u0645\u0631\u0629 \u0623\u062E\u0631\u0649.',auErrDup:'\u0647\u0630\u0647 \u0627\u0644\u062C\u0627\u0645\u0639\u0629 \u0645\u0648\u062C\u0648\u062F\u0629 \u0628\u0627\u0644\u0641\u0639\u0644.',countrySY:'\u0633\u0648\u0631\u064A\u0627',countryTR:'\u062A\u0631\u0643\u064A\u0627',countryGB:'\u0627\u0644\u0645\u0645\u0644\u0643\u0629 \u0627\u0644\u0645\u062A\u062D\u062F\u0629',countryDE:'\u0623\u0644\u0645\u0627\u0646\u064A\u0627',countryOther:'\u0623\u062E\u0631\u0649'
 }};
 /* i18n lookup. Resolution order: active language → English fallback → key itself.
    Dev safety net: if a key is missing from the ACTIVE language dictionary, warn
@@ -2792,6 +2809,8 @@ function applyText(){
   $('tmDlL').textContent=t('deadline');$('tmPrL').textContent=t('priority');$('oLow').textContent=t('low');$('oMed').textContent=t('medium');$('oHigh').textContent=t('high');$('saveTaskBtn').textContent=t('addTask');
   $('nmTitle').textContent=t('editName');$('nmL').textContent=t('name');$('saveNameBtn').textContent=t('save');
   $('umTitle').textContent=t('changeUni');$('umL').textContent=t('university');$('saveUniBtn').textContent=t('saveApply');
+  if($('openAddUniBtn'))$('openAddUniBtn').textContent=t('addMyUni');
+  if($('auTitle')){$('auTitle').textContent=t('auTitle');$('auNameL').textContent=t('auNameL');$('auNameArL').textContent=t('auNameArL');$('auCountryL').textContent=t('auCountryL');$('auGradeL').textContent=t('auGradeL');$('auSlotsL').textContent=t('auSlotsL');$('auSubmitBtn').textContent=t('auSubmit');}
   renderUniversityOptions();
   $('heroLabel').textContent=t('nextLec');
   $('slTasks').textContent=t('pendTasks');$('slStudy').textContent=t('studyToday');$('slExams').textContent=t('upcoming');
@@ -4015,6 +4034,68 @@ function renderSlotEditor(){const c=document.getElementById('slotEditor');c.inne
 document.getElementById('addSlotBtn').addEventListener('click',()=>{state.slots.push({start:'08:00',end:'10:00'});saveState();renderSlotEditor();renderSchedule();});
 document.getElementById('saveNameBtn').addEventListener('click',()=>{const n=document.getElementById('editNameInput').value.trim();if(n){state.name=n;saveState();renderHeader();renderSettings();closeModal('nameModal');toast(t('nameUpd'));}});
 document.getElementById('saveUniBtn').addEventListener('click',()=>{state.university=document.getElementById('editUniSelect').value;const _u=(typeof SupaDB!=='undefined'&&SupaDB.getUniversityById)?SupaDB.getUniversityById(state.university):null;const _tmpl=(_u&&Array.isArray(_u.schedule_template)&&_u.schedule_template.length)?_u.schedule_template:(UNI_SLOTS[state.university]||[]);state.slots=JSON.parse(JSON.stringify(_tmpl));saveState();SupaDB.upsertSettings(state).catch(()=>{});renderAll();closeModal('uniModal');toast(t('uniChg'));});
+
+/* ── Add-your-university ─────────────────────────────────────────────── */
+const AU_COUNTRIES=[['SY','countrySY'],['TR','countryTR'],['GB','countryGB'],['DE','countryDE'],['other','countryOther']];
+function openAddUniModal(){
+  if(!SupaDB.getUser()){ toast(t('signInFirst'),'error'); return; }
+  // Country dropdown
+  const cc=document.getElementById('auCountry');
+  cc.innerHTML=AU_COUNTRIES.map(([code,key])=>'<option value="'+code+'">'+escapeHTML(t(key))+'</option>').join('');
+  // Grade-system dropdown (reuse the same 7 systems)
+  const gs=document.getElementById('auGradeSystem');
+  gs.innerHTML=GRADE_SYSTEM_ORDER.map(id=>{const s=GRADE_SYSTEMS[id];const label=(state.lang==='ar')?s.name_ar:s.name_en;return '<option value="'+id+'">'+escapeHTML(label)+'</option>';}).join('');
+  // Reset fields
+  document.getElementById('auName').value='';
+  document.getElementById('auNameAr').value='';
+  document.getElementById('auSlotCount').value='5';
+  const err=document.getElementById('auError'); err.style.display='none'; err.textContent='';
+  openModal('addUniModal');
+  if(typeof upgradeAllSelects==='function')upgradeAllSelects(document.getElementById('addUniModal'));
+}
+document.getElementById('openAddUniBtn').addEventListener('click',()=>{ closeModal('uniModal'); openAddUniModal(); });
+
+document.getElementById('auSubmitBtn').addEventListener('click',async()=>{
+  const btn=document.getElementById('auSubmitBtn');
+  const err=document.getElementById('auError');
+  const name=document.getElementById('auName').value.trim();
+  const nameAr=document.getElementById('auNameAr').value.trim();
+  const country=document.getElementById('auCountry').value;
+  const gradeSystem=document.getElementById('auGradeSystem').value;
+  let n=parseInt(document.getElementById('auSlotCount').value,10);
+  if(isNaN(n)||n<1)n=1; if(n>12)n=12;
+  err.style.display='none'; err.textContent='';
+  if(!name){ err.textContent=t('auErrName'); err.style.display='block'; return; }
+  // Generate n default slots; user fine-tunes them in the slot editor next.
+  const tmpl=[]; for(let i=0;i<n;i++){const sh=8+i;const eh=9+i;tmpl.push({start:(sh<10?'0':'')+sh+':00',end:(eh<10?'0':'')+eh+':00'});}
+  btn.disabled=true; const orig=btn.textContent; btn.textContent=t('auAdding');
+  try{
+    const created=await SupaDB.addUniversity({name,name_ar:nameAr,country,grade_system:gradeSystem,schedule_template:tmpl});
+    // Switch to the new university (mirrors saveUniBtn behavior).
+    state.university=created.id;
+    state.slots=JSON.parse(JSON.stringify(created.schedule_template||tmpl));
+    saveState();
+    SupaDB.upsertSettings().catch(()=>{});
+    renderUniversityOptions();
+    renderAll();
+    closeModal('addUniModal');
+    toast(t('auAdded'));
+    // Open the existing slot editor so they can set real times now.
+    // Navigate to the Settings page using the same mechanism as the nav.
+    try{
+      document.querySelectorAll('.nav-item,.side-nav-item').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.tab-page').forEach(x=>x.classList.remove('active'));
+      const sp=document.getElementById('pageSettings'); if(sp)sp.classList.add('active');
+      const navBtn=document.querySelector('.nav-item[data-tab="pageSettings"],.side-nav-item[data-tab="pageSettings"]'); if(navBtn)navBtn.classList.add('active');
+    }catch(e){}
+    setTimeout(()=>{ const se=document.getElementById('slotEditor'); if(se){ se.scrollIntoView({behavior:'smooth',block:'center'}); se.classList.add('slot-editor-flash'); setTimeout(()=>se.classList.remove('slot-editor-flash'),1600);} },300);
+  }catch(e){
+    let msg=t('auErrGeneric');
+    if(e&&e.message==='not-authenticated')msg=t('signInFirst');
+    else if(e&&e.code==='23505')msg=t('auErrDup');
+    err.textContent=msg; err.style.display='block';
+  }finally{ btn.disabled=false; btn.textContent=orig; }
+});
 document.getElementById('importFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=sanitizeImport(JSON.parse(ev.target.result));if(!d||typeof d!=='object')throw new Error('bad');if(d.setupDone){state=d;saveState();applyLang();applyText();applyTheme();renderNav();renderAll();toast(t('dataImp'));}else toast(t('invBack'),'error');}catch(err){toast(t('parseFail'),'error');}};r.readAsText(f);e.target.value='';});
 document.querySelectorAll('.modal-overlay').forEach(ov=>{ov.addEventListener('click',e=>{if(e.target===ov)closeModal(ov.id);});});
 document.getElementById('sideDrawerToggle').addEventListener('click', openSideDrawer);
@@ -5933,9 +6014,48 @@ try {
     return getUniversities().find(u => u.id === id) || null;
   }
 
+  /* Add a user-submitted university. RLS enforces created_by = auth.uid()
+     and forbids is_official=true, so a user can only create their own
+     private entry (anti-spam: not visible to others until manually promoted).
+     On success the row is merged into the local cache immediately so it shows
+     up without waiting for a refetch, and a background refetch is kicked off.
+     Returns the created row. Throws on auth/validation/network failure. */
+  async function addUniversity(input) {
+    if (!_user) throw new Error('not-authenticated');
+    const name = (input.name || '').trim();
+    if (!name) throw new Error('name-required');
+    // Unique id namespaced to the user; never collides with official ids.
+    const id = 'user_' + _user.id.slice(0, 8) + '_' + Date.now().toString(36);
+    const tmpl = Array.isArray(input.schedule_template) ? input.schedule_template : [];
+    const row = {
+      id,
+      name,
+      name_ar: (input.name_ar || '').trim() || null,
+      country: input.country || 'SY',
+      grade_system: GRADE_SYSTEMS[input.grade_system] ? input.grade_system : 'sy_percent',
+      schedule_template: tmpl,
+      is_official: false,          // RLS rejects true; explicit for clarity
+      created_by: _user.id         // RLS requires this to equal auth.uid()
+    };
+    const { data, error } = await _supa
+      .from('universities')
+      .insert(row)
+      .select('id,name,name_ar,country,grade_system,schedule_template,is_official,created_by')
+      .single();
+    if (error) { console.warn('[SupaDB] addUniversity:', error); throw error; }
+    // Merge into cache right away (dedupe by id), then refresh in background.
+    try {
+      const cur = _readUniCache() || [];
+      const next = cur.filter(u => u.id !== data.id).concat([data]);
+      _writeUniCache(next);
+    } catch (e) { /* non-fatal */ }
+    fetchUniversities().catch(() => {});
+    return data;
+  }
+
   return {
     initAuth,
-    fetchUniversities, getUniversities, getUniversityById,
+    fetchUniversities, getUniversities, getUniversityById, addUniversity,
     peekSession,
     signInWithGoogle,
     // Granular write ops — called by app event handlers
