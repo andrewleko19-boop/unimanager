@@ -9,8 +9,9 @@ module.exports = {
       numberOfRuns: 3,
       settings: {
         // Simulate a mid-tier phone — closer to the actual student-with-Galaxy-A12
-        // audience than the default desktop preset would be.
-        preset: 'mobile',
+        // audience. Lighthouse already defaults to a mobile form factor with
+        // throttling, so no preset is needed ('mobile' is not a valid preset —
+        // only perf/experimental/desktop are, and passing it crashes the run).
         // Skip the "is this a 404?" audit since we only test the root URL.
         skipAudits: ['canonical']
       }
