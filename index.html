@@ -5504,7 +5504,7 @@ try {
       ]);
       if (mRes.data) {
         const uids = mRes.data.map(m => m.user_id);
-        const {data: nameRows} = await _supa.from('user_settings').select('user_id,name').in('user_id', uids);
+        const {data: nameRows} = await _supa.from('member_directory').select('user_id,name').in('user_id', uids);
         const nm = {};
         if(nameRows) nameRows.forEach(r => { nm[r.user_id] = r.name; });
         state.groups.members = mRes.data.map(m => ({...m, display_name: nm[m.user_id]||null}));
@@ -6091,7 +6091,7 @@ try {
     },
     rotateGroupInviteCode: async function(){ const gid=state.groups.current.id; const {data,error}=await _supa.rpc('rotate_group_invite_code',{p_group_id:gid}); if(error) throw error; return data; },
     kickGroupMember: async function(uid){ const gid=state.groups.current.id; const {error}=await _supa.rpc('kick_group_member',{p_group_id:gid,p_user_id:uid}); if(error) throw error; },
-    fetchMemberNames: async function(uids){ if(!uids||!uids.length) return {}; const {data}=await _supa.from('user_settings').select('user_id,name').in('user_id',uids); const map={}; if(data) data.forEach(r=>{ map[r.user_id]=r.name||null; }); return map; },
+    fetchMemberNames: async function(uids){ if(!uids||!uids.length) return {}; const {data}=await _supa.from('member_directory').select('user_id,name').in('user_id',uids); const map={}; if(data) data.forEach(r=>{ map[r.user_id]=r.name||null; }); return map; },
     renderAccountPage: function(){ _renderAccountPage(); },
     deleteGroup: async function(){ const gid=state.groups.current.id; const {error}=await _supa.rpc('delete_group',{p_group_id:gid}); if(error) throw error; },
     /* F2: chat */
