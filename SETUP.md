@@ -2,15 +2,15 @@
 
 This document covers the **one-time manual steps** to wire up the GitHub Actions workflows. After this, every push runs CI automatically and every push to `main` auto-deploys.
 
-## 1. Enable GitHub Pages with Actions as the source
+## 1. Deployment — Cloudflare Pages (no workflow needed)
 
-GitHub Pages defaults to "Deploy from a branch" but our workflow uses the modern "GitHub Actions" mode.
+Hosting is **Cloudflare Pages** connected directly to this GitHub repo (the repo IS the deployment — no build step). One-time setup in the Cloudflare dashboard:
 
-1. Go to your repo → **Settings** → **Pages** (left sidebar)
-2. Under **Build and deployment** → **Source**, choose: **GitHub Actions**
-3. Save. (No branch selection needed — the workflow handles it.)
+1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → connect this repo
+2. Build settings: framework preset **None**, build command **empty**, output directory **/** (repo root)
+3. Production branch: `main`. Every push to `main` deploys automatically; every PR gets a preview URL.
 
-Without this step, the deploy workflow will fail with a confusing `Get Pages site failed` error.
+There is intentionally **no deploy workflow** in `.github/workflows/` — Cloudflare's Git integration handles deploys, and the CI workflows only validate.
 
 ## 2. Run `npm install` once locally and commit `package-lock.json`
 
@@ -57,7 +57,8 @@ Make a trivial change (e.g., a comment in `index.html`), commit, push to a new b
 
 - ✓ **CI** workflow runs and passes (or fails clearly if there's a real issue)
 - ✓ **Lighthouse** workflow runs (slower, ~90s)
-- After merge → **Deploy** workflow runs and updates the live site
+- ✓ **Cloudflare Pages** posts a deploy-preview link on the PR
+- After merge → Cloudflare Pages deploys `main` to the live site automatically
 
 ## Local development — run the same checks before pushing
 
@@ -75,8 +76,8 @@ If `npm run check` passes locally, CI will pass. If it doesn't, fix it locally �
 
 ## Troubleshooting
 
-**"Resource not accessible by integration" on deploy**
-→ Step 1 wasn't done. Switch Pages source to "GitHub Actions".
+**PR has no deploy-preview link / merge didn't update the live site**
+→ Step 1 wasn't done. Connect the repo to Cloudflare Pages (Workers & Pages → Create → Pages).
 
 **`npm ci` fails with "package-lock.json not found"**
 → Step 2 wasn't done. Run `npm install` locally and commit the lockfile.
