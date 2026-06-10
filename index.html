@@ -1321,21 +1321,19 @@ body.group-active #pageGroups>.section-title{display:none}
 .chat-voice .cv-dur{font-size:10px;opacity:.8;margin-top:4px;font-variant-numeric:tabular-nums}
 
 /* ── Chat v2: search panel ── */
-#chatSearchPanel{display:none;position:fixed;top:0;bottom:0;left:0;right:0;width:100%;max-width:480px;margin-inline:auto;z-index:260;background:var(--bg-primary);flex-direction:column}
-#chatSearchPanel.visible{display:flex}
-#chatSearchPanel .csp-head{display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top,0px));background:var(--bg-secondary);border-bottom:1px solid var(--border)}
-#chatSearchPanel .csp-head input{flex:1;background:var(--bg-input,#1c1c38);border:1px solid var(--border);border-radius:20px;padding:9px 14px;color:var(--text-primary);font-size:15px}
-#chatSearchPanel .csp-head input:focus{outline:none;border-color:var(--accent)}
-#chatSearchPanel .csp-close{width:36px;height:36px;border-radius:50%;border:none;background:transparent;color:var(--text-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
-#chatSearchPanel .csp-close svg{width:20px;height:20px}
-#chatSearchResults{flex:1;overflow-y:auto;padding:6px 0}
-#chatSearchResults .csr-row{padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer}
-#chatSearchResults .csr-row:hover{background:var(--bg-surface)}
-#chatSearchResults .csr-top{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px}
-#chatSearchResults .csr-sender{font-weight:700;color:var(--accent)}
-#chatSearchResults .csr-date{color:var(--text-muted)}
-#chatSearchResults .csr-snippet{font-size:13px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#chatSearchResults .csr-empty{text-align:center;padding:30px;color:var(--text-muted);font-size:13px}
+/* WhatsApp-style in-place search: identical box (padding/safe-area/background/
+   border) to .chat-fs-header so swapping them is pixel-stable; the thread stays
+   visible underneath. */
+.chat-search-head{display:none;align-items:center;gap:6px;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top,0px));background:var(--bg-secondary);border-bottom:1px solid var(--border);position:relative;z-index:2}
+#groupChatView.fullscreen.searching .chat-fs-header{display:none}
+#groupChatView.fullscreen.searching .chat-search-head{display:flex}
+.chat-search-head input{flex:1;min-width:0;background:transparent;border:none;border-radius:0;padding:8px 4px;color:var(--text-primary);font-size:16px;height:36px;box-sizing:border-box}
+.chat-search-head input:focus{outline:none}
+.csp-count{flex-shrink:0;font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.csp-nav{width:36px;height:36px;border-radius:50%;border:none;background:transparent;color:var(--text-secondary);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;padding:0}
+.csp-nav:active{background:var(--bg-card-hover);color:var(--text-primary)}
+.csp-nav:disabled{opacity:.35;cursor:default}
+.csp-nav svg{width:20px;height:20px;display:block;pointer-events:none}
 .chat-fs-search{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);background:transparent;flex-shrink:0;border:none;cursor:pointer}
 .chat-fs-search:hover{background:var(--bg-card-hover);color:var(--text-primary)}
 .chat-fs-search svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none}
@@ -1917,6 +1915,22 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
             <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
           </button>
         </div>
+        <!-- WhatsApp-style in-place search: swaps with .chat-fs-header (same size,
+             same spot); the conversation stays visible and matches are highlighted
+             by jumping to them in the thread. -->
+        <div class="chat-search-head" id="chatSearchHead">
+          <button class="chat-fs-back" id="cspClose" type="button" aria-label="Close search">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <input type="text" id="cspInput" autocomplete="off" aria-label="Search messages">
+          <span class="csp-count" id="cspCount"></span>
+          <button class="csp-nav" id="cspPrev" type="button" aria-label="Previous match">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+          </button>
+          <button class="csp-nav" id="cspNext" type="button" aria-label="Next match">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
         <div class="chat-header-strip">
           <span id="chatHeaderLabel"></span>
           <span class="chs-mode" id="chatModeLabel"></span>
@@ -2379,14 +2393,6 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 <div class="csel-backdrop" id="cselBackdrop"></div>
 <div class="toast" id="toast"></div>
 <div id="chatLightbox"><button id="chatLightboxClose">&#215;</button><img id="chatLightboxImg" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt=""></div>
-<!-- ═══ Chat message search panel (fullscreen chat only) ═══ -->
-<div id="chatSearchPanel">
-  <div class="csp-head">
-    <button class="csp-close" id="cspClose" type="button" aria-label="Close search"><svg aria-hidden="true"><use href="#ic-x"/></svg></button>
-    <input type="text" id="cspInput" autocomplete="off" aria-label="Search messages">
-  </div>
-  <div id="chatSearchResults"></div>
-</div>
 <input type="file" id="importFile" accept=".json" style="display:none">
 <!-- Supabase SDK — deliberately synchronous and NOT defer/async: the main app
      script below references the `supabase` global at top level (createClient).
@@ -2397,7 +2403,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.36.2';
+const APP_VERSION = 'v1.36.3';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -3126,6 +3132,7 @@ function applyText(){
   if($('dgmLabel')) $('dgmLabel').textContent=t('gsDeleteLabel');
   if($('dgmConfirmBtn')) $('dgmConfirmBtn').textContent=t('gsDelete');
   if($('chatInput')) $('chatInput').placeholder=t('chatPlaceholder');
+  if($('cspInput')) $('cspInput').placeholder=t('chatSearchPH');
   if($('chatSendBtn')) $('chatSendBtn').setAttribute('aria-label',t('chatSend'));
   if($('avsTitle')) $('avsTitle').textContent=t('changePhoto');
   if($('avsCameraLabel')) $('avsCameraLabel').textContent=t('takePhoto');
@@ -7725,43 +7732,70 @@ function _applyMention(name){
     _syncComposerButtons();
   })();
 
-  /* ── In-chat message search (fullscreen) ── */
+  /* ── In-chat message search (fullscreen) — WhatsApp style ──
+     The search bar swaps with the chat header in place; the thread stays
+     visible. Matches (newest-first from the server) are navigated with the
+     up/down chevrons (or Enter) and highlighted by jumping in the thread. */
   (function(){
-    const panel=$('chatSearchPanel'), inp=$('cspInput'), results=$('chatSearchResults');
-    if(!panel) return;
-    function openPanel(){ panel.classList.add('visible'); if(inp){ inp.value=''; setTimeout(()=>inp.focus(),50); } if(results) results.textContent=''; }
-    function closePanel(){ panel.classList.remove('visible'); if(results) results.textContent=''; }
-    window._closeChatSearch = () => { if(panel.classList.contains('visible')){ closePanel(); return true; } return false; };
+    const inp=$('cspInput'), head=$('chatSearchHead');
+    if(!head) return;
+    let matches=[], cur=-1, deb=null, lastQ='';
+    function isOpen(){ const cv=$('groupChatView'); return !!(cv && cv.classList.contains('searching')); }
+    function updateCount(){
+      const c=$('cspCount');
+      if(c) c.textContent = matches.length ? (cur+1)+'/'+matches.length
+        : (inp && inp.value.trim().length>=2 && lastQ ? t('chatSearchNone') : '');
+      const up=$('cspPrev'), dn=$('cspNext');
+      if(up) up.disabled = !matches.length;
+      if(dn) dn.disabled = !matches.length;
+    }
+    function openPanel(){
+      const cv=$('groupChatView'); if(cv) cv.classList.add('searching');
+      matches=[]; cur=-1; lastQ='';
+      if(inp){ inp.value=''; setTimeout(()=>inp.focus(),50); }
+      updateCount();
+    }
+    function closePanel(){
+      const cv=$('groupChatView'); if(cv) cv.classList.remove('searching');
+      matches=[]; cur=-1; lastQ='';
+      if(inp){ inp.value=''; inp.blur(); }
+      updateCount();
+    }
+    window._closeChatSearch = () => { if(isOpen()){ closePanel(); return true; } return false; };
     $('chatFsSearch')?.addEventListener('click', openPanel);
     $('cspClose')   ?.addEventListener('click', closePanel);
-    let deb=null;
-    function renderResults(rows, q){
-      if(!results) return; results.textContent='';
-      if(!rows.length){ const e=document.createElement('div'); e.className='csr-row'; e.style.textAlign='center'; e.style.color='var(--text-muted)'; e.textContent=t('chatSearchNone'); results.appendChild(e); return; }
-      rows.forEach(m=>{
-        const row=document.createElement('div'); row.className='csr-row';
-        const s=document.createElement('div'); s.style.cssText='font-size:12px;font-weight:700;color:var(--accent);margin-bottom:2px'; s.textContent=m.sender_name||'—';
-        const txt=document.createElement('div'); txt.style.cssText='font-size:13px;color:var(--text-primary)';
-        const c=(m.content||''); const idx=c.toLowerCase().indexOf((q||'').toLowerCase());
-        txt.textContent = idx>40 ? '…'+c.slice(idx-40) : c;
-        const dt=document.createElement('div'); dt.style.cssText='font-size:10px;color:var(--text-muted);margin-top:3px';
-        try{ dt.textContent=new Date(m.created_at).toLocaleDateString(); }catch(_){}
-        row.appendChild(s); row.appendChild(txt); row.appendChild(dt);
-        row.addEventListener('click', ()=>{ closePanel(); _jumpToMessage(m.id); });
-        results.appendChild(row);
+    function goto(i){
+      if(!matches.length) return;
+      cur=((i%matches.length)+matches.length)%matches.length;
+      updateCount();
+      _jumpToMessage(matches[cur].id);
+    }
+    async function run(q){
+      const gid=_curGroupId(); if(!gid) return;
+      let rows=[]; try{ rows=await SupaDB.searchGroupMessages(gid, q); }catch(_){}
+      if(!isOpen() || (inp && inp.value.trim()!==q)) return; /* stale response */
+      matches=rows||[]; cur=-1;
+      if(matches.length) goto(0); else updateCount();
+    }
+    if(inp){
+      inp.addEventListener('input', ()=>{
+        clearTimeout(deb);
+        const q=inp.value.trim();
+        if(q.length<2){ matches=[]; cur=-1; lastQ=''; updateCount(); return; }
+        deb=setTimeout(()=>{ lastQ=q; run(q); }, 350);
+      });
+      inp.addEventListener('keydown', e=>{
+        if(e.key==='Enter'){
+          e.preventDefault();
+          const q=inp.value.trim(); if(q.length<2) return;
+          if(q!==lastQ){ clearTimeout(deb); lastQ=q; run(q); }
+          else goto(cur+1);
+        } else if(e.key==='Escape'){ closePanel(); }
       });
     }
-    if(inp) inp.addEventListener('input', ()=>{
-      clearTimeout(deb);
-      const q=inp.value.trim();
-      if(q.length<2){ if(results) results.textContent=''; return; }
-      deb=setTimeout(async()=>{
-        const gid=_curGroupId(); if(!gid) return;
-        let rows=[]; try{ rows=await SupaDB.searchGroupMessages(gid, q); }catch(_){}
-        renderResults(rows, q);
-      }, 350);
-    });
-    document.addEventListener('keydown', e=>{ if(e.key==='Escape' && panel.classList.contains('visible')) closePanel(); });
+    /* Up chevron = older match (server list is newest-first), down = newer. */
+    $('cspPrev')?.addEventListener('click', ()=>goto(cur+1));
+    $('cspNext')?.addEventListener('click', ()=>goto(cur-1));
   })();
 
   /* ═══════════════════════════════════════════════════════════════════
@@ -8183,6 +8217,7 @@ function _applyMention(name){
   }
   function exitFullscreenChat(){
     const cv = $('groupChatView'); if(!cv) return;
+    if(window._closeChatSearch) window._closeChatSearch(); /* don't leave search mode armed */
     cv.classList.remove('fullscreen');
     document.body.classList.remove('chat-fullscreen-open');
     /* Clean any lingering transform from keyboard-aware positioning */

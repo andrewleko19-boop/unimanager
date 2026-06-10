@@ -5,7 +5,7 @@
 // hand, remember: forgetting to bump here means returning users see stale code
 // indefinitely (the SW keeps serving old index.html from cache).
 
-const CACHE_VERSION = 'v1.36.2';
+const CACHE_VERSION = 'v1.36.3';
 const CACHE_NAME = `unimanager-${CACHE_VERSION}`;
 
 // Files to pre-cache on install. Paths are RELATIVE to the SW location, so the
