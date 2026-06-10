@@ -2375,7 +2375,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.36.0';
+const APP_VERSION = 'v1.36.1';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -6328,11 +6328,13 @@ try {
       return data||[];
     },
     /* Paginated fetch (newest-first under the hood, returned oldest-first so the
-       caller keeps a chronological array). Pass beforeId to page back in time. */
-    fetchGroupMessagesPage: async function(gid, beforeId, limit){
+       caller keeps a chronological array). Pass beforeTs (an ISO created_at) to
+       page back in time. Ordered by created_at because message ids are uuid
+       (not monotonic), so they can't be used as a chronological cursor. */
+    fetchGroupMessagesPage: async function(gid, beforeTs, limit){
       let q = _supa.from('group_messages').select('*').eq('group_id',gid)
-        .order('id',{ascending:false}).limit(limit||50);
-      if(beforeId) q = q.lt('id', beforeId);
+        .order('created_at',{ascending:false}).limit(limit||50);
+      if(beforeTs) q = q.lt('created_at', beforeTs);
       const { data, error } = await q;
       if(error) throw error;
       return (data||[]).reverse();
@@ -6407,7 +6409,7 @@ try {
       const esc = (q||'').replace(/[\\%_]/g, m=>'\\'+m);
       const { data, error } = await _supa.from('group_messages').select('*')
         .eq('group_id',gid).eq('deleted',false).not('content','is',null)
-        .ilike('content','%'+esc+'%').order('id',{ascending:false}).limit(50);
+        .ilike('content','%'+esc+'%').order('created_at',{ascending:false}).limit(50);
       if(error) throw error;
       return data||[];
     },
@@ -6503,7 +6505,7 @@ function saveState() {
   let _subscribedGid = null;    // gid the channels are bound to
   let _chatMsgForAction = null; // message id currently in the chat-msg action sheet
   /* Chat v2 state */
-  let _oldestLoadedId = null;   // id of the oldest message currently in _chatMessages
+  let _oldestLoadedTs = null;   // created_at (ISO) of the oldest message in _chatMessages — paging cursor
   let _hasMoreOlder   = false;  // whether older pages may still exist
   let _loadingOlder   = false;  // guard against concurrent older-page fetches
   let _reactionsByMsg = {};     // { msgId: [ {user_id, emoji} ] }
@@ -6582,13 +6584,13 @@ function saveState() {
     /* Reset paging + per-group caches */
     _chatMessages = []; window._chatMsgsMap = {}; _fetchedOrig = {};
     _reactionsByMsg = {}; _readsByUser = {}; _pinnedMsgs = []; _pinnedIdx = 0;
-    _oldestLoadedId = null; _hasMoreOlder = false; _loadingOlder = false;
+    _oldestLoadedTs = null; _hasMoreOlder = false; _loadingOlder = false;
     let page = [];
     try { page = await SupaDB.fetchGroupMessagesPage(gid, null, PAGE); }
     catch(e){ console.warn('[chat] fetch failed', e); page = []; }
     _chatMessages = page;
     _chatMessages.forEach(m => { if(m.id) window._chatMsgsMap[m.id]=m; });
-    _oldestLoadedId = _chatMessages.length ? _chatMessages[0].id : null;
+    _oldestLoadedTs = _chatMessages.length ? _chatMessages[0].created_at : null;
     _hasMoreOlder = page.length >= PAGE;
     /* Parallel: reactions for this page, read watermarks, pinned messages. */
     const ids = _chatMessages.map(m=>m.id).filter(Boolean);
@@ -6652,13 +6654,13 @@ function saveState() {
     const gid = _curGroupId(); if(!gid) return false;
     _loadingOlder = true;
     let page = [];
-    try { page = await SupaDB.fetchGroupMessagesPage(gid, _oldestLoadedId, PAGE); }
+    try { page = await SupaDB.fetchGroupMessagesPage(gid, _oldestLoadedTs, PAGE); }
     catch(e){ _loadingOlder=false; return false; }
     if(!page.length){ _hasMoreOlder=false; _loadingOlder=false; return false; }
     _hasMoreOlder = page.length >= PAGE;
     page.forEach(m=>{ if(m.id) window._chatMsgsMap[m.id]=m; });
     _chatMessages = page.concat(_chatMessages);
-    _oldestLoadedId = _chatMessages.length ? _chatMessages[0].id : _oldestLoadedId;
+    _oldestLoadedTs = _chatMessages.length ? _chatMessages[0].created_at : _oldestLoadedTs;
     try { _ingestReactions(await SupaDB.fetchReactions(page.map(m=>m.id).filter(Boolean))); } catch(_){}
     _renderAllChat(true); /* keepScroll: anchor the previously-visible messages */
     _loadingOlder = false;
@@ -7085,15 +7087,16 @@ function saveState() {
     target.classList.add('highlighted'); setTimeout(()=>target.classList.remove('highlighted'), 900);
   }
   async function _jumpToMessage(id){
+    if(id==null) return;
     let target=document.querySelector('#chatMsgs .chat-msg-row[data-mid="'+id+'"]');
     if(target){ _highlightRow(target); return; }
+    /* Not loaded yet: page back through history until it appears (ids are uuid,
+       so we can't compare them — we just load older pages until found). */
     let loaded=0, toasted=false;
-    while(_hasMoreOlder && _oldestLoadedId && Number(_oldestLoadedId)>Number(id) && loaded<_PAGE_MAX_JUMP){
+    while(_hasMoreOlder && !window._chatMsgsMap[id] && loaded<_PAGE_MAX_JUMP){
       if(!toasted){ toast(t('chatJumpLoading')); toasted=true; }
       const ok=await _loadOlderPage(); loaded++;
       if(!ok) break;
-      target=document.querySelector('#chatMsgs .chat-msg-row[data-mid="'+id+'"]');
-      if(target){ _highlightRow(target); return; }
     }
     target=document.querySelector('#chatMsgs .chat-msg-row[data-mid="'+id+'"]');
     if(target) _highlightRow(target); else toast(t('chatJumpFail'), 'error');
