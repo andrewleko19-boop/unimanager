@@ -1947,7 +1947,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 </div>
 
 <!-- MODALS -->
-<div class="modal-overlay" id="lectureModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="lmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('lectureModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="lmSubL" for="lecSubject"></label><input type="text" class="form-input" id="lecSubject"></div><div class="form-group"><label id="lmTypeL">Lecture Type</label><select class="form-input" id="lecType"><option value="theoretical" id="oTheo">Theoretical</option><option value="practical" id="oPrac">Practical</option></select></div><div class="form-group"><label id="lmProfL" for="lecProf"></label><input type="text" class="form-input" id="lecProf"></div><div class="form-group"><label id="lmRoomL" for="lecRoom"></label><input type="text" class="form-input" id="lecRoom"></div><button class="btn-primary" id="saveLecBtn"></button><button class="btn-danger" id="deleteLecBtn" style="display:none"></button></div></div>
+<div class="modal-overlay" id="lectureModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="lmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('lectureModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="lmSubL" for="lecSubject"></label><input type="text" class="form-input" id="lecSubject"></div><div class="form-group"><label id="lmTypeL" for="lecType">Lecture Type</label><select class="form-input" id="lecType"><option value="theoretical" id="oTheo">Theoretical</option><option value="practical" id="oPrac">Practical</option></select></div><div class="form-group"><label id="lmProfL" for="lecProf"></label><input type="text" class="form-input" id="lecProf"></div><div class="form-group"><label id="lmRoomL" for="lecRoom"></label><input type="text" class="form-input" id="lecRoom"></div><button class="btn-primary" id="saveLecBtn"></button><button class="btn-danger" id="deleteLecBtn" style="display:none"></button></div></div>
 <div class="modal-overlay" id="taskModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="tmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('taskModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="tmNameL" for="taskName"></label><input type="text" class="form-input" id="taskName"></div><div class="form-group"><label id="tmSubL" for="taskSubject"></label><input type="text" class="form-input" id="taskSubject"></div><div class="form-group"><label id="tmDlL" for="taskDeadline"></label><input type="datetime-local" class="form-input" id="taskDeadline"></div><div class="form-group"><label id="tmPrL" for="taskPriority"></label><select class="form-input" id="taskPriority"><option value="low" id="oLow"></option><option value="medium" selected id="oMed"></option><option value="high" id="oHigh"></option></select></div><button class="btn-primary" id="saveTaskBtn"></button></div></div>
 <div class="modal-overlay" id="nameModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="nmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('nameModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="nmL" for="editNameInput"></label><input type="text" class="form-input" id="editNameInput"></div><button class="btn-primary" id="saveNameBtn"></button></div></div>
 <div class="modal-overlay" id="uniModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="umTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('uniModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="umL" for="editUniSelect"></label><select class="form-input" id="editUniSelect"><option value="latakia"></option><option value="sham"></option><option value="aast"></option><option value="manara"></option><option value="gemtq"></option></select></div><button class="btn-secondary" id="openAddUniBtn" style="margin-bottom:10px"></button><button class="btn-primary" id="saveUniBtn"></button></div></div>
@@ -2008,8 +2008,8 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
     <div id="notifPermTitle"></div>
     <div id="notifPermMsg"></div>
     <div id="notifPermBtns">
-      <button id="notifPermAllow"></button>
-      <button id="notifPermBlock"></button>
+      <button id="notifPermAllow">Allow</button>
+      <button id="notifPermBlock">Not now</button>
     </div>
   </div>
 </div>
@@ -2028,11 +2028,11 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   <div class="modal-header"><div class="modal-title" id="gsmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('groupSettingsModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
   <div class="gs-section">
     <div class="gs-section-title" id="gsmNameL"></div>
-    <div class="gs-inline-row"><input type="text" class="form-input" id="gsmName" maxlength="80"><button class="btn-primary" id="gsmSaveName" style="padding:8px 14px;width:auto"></button></div>
+    <div class="gs-inline-row"><input type="text" class="form-input" id="gsmName" maxlength="80" aria-labelledby="gsmNameL"><button class="btn-primary" id="gsmSaveName" style="padding:8px 14px;width:auto"></button></div>
   </div>
   <div class="gs-section">
     <div class="gs-section-title" id="gsmDescL"></div>
-    <textarea class="form-input" id="gsmDesc" maxlength="500" rows="2"></textarea>
+    <textarea class="form-input" id="gsmDesc" maxlength="500" rows="2" aria-labelledby="gsmDescL"></textarea>
     <button class="btn-primary" id="gsmSaveDesc" style="margin-top:6px"></button>
   </div>
   <div class="gs-section">
@@ -2191,7 +2191,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 </div>
 <input type="file" id="gpicGalleryInput" accept="image/*" style="display:none">
 
-<div class="modal-overlay" id="confirmModal"><div class="modal" style="border-radius:var(--radius);max-width:360px;margin:auto;padding:20px 24px;text-align:center"><div class="confirm-msg" id="confirmMsg"></div><div class="confirm-btns"><button class="confirm-no" id="confirmNo"></button><button class="confirm-yes" id="confirmYes"></button></div></div></div>
+<div class="modal-overlay" id="confirmModal"><div class="modal" style="border-radius:var(--radius);max-width:360px;margin:auto;padding:20px 24px;text-align:center"><div class="confirm-msg" id="confirmMsg"></div><div class="confirm-btns"><button class="confirm-no" id="confirmNo">No</button><button class="confirm-yes" id="confirmYes">Yes</button></div></div></div>
 <div class="csel-backdrop" id="cselBackdrop"></div>
 <div class="toast" id="toast"></div>
 <div id="chatLightbox"><button id="chatLightboxClose">&#215;</button><img id="chatLightboxImg" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt=""></div>
@@ -2260,6 +2260,10 @@ function upgradeSelect(sel){
   trigger.setAttribute('tabindex','0');
   trigger.setAttribute('role','combobox');
   trigger.setAttribute('aria-expanded','false');
+  /* Carry the hidden select's accessible name over to the combobox trigger */
+  const selLbl=sel.id?document.querySelector('label[for="'+sel.id+'"]'):null;
+  if(selLbl){ if(!selLbl.id)selLbl.id=sel.id+'Lbl'; trigger.setAttribute('aria-labelledby',selLbl.id); }
+  else if(sel.getAttribute('aria-label')) trigger.setAttribute('aria-label',sel.getAttribute('aria-label'));
 
   const trigText=document.createElement('span');
   trigText.className='csel-trigger-text';
