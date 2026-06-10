@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://browser.sentry-cdn.com; img-src 'self' data: blob: https:; connect-src 'self' https://gcjlvfggsupndpnjoake.supabase.co wss://gcjlvfggsupndpnjoake.supabase.co https://cdn.jsdelivr.net https://*.ingest.de.sentry.io https://*.sentry.io;">
 <title>UniManager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1553,9 +1553,9 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 ">
   <svg aria-hidden="true" class="icon" width="13" height="13" style="margin-inline-end:6px;color:#fbbf24;vertical-align:middle"><use href="#ic-warning"></use></svg><span id="localModeWarningText"></span>
 </div>
-<div class="form-group"><label id="welNameL"></label><input type="text" class="form-input" id="setupName"></div>
-<div class="form-group"><label id="welUniL"></label><select class="form-input" id="setupUni"><option value="" id="wUD"></option><option value="latakia" id="wU1"></option><option value="sham" id="wU2"></option><option value="aast" id="wU3"></option><option value="manara" id="wU4"></option><option value="gemtq" id="wU5"></option></select></div>
-<div class="form-group"><label id="welLangL"></label><select class="form-input" id="setupLang"><option value="en">English</option><option value="ar">العربية</option></select></div>
+<div class="form-group"><label id="welNameL" for="setupName"></label><input type="text" class="form-input" id="setupName"></div>
+<div class="form-group"><label id="welUniL" for="setupUni"></label><select class="form-input" id="setupUni"><option value="" id="wUD"></option><option value="latakia" id="wU1"></option><option value="sham" id="wU2"></option><option value="aast" id="wU3"></option><option value="manara" id="wU4"></option><option value="gemtq" id="wU5"></option></select></div>
+<div class="form-group"><label id="welLangL" for="setupLang"></label><select class="form-input" id="setupLang"><option value="en">English</option><option value="ar">العربية</option></select></div>
 <button class="btn-primary" id="setupBtn" disabled></button>
 </div></div>
 
@@ -1646,7 +1646,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
       <div class="group-action-card">
         <div class="gac-title" id="cgTitle"></div>
         <div class="gac-sub" id="cgSub"></div>
-        <div class="form-group"><label id="cgNameL"></label><input type="text" class="form-input" id="cgName" maxlength="80"></div>
+        <div class="form-group"><label id="cgNameL" for="cgName"></label><input type="text" class="form-input" id="cgName" maxlength="80"></div>
         <div class="form-group"><label id="cgDescL"></label><textarea class="form-input" id="cgDesc" maxlength="500"></textarea></div>
         <button class="btn-primary" id="cgBtn"></button>
       </div>
@@ -1654,7 +1654,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
       <div class="group-action-card">
         <div class="gac-title" id="jgTitle"></div>
         <div class="gac-sub" id="jgSub"></div>
-        <div class="form-group"><label id="jgCodeL"></label><input type="text" class="form-input code-input" id="jgCode" maxlength="6"></div>
+        <div class="form-group"><label id="jgCodeL" for="jgCode"></label><input type="text" class="form-input code-input" id="jgCode" maxlength="6"></div>
         <button class="btn-primary" id="jgBtn"></button>
       </div>
     </div>
@@ -1781,12 +1781,12 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
               <div class="crb-sender" id="crbSender"></div>
               <div class="crb-preview" id="crbPreview"></div>
             </div>
-            <button class="crb-close" id="crbClose"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button>
+            <button class="crb-close" id="crbClose" aria-label="Close"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button>
           </div>
           <div id="chatUploadProgress"><div class="cup-bar"><div class="cup-fill" id="cupFill"></div></div></div>
           <div class="chat-input-row" id="chatInputRow">
             <button id="chatAttachBtn" type="button" aria-label="Attach"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="9" y1="2" x2="9" y2="16"/><line x1="2" y1="9" x2="16" y2="9"/></svg></button>
-            <input type="text" id="chatInput" maxlength="2000" autocomplete="off">
+            <input type="text" id="chatInput" maxlength="2000" autocomplete="off" aria-label="Message">
             <button id="chatSendBtn"></button>
           </div>
           <input type="file" id="chatGalleryInput" style="display:none" accept="image/*">
@@ -1817,33 +1817,33 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
       <div class="fc-comp">
         <input class="fc-comp-name" id="fcName0" value="7th Week Exam">
         <div class="fc-comp-grid">
-          <div><label id="fcLScore0"></label><input type="number" id="fcScore0" min="0" placeholder="0"></div>
-          <div><label id="fcLMax0"></label><input type="number" id="fcMax0" min="0.1" value="30" placeholder="30"></div>
-          <div><label id="fcLW0"></label><input type="number" id="fcW0" min="0" max="100" value="30" placeholder="30"></div>
+          <div><label id="fcLScore0" for="fcScore0"></label><input type="number" id="fcScore0" min="0" placeholder="0"></div>
+          <div><label id="fcLMax0" for="fcMax0"></label><input type="number" id="fcMax0" min="0.1" value="30" placeholder="30"></div>
+          <div><label id="fcLW0" for="fcW0"></label><input type="number" id="fcW0" min="0" max="100" value="30" placeholder="30"></div>
         </div>
       </div>
       <!-- Component 2 -->
       <div class="fc-comp">
         <input class="fc-comp-name" id="fcName1" value="12th Week Exam">
         <div class="fc-comp-grid">
-          <div><label id="fcLScore1"></label><input type="number" id="fcScore1" min="0" placeholder="0"></div>
-          <div><label id="fcLMax1"></label><input type="number" id="fcMax1" min="0.1" value="20" placeholder="20"></div>
-          <div><label id="fcLW1"></label><input type="number" id="fcW1" min="0" max="100" value="20" placeholder="20"></div>
+          <div><label id="fcLScore1" for="fcScore1"></label><input type="number" id="fcScore1" min="0" placeholder="0"></div>
+          <div><label id="fcLMax1" for="fcMax1"></label><input type="number" id="fcMax1" min="0.1" value="20" placeholder="20"></div>
+          <div><label id="fcLW1" for="fcW1"></label><input type="number" id="fcW1" min="0" max="100" value="20" placeholder="20"></div>
         </div>
       </div>
       <!-- Component 3 -->
       <div class="fc-comp">
         <input class="fc-comp-name" id="fcName2" value="Course Work">
         <div class="fc-comp-grid">
-          <div><label id="fcLScore2"></label><input type="number" id="fcScore2" min="0" placeholder="0"></div>
-          <div><label id="fcLMax2"></label><input type="number" id="fcMax2" min="0.1" value="10" placeholder="10"></div>
-          <div><label id="fcLW2"></label><input type="number" id="fcW2" min="0" max="100" value="10" placeholder="10"></div>
+          <div><label id="fcLScore2" for="fcScore2"></label><input type="number" id="fcScore2" min="0" placeholder="0"></div>
+          <div><label id="fcLMax2" for="fcMax2"></label><input type="number" id="fcMax2" min="0.1" value="10" placeholder="10"></div>
+          <div><label id="fcLW2" for="fcW2"></label><input type="number" id="fcW2" min="0" max="100" value="10" placeholder="10"></div>
         </div>
       </div>
       <!-- Final weight + Target -->
       <div class="fc-row">
-        <div><label id="fcFinalWL"></label><input type="number" id="fcFinalWeight" min="0" max="100" placeholder="40"></div>
-        <div><label id="fcTargetL"></label><input type="number" id="fcTarget" min="0" max="100" placeholder="70" value="70"></div>
+        <div><label id="fcFinalWL" for="fcFinalWeight"></label><input type="number" id="fcFinalWeight" min="0" max="100" placeholder="40"></div>
+        <div><label id="fcTargetL" for="fcTarget"></label><input type="number" id="fcTarget" min="0" max="100" placeholder="70" value="70"></div>
       </div>
       <!-- Weight validation -->
       <div class="fc-weight-check" id="fcWeightCheck"></div>
@@ -1907,6 +1907,10 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
       <div class="card-title" id="dangerZoneTitle">Danger Zone</div>
       <button class="btn-danger" id="logoutBtn" style="margin-top:4px">Sign Out</button>
     </div>
+
+    <div style="text-align:center;margin-top:14px">
+      <a href="privacy.html" target="_blank" rel="noopener" id="privacyLink" style="color:var(--text-secondary);font-size:.85rem;text-decoration:underline">Privacy Policy</a>
+    </div>
   </div>
 
   <!-- ─── LOADING ─── -->
@@ -1935,7 +1939,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 <div id="sideDrawer">
   <div class="side-drawer-header">
     <span id="sideDrawerTitle"></span>
-    <button class="modal-close" id="sideDrawerClose"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button>
+    <button class="modal-close" aria-label="Close" id="sideDrawerClose"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button>
   </div>
   <nav id="sideDrawerNav" aria-label="Side menu"></nav>
 </div>
@@ -1943,42 +1947,42 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 </div>
 
 <!-- MODALS -->
-<div class="modal-overlay" id="lectureModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="lmTitle"></div><button class="modal-close" onclick="closeModal('lectureModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="lmSubL"></label><input type="text" class="form-input" id="lecSubject"></div><div class="form-group"><label id="lmTypeL">Lecture Type</label><select class="form-input" id="lecType"><option value="theoretical" id="oTheo">Theoretical</option><option value="practical" id="oPrac">Practical</option></select></div><div class="form-group"><label id="lmProfL"></label><input type="text" class="form-input" id="lecProf"></div><div class="form-group"><label id="lmRoomL"></label><input type="text" class="form-input" id="lecRoom"></div><button class="btn-primary" id="saveLecBtn"></button><button class="btn-danger" id="deleteLecBtn" style="display:none"></button></div></div>
-<div class="modal-overlay" id="taskModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="tmTitle"></div><button class="modal-close" onclick="closeModal('taskModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="tmNameL"></label><input type="text" class="form-input" id="taskName"></div><div class="form-group"><label id="tmSubL"></label><input type="text" class="form-input" id="taskSubject"></div><div class="form-group"><label id="tmDlL"></label><input type="datetime-local" class="form-input" id="taskDeadline"></div><div class="form-group"><label id="tmPrL"></label><select class="form-input" id="taskPriority"><option value="low" id="oLow"></option><option value="medium" selected id="oMed"></option><option value="high" id="oHigh"></option></select></div><button class="btn-primary" id="saveTaskBtn"></button></div></div>
-<div class="modal-overlay" id="nameModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="nmTitle"></div><button class="modal-close" onclick="closeModal('nameModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="nmL"></label><input type="text" class="form-input" id="editNameInput"></div><button class="btn-primary" id="saveNameBtn"></button></div></div>
-<div class="modal-overlay" id="uniModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="umTitle"></div><button class="modal-close" onclick="closeModal('uniModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="umL"></label><select class="form-input" id="editUniSelect"><option value="latakia"></option><option value="sham"></option><option value="aast"></option><option value="manara"></option><option value="gemtq"></option></select></div><button class="btn-secondary" id="openAddUniBtn" style="margin-bottom:10px"></button><button class="btn-primary" id="saveUniBtn"></button></div></div>
+<div class="modal-overlay" id="lectureModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="lmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('lectureModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="lmSubL" for="lecSubject"></label><input type="text" class="form-input" id="lecSubject"></div><div class="form-group"><label id="lmTypeL">Lecture Type</label><select class="form-input" id="lecType"><option value="theoretical" id="oTheo">Theoretical</option><option value="practical" id="oPrac">Practical</option></select></div><div class="form-group"><label id="lmProfL" for="lecProf"></label><input type="text" class="form-input" id="lecProf"></div><div class="form-group"><label id="lmRoomL" for="lecRoom"></label><input type="text" class="form-input" id="lecRoom"></div><button class="btn-primary" id="saveLecBtn"></button><button class="btn-danger" id="deleteLecBtn" style="display:none"></button></div></div>
+<div class="modal-overlay" id="taskModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="tmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('taskModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="tmNameL" for="taskName"></label><input type="text" class="form-input" id="taskName"></div><div class="form-group"><label id="tmSubL" for="taskSubject"></label><input type="text" class="form-input" id="taskSubject"></div><div class="form-group"><label id="tmDlL" for="taskDeadline"></label><input type="datetime-local" class="form-input" id="taskDeadline"></div><div class="form-group"><label id="tmPrL" for="taskPriority"></label><select class="form-input" id="taskPriority"><option value="low" id="oLow"></option><option value="medium" selected id="oMed"></option><option value="high" id="oHigh"></option></select></div><button class="btn-primary" id="saveTaskBtn"></button></div></div>
+<div class="modal-overlay" id="nameModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="nmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('nameModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="nmL" for="editNameInput"></label><input type="text" class="form-input" id="editNameInput"></div><button class="btn-primary" id="saveNameBtn"></button></div></div>
+<div class="modal-overlay" id="uniModal"><div class="modal"><div class="modal-header"><div class="modal-title" id="umTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('uniModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label id="umL" for="editUniSelect"></label><select class="form-input" id="editUniSelect"><option value="latakia"></option><option value="sham"></option><option value="aast"></option><option value="manara"></option><option value="gemtq"></option></select></div><button class="btn-secondary" id="openAddUniBtn" style="margin-bottom:10px"></button><button class="btn-primary" id="saveUniBtn"></button></div></div>
 
 <!-- Add-your-university modal: lets a signed-in user create their own
      (is_official=false) university when it's not in the catalog. After it's
      created, the existing slot editor opens so they can set real times. -->
 <div class="modal-overlay" id="addUniModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="auTitle"></div><button class="modal-close" onclick="closeModal('addUniModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
-  <div class="form-group"><label id="auNameL"></label><input type="text" class="form-input" id="auName" maxlength="120"></div>
-  <div class="form-group"><label id="auNameArL"></label><input type="text" class="form-input" id="auNameAr" maxlength="120" dir="rtl"></div>
-  <div class="form-group"><label id="auCountryL"></label><select class="form-input" id="auCountry"></select></div>
-  <div class="form-group"><label id="auGradeL"></label><select class="form-input" id="auGradeSystem"></select></div>
-  <div class="form-group"><label id="auSlotsL"></label><input type="number" class="form-input" id="auSlotCount" min="1" max="12" value="5"></div>
+  <div class="modal-header"><div class="modal-title" id="auTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('addUniModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
+  <div class="form-group"><label id="auNameL" for="auName"></label><input type="text" class="form-input" id="auName" maxlength="120"></div>
+  <div class="form-group"><label id="auNameArL" for="auNameAr"></label><input type="text" class="form-input" id="auNameAr" maxlength="120" dir="rtl"></div>
+  <div class="form-group"><label id="auCountryL" for="auCountry"></label><select class="form-input" id="auCountry"></select></div>
+  <div class="form-group"><label id="auGradeL" for="auGradeSystem"></label><select class="form-input" id="auGradeSystem"></select></div>
+  <div class="form-group"><label id="auSlotsL" for="auSlotCount"></label><input type="number" class="form-input" id="auSlotCount" min="1" max="12" value="5"></div>
   <div id="auError" class="au-error" style="display:none"></div>
   <button class="btn-primary" id="auSubmitBtn"></button>
 </div></div>
-<div class="modal-overlay" id="examModal"><div class="modal"><div class="modal-header"><div class="modal-title">Add Exam</div><button class="modal-close" onclick="closeModal('examModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label>Subject</label><input type="text" class="form-input" id="examSubject" placeholder="e.g. Data Structures"></div><div class="form-group"><label>Date</label><input type="date" class="form-input" id="examDate"></div><div class="form-group"><label>Time</label><input type="time" class="form-input" id="examTime" value="09:00"></div><div class="form-group"><label>Type</label><select class="form-input" id="examType"><option value="midterm">Midterm</option><option value="final">Final</option><option value="quiz">Quiz</option></select></div><button class="btn-primary" id="saveExamBtn">Add Exam</button></div></div>
+<div class="modal-overlay" id="examModal"><div class="modal"><div class="modal-header"><div class="modal-title">Add Exam</div><button class="modal-close" aria-label="Close" onclick="closeModal('examModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div><div class="form-group"><label for="examSubject">Subject</label><input type="text" class="form-input" id="examSubject" placeholder="e.g. Data Structures"></div><div class="form-group"><label for="examDate">Date</label><input type="date" class="form-input" id="examDate"></div><div class="form-group"><label for="examTime">Time</label><input type="time" class="form-input" id="examTime" value="09:00"></div><div class="form-group"><label for="examType">Type</label><select class="form-input" id="examType"><option value="midterm">Midterm</option><option value="final">Final</option><option value="quiz">Quiz</option></select></div><button class="btn-primary" id="saveExamBtn">Add Exam</button></div></div>
 
 <!-- ═══════════════ GROUP MODALS ═══════════════ -->
 <!-- Shared Lecture modal: admin-only editor for group_shared_schedule slots.
      Mirrors the structure of lectureModal but writes to state.groups.sharedSchedule. -->
 <div class="modal-overlay" id="groupLectureModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="glmTitle"></div><button class="modal-close" onclick="closeModal('groupLectureModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
-  <div class="form-group"><label id="glmSubL"></label><input type="text" class="form-input" id="gLecSubject"></div>
+  <div class="modal-header"><div class="modal-title" id="glmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('groupLectureModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
+  <div class="form-group"><label id="glmSubL" for="gLecSubject"></label><input type="text" class="form-input" id="gLecSubject"></div>
   <div class="form-group"><label id="glmTypeL"></label>
   <div class="glm-type-row">
     <button class="glm-type-btn" data-type="theoretical" id="glmTypeTheo"></button>
     <button class="glm-type-btn" data-type="practical" id="glmTypePrac"></button>
     <button class="glm-type-btn" data-type="activity" id="glmTypeActi"></button>
   </div></div>
-  <div class="form-group"><label id="glmRoomL"></label><input type="text" class="form-input" id="gLecRoom" style="direction:ltr;text-align:inherit"></div>
+  <div class="form-group"><label id="glmRoomL" for="gLecRoom"></label><input type="text" class="form-input" id="gLecRoom" style="direction:ltr;text-align:inherit"></div>
   <div class="form-group glm-time-row" style="display:flex;gap:10px">
-    <div style="flex:1"><label id="glmStartL"></label><input type="time" class="form-input" id="gLecStart" value="08:00"></div>
-    <div style="flex:1"><label id="glmEndL"></label><input type="time" class="form-input" id="gLecEnd" value="10:00"></div>
+    <div style="flex:1"><label id="glmStartL" for="gLecStart"></label><input type="time" class="form-input" id="gLecStart" value="08:00"></div>
+    <div style="flex:1"><label id="glmEndL" for="gLecEnd"></label><input type="time" class="form-input" id="gLecEnd" value="10:00"></div>
   </div>
   <input type="hidden" id="gLecType" value="theoretical">
   <input type="hidden" id="gLecOldSlot" value="">
@@ -1991,10 +1995,10 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 <!-- Shared Exam modal: admin-only. Mirrors examModal. -->
 <div class="modal-overlay" id="groupExamModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="gemTitle"></div><button class="modal-close" onclick="closeModal('groupExamModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
-  <div class="form-group"><label id="gemSubL"></label><input type="text" class="form-input" id="gExamSubject" placeholder="e.g. Data Structures"></div>
-  <div class="form-group"><label id="gemDateL"></label><input type="date" class="form-input" id="gExamDate"></div>
-  <div class="form-group"><label id="gemTypeL"></label><select class="form-input" id="gExamType"><option value="midterm">Midterm</option><option value="final">Final</option><option value="quiz">Quiz</option></select></div>
+  <div class="modal-header"><div class="modal-title" id="gemTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('groupExamModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
+  <div class="form-group"><label id="gemSubL" for="gExamSubject"></label><input type="text" class="form-input" id="gExamSubject" placeholder="e.g. Data Structures"></div>
+  <div class="form-group"><label id="gemDateL" for="gExamDate"></label><input type="date" class="form-input" id="gExamDate"></div>
+  <div class="form-group"><label id="gemTypeL" for="gExamType"></label><select class="form-input" id="gExamType"><option value="midterm">Midterm</option><option value="final">Final</option><option value="quiz">Quiz</option></select></div>
   <button class="btn-primary" id="saveGroupExamBtn"></button>
 </div></div>
 
@@ -2013,7 +2017,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 <button class="add-task-btn" id="fabAddTask" style="display:none">+</button>
 <!-- ═══ F1: Group Time Slots editor (admin only) ═══ -->
 <div class="modal-overlay" id="timeSlotsModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="tsmTitle"></div><button class="modal-close" onclick="closeModal('timeSlotsModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
+  <div class="modal-header"><div class="modal-title" id="tsmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('timeSlotsModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
   <div id="tsmSlotList" style="margin-bottom:10px"></div>
   <button class="btn-secondary" id="tsmAddBtn" style="width:100%;margin-bottom:10px"></button>
   <button class="btn-primary" id="tsmSaveBtn"></button>
@@ -2021,7 +2025,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 <!-- ═══ F2: Group Settings (admin only) ═══ -->
 <div class="modal-overlay" id="groupSettingsModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="gsmTitle"></div><button class="modal-close" onclick="closeModal('groupSettingsModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
+  <div class="modal-header"><div class="modal-title" id="gsmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('groupSettingsModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
   <div class="gs-section">
     <div class="gs-section-title" id="gsmNameL"></div>
     <div class="gs-inline-row"><input type="text" class="form-input" id="gsmName" maxlength="80"><button class="btn-primary" id="gsmSaveName" style="padding:8px 14px;width:auto"></button></div>
@@ -2098,9 +2102,9 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 <!-- ═══ F2: Delete Group confirm (type-name) ═══ -->
 <div class="modal-overlay" id="deleteGroupModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="dgmTitle"></div><button class="modal-close" onclick="closeModal('deleteGroupModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
+  <div class="modal-header"><div class="modal-title" id="dgmTitle"></div><button class="modal-close" aria-label="Close" onclick="closeModal('deleteGroupModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
   <div id="dgmMsg" style="font-size:.88rem;color:var(--text-secondary);margin-bottom:10px"></div>
-  <div class="form-group"><label id="dgmLabel"></label><input type="text" class="form-input" id="dgmInput"></div>
+  <div class="form-group"><label id="dgmLabel" for="dgmInput"></label><input type="text" class="form-input" id="dgmInput"></div>
   <button class="btn-danger" id="dgmConfirmBtn" disabled></button>
 </div></div>
 
@@ -2163,7 +2167,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 <!-- ═══ Group Info modal (tap chat header) ═══ -->
 <div class="modal-overlay" id="groupInfoModal"><div class="modal">
-  <div class="modal-header"><div class="modal-title" id="gimTitle">Group info</div><button class="modal-close" onclick="closeModal('groupInfoModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
+  <div class="modal-header"><div class="modal-title" id="gimTitle">Group info</div><button class="modal-close" aria-label="Close" onclick="closeModal('groupInfoModal')"><svg aria-hidden="true" class="icon" width="18" height="18"><use href="#ic-x"/></svg></button></div>
   <div class="gis-hero">
     <div class="group-pic lg" id="gimPic" data-ctx="info"></div>
     <div class="gis-name" id="gimName">—</div>
@@ -2196,7 +2200,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.33.0';
+const APP_VERSION = 'v1.34.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */

@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-proprietary-lightgrey.svg"></a>
   <a href="#"><img alt="PWA" src="https://img.shields.io/badge/PWA-ready-5A0FC8.svg"></a>
   <a href="#"><img alt="No build step" src="https://img.shields.io/badge/build-none-success.svg"></a>
   <a href="#"><img alt="Single file" src="https://img.shields.io/badge/architecture-single--file-orange.svg"></a>
@@ -370,9 +370,9 @@ If this grows past a single semester's worth of features, the move is **not** "t
 
 ## 📄 License
 
-MIT — see [`LICENSE`](LICENSE). <!-- TODO: add a LICENSE file to the repo root -->
+Proprietary — All rights reserved. See [`LICENSE`](LICENSE).
 
-Use, modify, and ship for any purpose. Attribution appreciated, not required.
+The source is public for portfolio and code-review purposes. Copying, redistributing, or republishing the app (including on app stores) requires prior written permission from the author.
 
 ---
 
