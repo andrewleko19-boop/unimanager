@@ -263,16 +263,31 @@ on conflict (id) do update set
 
 -- 3.1 groups — the group itself
 create table if not exists public.groups (
-  id           uuid primary key default gen_random_uuid(),
-  name         text not null,
-  description  text,
-  invite_code  text unique not null,
-  owner_id     uuid not null references auth.users(id) on delete cascade,
-  picture_url  text,
-  chat_mode    text default 'all',          -- 'all' | 'admins' (who can post)
-  time_slots   jsonb default '[]'::jsonb,    -- shared timetable slots
-  created_at   timestamptz default now()
+  id            uuid primary key default gen_random_uuid(),
+  name          text not null,
+  description   text,
+  invite_code   text unique not null,
+  owner_id      uuid not null references auth.users(id) on delete cascade,
+  group_picture text,                        -- data-URL set via update_group_picture RPC
+  chat_mode     text default 'all',          -- 'all' | 'admins' (who can post)
+  time_slots    jsonb default '[]'::jsonb,    -- shared timetable slots
+  created_at    timestamptz default now()
 );
+
+-- [FIX 5] Column-name drift: earlier revisions of this reference file called the
+-- column picture_url, but the client (index.html) reads/writes group_picture
+-- everywhere and the live update_group_picture RPC takes p_picture — the live
+-- column is group_picture. If a database was ever created from the old file,
+-- rename it to match the client. No-op on the live project.
+do $$ begin
+  if exists (select 1 from information_schema.columns
+             where table_schema='public' and table_name='groups' and column_name='picture_url')
+     and not exists (select 1 from information_schema.columns
+             where table_schema='public' and table_name='groups' and column_name='group_picture')
+  then
+    alter table public.groups rename column picture_url to group_picture;
+  end if;
+end $$;
 
 -- 3.2 group_members — membership + role
 create table if not exists public.group_members (
@@ -462,7 +477,7 @@ create policy msg_update_own_or_admin on public.group_messages
 --    rotate_group_invite_code(p_group_id uuid) -> text            [admin only]
 --    update_group_name(p_group_id uuid, p_name text) -> void      [admin only]
 --    update_group_description(p_group_id uuid, p_description text) -> void
---    update_group_picture(p_group_id uuid, p_url text) -> void    [admin only]
+--    update_group_picture(p_group_id uuid, p_picture text) -> void  [admin only]
 --    update_group_chat_mode(p_group_id uuid, p_mode text) -> void [admin only]
 --    update_group_time_slots(p_group_id uuid, p_slots jsonb) -> void [admin only]
 --
@@ -501,6 +516,11 @@ create policy msg_update_own_or_admin on public.group_messages
 --  [FIX 4] groups.chat_mode='admins' was UI-only; msg_insert_own checked only
 --          membership. Added can_post_in_group() to the insert WITH CHECK so
 --          the lock holds at the DB layer.
+--  [FIX 5] (2026-06-10) groups.picture_url renamed to group_picture: the client
+--          uses group_picture in all 11 call sites and passes p_picture to the
+--          working update_group_picture RPC, so the old picture_url name in
+--          this reference file was a transcription error. Conditional rename
+--          added after the table definition (no-op on the live project).
 --
 --  Verified consistent (no change needed): personal tables own_all; the four
 --  universities command-split policies; grp_select_member + RPC-only group

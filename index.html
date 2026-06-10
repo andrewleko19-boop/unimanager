@@ -6,9 +6,12 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://browser.sentry-cdn.com; img-src 'self' data: blob: https:; connect-src 'self' https://gcjlvfggsupndpnjoake.supabase.co wss://gcjlvfggsupndpnjoake.supabase.co https://cdn.jsdelivr.net https://*.ingest.de.sentry.io https://*.sentry.io;">
 <title>UniManager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- Supabase SDK is loaded at the END of <body>, right before the main app
+     script — it was render-blocking here (~1.7s on simulated mobile). The
+     preconnect above warms the CDN connection while the document parses. -->
 
 <!--
   ════════════════════════════════════════════════════════════════════════════
@@ -2196,11 +2199,16 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 <div class="toast" id="toast"></div>
 <div id="chatLightbox"><button id="chatLightboxClose">&#215;</button><img id="chatLightboxImg" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt=""></div>
 <input type="file" id="importFile" accept=".json" style="display:none">
+<!-- Supabase SDK — deliberately synchronous and NOT defer/async: the main app
+     script below references the `supabase` global at top level (createClient).
+     Placed here (after all UI markup) instead of <head> so the splash screen
+     and layout paint before the SDK download blocks the parser. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.34.0';
+const APP_VERSION = 'v1.35.0';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -6252,6 +6260,7 @@ function saveState() {
       state.groups.current.invite_code = row.invite_code;
       state.groups.current.chat_mode   = row.chat_mode || 'all';
       state.groups.current.time_slots  = row.time_slots || [];
+      state.groups.current.group_picture = row.group_picture || null;
       state.groups.chatMode            = row.chat_mode || 'all';
       state.groups.timeSlots           = row.time_slots || [];
       renderGroups();
