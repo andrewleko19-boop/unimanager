@@ -23,11 +23,9 @@ module.exports = {
       assertions: {
         // Performance: anything below 0.85 is a real problem on mobile.
         'categories:performance': ['warn', { minScore: 0.85 }],
-        // Accessibility: target stays 0.90, but the app currently scores ~0.72
-        // in CI. Downgraded error -> warn so the gap is surfaced on every run
-        // without blocking unrelated PRs. TODO: fix the underlying a11y issues
-        // in index.html, then restore this to 'error'.
-        'categories:accessibility': ['warn', { minScore: 0.90 }],
+        // Accessibility: aim high — easy to fix, cheap to maintain.
+        // (Restored to error after the a11y pass brought CI from 0.72 to 1.0.)
+        'categories:accessibility': ['error', { minScore: 0.90 }],
         // Best practices: HTTPS, modern APIs, no console errors.
         'categories:best-practices': ['error', { minScore: 0.92 }],
         // SEO: meta tags, valid HTML, mobile-friendly.
