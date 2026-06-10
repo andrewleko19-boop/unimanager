@@ -1206,18 +1206,32 @@ body.group-active #pageGroups>.section-title{display:none}
 [dir="rtl"] #groupChatView .chat-msg-row.self .chat-msg-time{text-align:right}
 [dir="rtl"] #groupChatView .chat-msg-row.other .chat-msg-time{text-align:left}
 
-#groupChatView .chat-input-row{padding:10px 14px;background:#0e0e1e;border-top:1px solid #1a1a30;display:flex;gap:8px;align-items:center}
+/* ── Chat composer: WhatsApp-style pill (emoji · input · attach · camera) + standalone mic/send ── */
+#chatInputContainer{position:relative}
+#groupChatView .chat-input-row{padding:8px 10px;background:#0e0e1e;border-top:1px solid #1a1a30;display:flex;gap:8px;align-items:flex-end}
 [data-theme="light"] #groupChatView .chat-input-row{background:#f0f2f5;border-top-color:#e3e6ee}
-#groupChatView .chat-input-row input{flex:1;background:#1c1c38;border:none;border-radius:22px;padding:9px 14px;color:#e8e8f5;font-size:13px;direction:rtl}
-[data-theme="light"] #groupChatView .chat-input-row input{background:#fff;color:#111;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+/* The rounded pill holds the emoji button, the text field, and the trailing attach + camera icons */
+#groupChatView .ci-pill{flex:1;min-width:0;display:flex;align-items:center;gap:2px;background:#1c1c38;border-radius:24px;padding:3px 6px}
+[data-theme="light"] #groupChatView .ci-pill{background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+#groupChatView .ci-pill:focus-within{box-shadow:0 0 0 1px var(--accent)}
+#groupChatView .chat-input-row input{flex:1;min-width:0;background:transparent;border:none;border-radius:0;padding:8px 4px;color:#e8e8f5;font-size:15px;direction:rtl}
+[data-theme="light"] #groupChatView .chat-input-row input{color:#111;box-shadow:none}
 [dir="ltr"] #groupChatView .chat-input-row input{direction:ltr}
-#groupChatView .chat-input-row input:focus{outline:none;box-shadow:0 0 0 1px var(--accent)}
-#groupChatView .chat-input-row button{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;font-size:0}
-#groupChatView .chat-input-row button:disabled{background:#1c1c38;color:#666}
-#groupChatView .chat-input-row button::after{content:"\27A4";font-size:14px}
-[dir="rtl"] #groupChatView .chat-input-row button::after{transform:scaleX(-1);display:inline-block}
-#groupChatView .chat-input-row #chatMicBtn::after{content:none}
-#groupChatView .chat-input-row #chatMicBtn svg{width:18px;height:18px;stroke:currentColor;fill:none}
+#groupChatView .chat-input-row input:focus{outline:none;box-shadow:none}
+/* In-pill flat icon buttons (emoji / attach / camera) */
+#groupChatView .ci-icon{width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:transparent;border:none;border-radius:50%;color:var(--text-secondary);cursor:pointer;padding:0;font-size:0}
+#groupChatView .ci-icon:active{background:rgba(127,127,127,.15)}
+#groupChatView .ci-icon svg{width:22px;height:22px;stroke:currentColor;fill:none;display:block;pointer-events:none}
+/* Standalone round mic / send button (far end, outside the pill) */
+#groupChatView #chatMicBtn,#groupChatView #chatSendBtn{width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;font-size:0}
+#groupChatView #chatMicBtn:disabled,#groupChatView #chatSendBtn:disabled{background:#1c1c38;color:#666}
+#groupChatView #chatMicBtn svg,#groupChatView #chatSendBtn svg{width:20px;height:20px;stroke:currentColor;fill:none;display:block;pointer-events:none}
+[dir="rtl"] #groupChatView #chatSendBtn svg{transform:scaleX(-1)}
+/* Emoji picker popup */
+#chatEmojiPicker{display:none;position:absolute;bottom:100%;inset-inline-start:8px;inset-inline-end:8px;margin-bottom:6px;grid-template-columns:repeat(8,1fr);gap:2px;background:var(--bg-card,#1c1c38);border:1px solid var(--border);border-radius:14px;padding:8px;max-height:210px;overflow-y:auto;z-index:30;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+#chatEmojiPicker.visible{display:grid}
+#chatEmojiPicker button{background:none;border:none;font-size:22px;padding:5px 0;cursor:pointer;border-radius:8px;line-height:1}
+#chatEmojiPicker button:active{background:rgba(127,127,127,.2)}
 
 /* ── Chat v2: date separators ── */
 .chat-date-sep{align-self:center;margin:10px 0 6px;pointer-events:none}
@@ -1307,7 +1321,7 @@ body.group-active #pageGroups>.section-title{display:none}
 .chat-voice .cv-dur{font-size:10px;opacity:.8;margin-top:4px;font-variant-numeric:tabular-nums}
 
 /* ── Chat v2: search panel ── */
-#chatSearchPanel{display:none;position:fixed;inset:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:260;background:var(--bg-primary);flex-direction:column}
+#chatSearchPanel{display:none;position:fixed;top:0;bottom:0;left:0;right:0;width:100%;max-width:480px;margin-inline:auto;z-index:260;background:var(--bg-primary);flex-direction:column}
 #chatSearchPanel.visible{display:flex}
 #chatSearchPanel .csp-head{display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top,0px));background:var(--bg-secondary);border-bottom:1px solid var(--border)}
 #chatSearchPanel .csp-head input{flex:1;background:var(--bg-input,#1c1c38);border:1px solid var(--border);border-radius:20px;padding:9px 14px;color:var(--text-primary);font-size:15px}
@@ -1614,6 +1628,8 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
   <symbol id="ic-play" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 4 20 12 6 20 6 4"/></symbol>
   <symbol id="ic-pause" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></symbol>
   <symbol id="ic-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+  <symbol id="ic-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
+  <symbol id="ic-smile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></symbol>
 </svg>
 <!-- Initial loading overlay — full splash. Covers the app until we know the auth state.
      Prevents the welcomeScreen from flashing for users with an active session.
@@ -1927,10 +1943,14 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
           </div>
           <div id="chatUploadProgress"><div class="cup-bar"><div class="cup-fill" id="cupFill"></div></div></div>
           <div class="chat-input-row" id="chatInputRow">
-            <button id="chatAttachBtn" type="button" aria-label="Attach"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="9" y1="2" x2="9" y2="16"/><line x1="2" y1="9" x2="16" y2="9"/></svg></button>
-            <input type="text" id="chatInput" maxlength="2000" autocomplete="off" aria-label="Message">
+            <div class="ci-pill" id="chatInputPill">
+              <button class="ci-icon" id="chatEmojiBtn" type="button" aria-label="Emoji"><svg aria-hidden="true"><use href="#ic-smile"/></svg></button>
+              <input type="text" id="chatInput" maxlength="2000" autocomplete="off" aria-label="Message">
+              <button class="ci-icon" id="chatAttachBtn" type="button" aria-label="Attach"><svg aria-hidden="true"><use href="#ic-paperclip"/></svg></button>
+              <button class="ci-icon" id="chatCameraBtn" type="button" aria-label="Camera"><svg aria-hidden="true"><use href="#ic-camera"/></svg></button>
+            </div>
             <button id="chatMicBtn" type="button" aria-label="Record voice message" style="display:none"><svg width="18" height="18"><use href="#ic-mic"/></svg></button>
-            <button id="chatSendBtn"></button>
+            <button id="chatSendBtn" type="button" aria-label="Send"><svg aria-hidden="true" width="18" height="18"><use href="#ic-send"/></svg></button>
           </div>
           <div id="chatRecBar">
             <span class="crec-dot"></span>
@@ -1940,7 +1960,9 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
             <button class="crec-send" id="chatRecSend" type="button" aria-label="Send voice message"><svg aria-hidden="true"><use href="#ic-send"/></svg></button>
           </div>
           <input type="file" id="chatGalleryInput" style="display:none" accept="image/*">
+          <input type="file" id="chatCameraInput" style="display:none" accept="image/*" capture="environment">
           <input type="file" id="chatDocInput" style="display:none" accept=".pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx">
+          <div id="chatEmojiPicker" aria-label="Emoji picker"></div>
         </div>
       </div>
     </div>
@@ -2375,7 +2397,7 @@ body.chat-fullscreen-open #groupNotesView{display:none!important}
 
 /* ===== APP VERSION =====
    ⚠️ UPDATE both APP_VERSION and CACHE_VERSION (sw.js) when deploying changes */
-const APP_VERSION = 'v1.36.1';
+const APP_VERSION = 'v1.36.2';
 /* Splash version badge — set as early as possible so the user sees the right
    build number even if init() takes a moment. Defensive: badge may already be
    gone if hideInitLoader fired (it shouldn't yet, but fail-safe). */
@@ -3104,7 +3126,7 @@ function applyText(){
   if($('dgmLabel')) $('dgmLabel').textContent=t('gsDeleteLabel');
   if($('dgmConfirmBtn')) $('dgmConfirmBtn').textContent=t('gsDelete');
   if($('chatInput')) $('chatInput').placeholder=t('chatPlaceholder');
-  if($('chatSendBtn')) $('chatSendBtn').textContent=t('chatSend');
+  if($('chatSendBtn')) $('chatSendBtn').setAttribute('aria-label',t('chatSend'));
   if($('avsTitle')) $('avsTitle').textContent=t('changePhoto');
   if($('avsCameraLabel')) $('avsCameraLabel').textContent=t('takePhoto');
   if($('avsGalleryLabel')) $('avsGalleryLabel').textContent=t('chooseGallery');
@@ -7226,12 +7248,16 @@ function saveState() {
     const rb=$('chatReplyBar'); if(rb) rb.classList.remove('editing','visible');
     const inp=$('chatInput'); if(inp){ inp.value=''; _syncComposerButtons(); }
   }
-  /* Toggle mic ↔ send based on composer content (also called after edit). */
+  /* Toggle mic ↔ send based on composer content (also called after edit).
+     Like WhatsApp, the in-pill camera icon hides while there is text so the
+     field has more room; emoji + attach stay put. */
   function _syncComposerButtons(){
-    const mic=$('chatMicBtn'), send=$('chatSendBtn'), inp=$('chatInput');
+    const mic=$('chatMicBtn'), send=$('chatSendBtn'), inp=$('chatInput'), cam=$('chatCameraBtn');
     if(!send||!inp) return;
     const has=inp.value.trim().length>0;
     if(mic && mic.dataset.voice==='1'){ mic.style.display=has?'none':''; send.style.display=has?'':'none'; }
+    else { send.style.display=''; }
+    if(cam) cam.style.display = has ? 'none' : '';
   }
 
   /* Send button + Enter-to-send (mobile‑friendly) */
@@ -7331,6 +7357,51 @@ function _detectFileType(file){
   }
   galInp.addEventListener('change', async()=>{ const f=galInp.files&&galInp.files[0]; galInp.value=''; await handleFile(f); });
   docInp.addEventListener('change', async()=>{ const f=docInp.files&&docInp.files[0]; docInp.value=''; await handleFile(f); });
+  /* Camera button (in-pill, trailing): open the device camera directly. */
+  const camBtn=$('chatCameraBtn'), camInp=$('chatCameraInput');
+  if(camBtn && camInp){
+    camBtn.addEventListener('click', ()=>camInp.click());
+    camInp.addEventListener('change', async()=>{ const f=camInp.files&&camInp.files[0]; camInp.value=''; await handleFile(f); });
+  }
+})();
+
+/* -- Emoji picker (in-pill leading button) — inserts at the last caret position.
+   Opening blurs the field so the on-screen keyboard hides and the grid is fully
+   visible (WhatsApp behaviour); the picker stays open for multiple picks and
+   closes when you tap the field, tap outside, or send. -- */
+(function(){
+  const btn=$('chatEmojiBtn'), picker=$('chatEmojiPicker'), inp=$('chatInput');
+  if(!btn||!picker||!inp) return;
+  const EMOJIS=['😀','😁','😂','🤣','😊','😍','😘','😎','🤩','😇','🙂','😉','😋','😜','🤔','🤨','😐','😴','😢','😭','😡','🥺','😱','😬','🙄','😏','😒','😔','😩','🥳','😤','😞','👍','👎','👏','🙏','💪','🤝','👌','✌️','🤞','🫶','❤️','🧡','💛','💚','💙','💜','🖤','🤍','💔','🔥','✨','⭐','🎉','🎊','💯','✅','❌','❓','❗','💬','📌','🕒','☕','🍔','⚽','🎓','📚','💻','📱','🚀','🌙','☀️','🌧️','🎵','🎁'];
+  let built=false, caret=null;
+  function build(){
+    if(built) return; built=true;
+    EMOJIS.forEach(e=>{
+      const b=document.createElement('button'); b.type='button'; b.textContent=e;
+      b.addEventListener('click', ev=>{ ev.preventDefault(); insert(e); });
+      picker.appendChild(b);
+    });
+  }
+  function saveCaret(){ if(inp.selectionStart!=null) caret=inp.selectionStart; }
+  inp.addEventListener('keyup', saveCaret);
+  inp.addEventListener('click', saveCaret);
+  inp.addEventListener('blur', saveCaret);
+  function insert(e){
+    const pos=(caret==null)?inp.value.length:caret;
+    inp.value=inp.value.slice(0,pos)+e+inp.value.slice(pos);
+    caret=pos+e.length;
+    if(typeof _syncComposerButtons==='function') _syncComposerButtons();
+  }
+  function open(){ build(); saveCaret(); inp.blur(); picker.classList.add('visible'); }
+  function close(){ picker.classList.remove('visible'); }
+  window._closeChatEmoji=close;
+  btn.addEventListener('click', e=>{ e.stopPropagation(); picker.classList.contains('visible')?close():open(); });
+  document.addEventListener('click', e=>{
+    if(!picker.classList.contains('visible')) return;
+    if(e.target.closest('#chatEmojiPicker')||e.target.closest('#chatEmojiBtn')) return;
+    close();
+  });
+  inp.addEventListener('focus', close);
 })();
 
 /* -- Lightbox -- */
