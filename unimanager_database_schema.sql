@@ -487,7 +487,8 @@ create policy msg_update_own_or_admin on public.group_messages
 
 -- ============================================================================
 --  SECTION 5 — STORAGE (Supabase Storage bucket for chat attachments)
---  Bucket: 'group-files' (or your chosen name). Created via the Storage UI,
+--  Bucket: 'group-attachments' (the name the client actually uses — see
+--  uploadGroupAttachment in index.html). Created via the Storage UI,
 --  not SQL. Policies allow group members to read; senders to upload. If you
 --  need exact storage.objects policies regenerated, ask the assistant.
 -- ============================================================================
@@ -521,6 +522,12 @@ create policy msg_update_own_or_admin on public.group_messages
 --          working update_group_picture RPC, so the old picture_url name in
 --          this reference file was a transcription error. Conditional rename
 --          added after the table definition (no-op on the live project).
+--  [FIX 6] (2026-06-10) Chat v2 — see SECTION 7. Adds pin columns to
+--          group_messages, two new member-scoped tables (group_message_reactions
+--          with REPLICA IDENTITY FULL for DELETE events, group_chat_reads
+--          watermarks), the set_message_pin() RPC (member-pin without widening
+--          the UPDATE policy), and the realtime publication wiring. Edit reuses
+--          the existing edited_at column + msg_update_own_or_admin policy.
 --
 --  Verified consistent (no change needed): personal tables own_all; the four
 --  universities command-split policies; grp_select_member + RPC-only group
@@ -529,6 +536,116 @@ create policy msg_update_own_or_admin on public.group_messages
 --  insert-only. Note: official universities are visible to AUTHENTICATED users
 --  only (not anon) — the app is auth-gated with a built-in fallback, so this is
 --  intentional even though the prose says "everyone".
+-- ============================================================================
+
+
+-- ============================================================================
+--  SECTION 7 — CHAT v2 (2026-06-10) [FIX 6]
+--  Interactive chat upgrade (reactions, read receipts, pins, edits). All DDL
+--  here is idempotent: running this section twice is a clean no-op. Edit needs
+--  no new objects (group_messages.edited_at already exists and the existing
+--  msg_update_own_or_admin policy already permits the sender to update content).
+-- ============================================================================
+
+-- 7.1 group_messages: pin columns + supporting indexes.
+--     pinned_at IS NOT NULL means "pinned"; pinned_by records who pinned it.
+--     Writes go exclusively through set_message_pin() (7.4) so any member can
+--     pin without loosening the sender-or-admin UPDATE policy.
+alter table public.group_messages add column if not exists pinned_at timestamptz;
+alter table public.group_messages add column if not exists pinned_by uuid references auth.users(id) on delete set null;
+create index if not exists idx_group_messages_group_id_desc on public.group_messages(group_id, id desc);
+create index if not exists idx_group_messages_pinned on public.group_messages(group_id, pinned_at) where pinned_at is not null;
+
+-- 7.2 Reactions. group_id is denormalised (not part of the PK) so the realtime
+--     channel can filter on it AND the RLS check stays a simple membership test.
+--     REPLICA IDENTITY FULL is REQUIRED: DELETE realtime events only carry the
+--     replica-identity columns, and our channel filter needs group_id — which
+--     the PK (message_id,user_id,emoji) does not include.
+create table if not exists public.group_message_reactions (
+  message_id bigint not null references public.group_messages(id) on delete cascade,
+  group_id   uuid   not null references public.groups(id) on delete cascade,
+  user_id    uuid   not null references auth.users(id) on delete cascade,
+  emoji      text   not null,
+  created_at timestamptz default now(),
+  primary key (message_id, user_id, emoji)
+);
+alter table public.group_message_reactions replica identity full;
+alter table public.group_message_reactions enable row level security;
+
+drop policy if exists gmr_select_member on public.group_message_reactions;
+create policy gmr_select_member on public.group_message_reactions
+  for select to authenticated using (is_group_member(group_id));
+
+drop policy if exists gmr_insert_self on public.group_message_reactions;
+create policy gmr_insert_self on public.group_message_reactions
+  for insert to authenticated
+  with check (
+    user_id = auth.uid()
+    and is_group_member(group_id)
+    and exists (
+      select 1 from public.group_messages m
+      where m.id = message_id and m.group_id = group_message_reactions.group_id
+    )
+  );
+
+drop policy if exists gmr_delete_self on public.group_message_reactions;
+create policy gmr_delete_self on public.group_message_reactions
+  for delete to authenticated using (user_id = auth.uid());
+
+-- 7.3 Read receipts — per-group watermark (one row per member, not per message).
+--     "seen by N" is computed client-side: a member has seen message X iff
+--     their last_read_at >= X.created_at.
+create table if not exists public.group_chat_reads (
+  group_id     uuid not null references public.groups(id) on delete cascade,
+  user_id      uuid not null references auth.users(id) on delete cascade,
+  last_read_at timestamptz not null default now(),
+  primary key (group_id, user_id)
+);
+alter table public.group_chat_reads enable row level security;
+
+drop policy if exists gcr_select_member on public.group_chat_reads;
+create policy gcr_select_member on public.group_chat_reads
+  for select to authenticated using (is_group_member(group_id));
+
+drop policy if exists gcr_insert_self on public.group_chat_reads;
+create policy gcr_insert_self on public.group_chat_reads
+  for insert to authenticated with check (user_id = auth.uid() and is_group_member(group_id));
+
+drop policy if exists gcr_update_self on public.group_chat_reads;
+create policy gcr_update_self on public.group_chat_reads
+  for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+-- 7.4 Pin RPC. ANY group member may pin/unpin (WhatsApp-style) WITHOUT widening
+--     the sender-or-admin UPDATE policy: SECURITY DEFINER + an explicit
+--     membership check is the controlled escape hatch.
+create or replace function public.set_message_pin(p_message_id bigint, p_pinned boolean)
+returns void language plpgsql security definer set search_path = public as $$
+declare gid uuid;
+begin
+  select group_id into gid from group_messages where id = p_message_id and deleted is not true;
+  if gid is null then raise exception 'message not found'; end if;
+  if not is_group_member(gid) then raise exception 'not a group member'; end if;
+  update group_messages
+     set pinned_at = case when p_pinned then now() else null end,
+         pinned_by = case when p_pinned then auth.uid() else null end
+   where id = p_message_id;
+end $$;
+revoke execute on function public.set_message_pin(bigint, boolean) from public, anon;
+grant  execute on function public.set_message_pin(bigint, boolean) to authenticated;
+
+-- 7.5 Realtime publication. Idempotently ensure the chat tables are published so
+--     postgres_changes events fire (covers group_messages too, for fresh clones).
+do $$ declare tname text;
+begin
+  foreach tname in array array['group_messages','group_message_reactions','group_chat_reads'] loop
+    if not exists (
+      select 1 from pg_publication_tables
+      where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = tname
+    ) then
+      execute format('alter publication supabase_realtime add table public.%I', tname);
+    end if;
+  end loop;
+end $$;
 -- ============================================================================
 
 
